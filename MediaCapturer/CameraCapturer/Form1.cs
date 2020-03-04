@@ -71,7 +71,12 @@ namespace CameraCapturer
                 //}
                 //else
                 //{
+
+                if(FileWriter!=null && FileWriter.IsOpen)
+                {
                     FileWriter.WriteVideoFrame(Imagen);
+                }
+                    
                 //}
 
                 
