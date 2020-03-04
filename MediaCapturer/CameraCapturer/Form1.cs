@@ -65,14 +65,14 @@ namespace CameraCapturer
                 var lapsoTiempo = numeroActual - numeroPrevio;
                 var lapsoTiempoTS = new TimeSpan(numeroActual - numeroPrevio);
 
-                if (lapsoTiempoTS.TotalSeconds > 1)
-                {
-                    FileWriter.WriteVideoFrame(Imagen, lapsoTiempoTS);
-                }
-                else
-                {
+                //if (lapsoTiempoTS.TotalSeconds > 1)
+                //{
+                //    FileWriter.WriteVideoFrame(Imagen, lapsoTiempoTS);
+                //}
+                //else
+                //{
                     FileWriter.WriteVideoFrame(Imagen);
-                }
+                //}
 
                 
             }
