@@ -11,12 +11,21 @@ namespace CameraCapturer
         /// <summary>
         /// Punto de entrada principal para la aplicación.
         /// </summary>
+
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormCapturador());
+            if (args.Count() > 0)
+            {
+
+                Application.Run(new FormCapturador(args[0]));
+            }
+            else
+            {
+                Application.Run(new FormCapturador());
+            }
         }
     }
 }

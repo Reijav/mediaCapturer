@@ -17,6 +17,7 @@
             {
                 components.Dispose();
             }
+            FileWriter.Dispose();
             base.Dispose(disposing);
         }
 
@@ -42,9 +43,10 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 72);
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pictureBox1.Location = new System.Drawing.Point(12, 107);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(416, 331);
+            this.pictureBox1.Size = new System.Drawing.Size(640, 480);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -68,7 +70,7 @@
             // 
             // buttonObtenerVideo
             // 
-            this.buttonObtenerVideo.Location = new System.Drawing.Point(16, 43);
+            this.buttonObtenerVideo.Location = new System.Drawing.Point(16, 78);
             this.buttonObtenerVideo.Name = "buttonObtenerVideo";
             this.buttonObtenerVideo.Size = new System.Drawing.Size(154, 23);
             this.buttonObtenerVideo.TabIndex = 4;
@@ -78,7 +80,7 @@
             // 
             // buttonCapturarImg
             // 
-            this.buttonCapturarImg.Location = new System.Drawing.Point(586, 43);
+            this.buttonCapturarImg.Location = new System.Drawing.Point(672, 78);
             this.buttonCapturarImg.Name = "buttonCapturarImg";
             this.buttonCapturarImg.Size = new System.Drawing.Size(130, 23);
             this.buttonCapturarImg.TabIndex = 5;
@@ -88,9 +90,9 @@
             // 
             // buttonGrabar
             // 
-            this.buttonGrabar.Location = new System.Drawing.Point(310, 43);
+            this.buttonGrabar.Location = new System.Drawing.Point(492, 78);
             this.buttonGrabar.Name = "buttonGrabar";
-            this.buttonGrabar.Size = new System.Drawing.Size(118, 23);
+            this.buttonGrabar.Size = new System.Drawing.Size(160, 23);
             this.buttonGrabar.TabIndex = 6;
             this.buttonGrabar.Text = "Grabar Video";
             this.buttonGrabar.UseVisualStyleBackColor = true;
@@ -99,18 +101,18 @@
             // imageListCaptured
             // 
             this.imageListCaptured.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.imageListCaptured.ImageSize = new System.Drawing.Size(128, 128);
+            this.imageListCaptured.ImageSize = new System.Drawing.Size(160, 120);
             this.imageListCaptured.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // listViewImages
             // 
-            this.listViewImages.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.listViewImages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewImages.HideSelection = false;
             this.listViewImages.LargeImageList = this.imageListCaptured;
-            this.listViewImages.Location = new System.Drawing.Point(448, 72);
+            this.listViewImages.Location = new System.Drawing.Point(672, 107);
             this.listViewImages.Name = "listViewImages";
-            this.listViewImages.Size = new System.Drawing.Size(268, 331);
+            this.listViewImages.Size = new System.Drawing.Size(548, 483);
             this.listViewImages.SmallImageList = this.imageListCaptured;
             this.listViewImages.TabIndex = 7;
             this.listViewImages.UseCompatibleStateImageBehavior = false;
@@ -119,7 +121,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(728, 415);
+            this.ClientSize = new System.Drawing.Size(1232, 597);
             this.Controls.Add(this.listViewImages);
             this.Controls.Add(this.buttonGrabar);
             this.Controls.Add(this.buttonCapturarImg);
@@ -128,7 +130,7 @@
             this.Controls.Add(this.comboBoxDispositivos);
             this.Controls.Add(this.pictureBox1);
             this.Name = "FormCapturador";
-            this.Text = "Form1";
+            this.Text = "Capturador";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormCapturador_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

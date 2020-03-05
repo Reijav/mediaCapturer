@@ -3,6 +3,8 @@ using AForge.Video;
 using AForge.Video.DirectShow;
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -28,6 +30,18 @@ namespace CameraCapturer
         public FormCapturador()
         {
             InitializeComponent();
+        }
+
+        public FormCapturador(string path)
+        {
+            InitializeComponent();
+            DirectoryInfo dirinfo = new DirectoryInfo(path);
+            if (!dirinfo.Exists)
+            {
+                dirinfo.Create();
+            }
+
+            this.path = path;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -152,13 +166,33 @@ namespace CameraCapturer
 
         private void buttonCapturarImg_Click_1(object sender, EventArgs e)
         {
-            Bitmap imagenCapturada= Imagen;
-            string nombreArchivo = $"{path}{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.jpg";
-            imagenCapturada.Save(nombreArchivo, System.Drawing.Imaging.ImageFormat.Jpeg);
-            imageListCaptured.Images.Add(imagenCapturada);
-            listViewImages.Refresh();
-            listViewImages.Items.Add(nombreArchivo, listViewImages.Items.Count);
 
+            if (buttonObtenerVideo.Text == DESCONECTAR)
+            {
+                Bitmap imagenCapturada = Imagen;
+                string nombreArchivo = $"{path}{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.jpg";
+
+                using (MemoryStream memory = new MemoryStream())
+                {
+                    using (FileStream fs = new FileStream(nombreArchivo, FileMode.Create, FileAccess.Write))
+                    {
+                        imagenCapturada.Save(memory, ImageFormat.Jpeg);
+                        byte[] bytes = memory.ToArray();
+                        fs.Write(bytes, 0, bytes.Length);
+                    }
+                    MessageBox.Show($"Imagen guardada en {path}");
+                }
+
+                //Este codigo causa  "A generic error occurred in GDI+."
+                //imagenCapturada.Save(nombreArchivo, System.Drawing.Imaging.ImageFormat.Jpeg);
+                imageListCaptured.Images.Add(imagenCapturada);
+                listViewImages.Refresh();
+                listViewImages.Items.Add(nombreArchivo, listViewImages.Items.Count);
+            }
+            else
+            {
+                MessageBox.Show("No se encuentra conectado a ningún dispositivo.");
+            }
         }
 
         private void buttonConectarDispositivo_Click(object sender, EventArgs e)
