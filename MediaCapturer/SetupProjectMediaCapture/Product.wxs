@@ -11,12 +11,45 @@
 		</Feature>
 	</Product>
 
+  <Fragment >
+    <PropertyRef Id="WIX_IS_NETFRAMEWORK_461_OR_LATER_INSTALLED" />
+    <Condition Message="$(var.CameraCapturer.TargetName) requiere .NET Framework 4.6.1 or higher.">
+      <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_461_OR_LATER_INSTALLED]]>
+    </Condition>
+  </Fragment>
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="SetupProjectMediaCapture" />
-			</Directory>
+        <Directory Id="INSTALLFOLDER" Name="SetupProjectMediaCapture" >
+          <Directory Id="DesktopFolder" Name="DesktopFolder" />
+        </Directory>
+      </Directory>
+      <!-- Step 1: Define the directory structure -->
+      <!--<Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="My Application Name"/>
+      </Directory>-->
 		</Directory>
+
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="CameraCapturer.exe" Guid="4dd29b12-0b30-472d-9090-ee8ce9dd6c25">
+        <File Id="CameraCapturer.exe" Source="$(var.CameraCapturer.TargetDir)CameraCapturer.exe" KeyPath="yes" Checksum="yes"/>
+      </Component>
+    </DirectoryRef>
+    
+
+    <!-- Step 2: Add the shortcut to your installer package -->
+    <!--<DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="ApplicationShortcut" Guid="ccaf3424-faf7-46e9-afc2-5a65be2bd12a" >
+        <Shortcut Id="ApplicationStartMenuShortcut"
+             Name="CameraCapturer"
+           Description="Captura el video y fotos de la camara"
+            Target="[#CameraCapturer.exe]"
+                  WorkingDirectory="INSTALLFOLDER"/>
+        <RemoveFolder Id="INSTALLFOLDER" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\MediaSoft\CameraCapturer" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+
+      </Component>
+    </DirectoryRef>-->
 	</Fragment>
 
 	<Fragment>
@@ -25,8 +58,25 @@
     <Condition Message="$(var.CameraCapturer.TargetName) requires .NET Framework 4.6.1 or higher.">
       <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_461_OR_LATER_INSTALLED]]>
     </Condition>-->
-    
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">     
+
+    <!--Desktop Shortcut-->
+    <ComponentGroup Id="ComponentGroupDesktopShortcut" Directory="DesktopFolder" >
+      <Component Id="ComponentDesktopShortcut" Guid="ccaf3424-faf7-46e9-afc2-5a65be2bd12b"  >
+        <Shortcut Id="AppDesktopShortcut"
+                  Name="CameraCapturer"
+                  Description="Captura el video y fotos de la camara"
+                  Directory="DesktopFolder"
+                  Target="[#CameraCapturer.exe]"
+                  WorkingDirectory="INSTALLFOLDER"/>
+        <!--Remove desktop shortcut on uninstall-->
+        <RemoveFolder Id="DesktopFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\MediaSoft\CameraCapturer" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+
+      </Component>
+    </ComponentGroup>
+
+
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">     
 			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
 			 <!--<Component Id="ProductComponent"> 
         <File Source="$(var.CameraCapturer.TargetPath)" />
@@ -86,9 +136,9 @@
       <Component Id="avutil55.dll">
         <File Id ="avutil55.dll" Source = "$(var.CameraCapturer.TargetDir)avutil-55.dll" KeyPath = "yes" Checksum = "yes" />
       </Component>
-      <Component Id="CameraCapturer.exe">
-        <File Id ="CameraCapturer.exe" Source = "$(var.CameraCapturer.TargetDir)CameraCapturer.exe" KeyPath = "yes" Checksum = "yes" />
-      </Component>
+      <ComponentRef Id="CameraCapturer.exe">
+        <!--<File Id ="CameraCapturer.exe" Source = "$(var.CameraCapturer.TargetDir)CameraCapturer.exe" KeyPath = "yes" Checksum = "yes" />-->
+      </ComponentRef>
       <Component Id="CameraCapturer.exe.config">
         <File Id ="CameraCapturer.exe.config" Source = "$(var.CameraCapturer.TargetDir)CameraCapturer.exe.config" KeyPath = "yes" Checksum = "yes" />
       </Component>
@@ -104,7 +154,9 @@
       <Component Id="swscale4.dll">
         <File Id ="swscale4.dll" Source = "$(var.CameraCapturer.TargetDir)swscale-4.dll" KeyPath = "yes" Checksum = "yes" />
       </Component>
-		</ComponentGroup>
+      <!--<ComponentRef Id="ApplicationShortcut" />-->
+      <ComponentGroupRef Id="ComponentGroupDesktopShortcut"/>
+    </ComponentGroup>
 	</Fragment>
 
 
