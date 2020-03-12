@@ -5,7 +5,11 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraCapturer", "CameraCapturer\CameraCapturer.csproj", "{32217251-D77A-474F-AC43-82114D499706}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupProjectCamera", "SetupProjectCamera\SetupProjectCamera.wixproj", "{21CE5F3F-F6F8-4586-9826-0C4DF5F12B96}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupProjectMediaCapture", "SetupProjectMediaCapture\SetupProjectMediaCapture.wixproj", "{98E35983-B1EF-4EB2-B4D9-37DF6C7FC137}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleObtenerCadenaInstalador", "ConsoleObtenerCadenaInstalador\ConsoleObtenerCadenaInstalador.csproj", "{24FA0156-66DF-40D2-B02D-4D9CF9486FA7}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupWizardtMediaCapture", "SetupWizardtMediaCapture\SetupWizardtMediaCapture.vdproj", "{F12B38BF-4471-452A-BEE7-68F563688C29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +27,24 @@ Global
 		{32217251-D77A-474F-AC43-82114D499706}.Release|Any CPU.Build.0 = Release|Any CPU
 		{32217251-D77A-474F-AC43-82114D499706}.Release|x86.ActiveCfg = Release|Any CPU
 		{32217251-D77A-474F-AC43-82114D499706}.Release|x86.Build.0 = Release|Any CPU
-		{21CE5F3F-F6F8-4586-9826-0C4DF5F12B96}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{21CE5F3F-F6F8-4586-9826-0C4DF5F12B96}.Debug|x86.ActiveCfg = Debug|x86
-		{21CE5F3F-F6F8-4586-9826-0C4DF5F12B96}.Debug|x86.Build.0 = Debug|x86
-		{21CE5F3F-F6F8-4586-9826-0C4DF5F12B96}.Release|Any CPU.ActiveCfg = Release|x86
-		{21CE5F3F-F6F8-4586-9826-0C4DF5F12B96}.Release|x86.ActiveCfg = Release|x86
-		{21CE5F3F-F6F8-4586-9826-0C4DF5F12B96}.Release|x86.Build.0 = Release|x86
+		{98E35983-B1EF-4EB2-B4D9-37DF6C7FC137}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{98E35983-B1EF-4EB2-B4D9-37DF6C7FC137}.Debug|x86.ActiveCfg = Debug|x86
+		{98E35983-B1EF-4EB2-B4D9-37DF6C7FC137}.Debug|x86.Build.0 = Debug|x86
+		{98E35983-B1EF-4EB2-B4D9-37DF6C7FC137}.Release|Any CPU.ActiveCfg = Release|x86
+		{98E35983-B1EF-4EB2-B4D9-37DF6C7FC137}.Release|x86.ActiveCfg = Release|x86
+		{98E35983-B1EF-4EB2-B4D9-37DF6C7FC137}.Release|x86.Build.0 = Release|x86
+		{24FA0156-66DF-40D2-B02D-4D9CF9486FA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24FA0156-66DF-40D2-B02D-4D9CF9486FA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24FA0156-66DF-40D2-B02D-4D9CF9486FA7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{24FA0156-66DF-40D2-B02D-4D9CF9486FA7}.Debug|x86.Build.0 = Debug|Any CPU
+		{24FA0156-66DF-40D2-B02D-4D9CF9486FA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24FA0156-66DF-40D2-B02D-4D9CF9486FA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24FA0156-66DF-40D2-B02D-4D9CF9486FA7}.Release|x86.ActiveCfg = Release|Any CPU
+		{24FA0156-66DF-40D2-B02D-4D9CF9486FA7}.Release|x86.Build.0 = Release|Any CPU
+		{F12B38BF-4471-452A-BEE7-68F563688C29}.Debug|Any CPU.ActiveCfg = Debug
+		{F12B38BF-4471-452A-BEE7-68F563688C29}.Debug|x86.ActiveCfg = Debug
+		{F12B38BF-4471-452A-BEE7-68F563688C29}.Release|Any CPU.ActiveCfg = Release
+		{F12B38BF-4471-452A-BEE7-68F563688C29}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

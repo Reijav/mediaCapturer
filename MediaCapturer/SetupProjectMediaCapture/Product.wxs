@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="SetupProjectMediaCapture" Language="1033" Version="1.0.0.0" Manufacturer="MultimediaSoft" UpgradeCode="dfb8b9c1-c893-460a-9f36-76a800e1104c">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate  />
+
+		<Feature Id="ProductFeature" Title="SetupProjectMediaCapture" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="SetupProjectMediaCapture" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+    <!--<Property Id="SOURCEDIRECTORY" Value="$(var.CameraCapturer.TargetDir)" />
+    <Property Id="WIX_IS_NETFRAMEWORK_461_OR_LATER_INSTALLED" />
+    <Condition Message="$(var.CameraCapturer.TargetName) requires .NET Framework 4.6.1 or higher.">
+      <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_461_OR_LATER_INSTALLED]]>
+    </Condition>-->
+    
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">     
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			 <!--<Component Id="ProductComponent"> 
+        <File Source="$(var.CameraCapturer.TargetPath)" />
+			 </Component>-->
+      <Component Id="Accord.dll">
+        
+        <File Id ="Accord.dll" Source = "$(var.CameraCapturer.TargetDir)Accord.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="Accord.dll.config">
+        <File Id ="Accord.dll.config" Source = "$(var.CameraCapturer.TargetDir)Accord.dll.config" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="Accord.Video.dll">
+        <File Id ="Accord.Video.dll" Source = "$(var.CameraCapturer.TargetDir)Accord.Video.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="Accord.Video.FFMPEG.x64.dll">
+        <File Id ="Accord.Video.FFMPEG.x64.dll" Source = "$(var.CameraCapturer.TargetDir)Accord.Video.FFMPEG.x64.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="Accord.Video.FFMPEG.x64.xml">
+        <File Id ="Accord.Video.FFMPEG.x64.xml" Source = "$(var.CameraCapturer.TargetDir)Accord.Video.FFMPEG.x64.xml" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="Accord.Video.xml">
+        <File Id ="Accord.Video.xml" Source = "$(var.CameraCapturer.TargetDir)Accord.Video.xml" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="Accord.xml">
+        <File Id ="Accord.xml" Source = "$(var.CameraCapturer.TargetDir)Accord.xml" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="AForge.dll">
+        <File Id ="AForge.dll" Source = "$(var.CameraCapturer.TargetDir)AForge.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="AForge.Video.DirectShow.dll">
+        <File Id ="AForge.Video.DirectShow.dll" Source = "$(var.CameraCapturer.TargetDir)AForge.Video.DirectShow.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="AForge.Video.DirectShow.xml">
+        <File Id ="AForge.Video.DirectShow.xml" Source = "$(var.CameraCapturer.TargetDir)AForge.Video.DirectShow.xml" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="AForge.Video.dll">
+        <File Id ="AForge.Video.dll" Source = "$(var.CameraCapturer.TargetDir)AForge.Video.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="AForge.Video.xml">
+        <File Id ="AForge.Video.xml" Source = "$(var.CameraCapturer.TargetDir)AForge.Video.xml" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="AForge.xml">
+        <File Id ="AForge.xml" Source = "$(var.CameraCapturer.TargetDir)AForge.xml" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="avcodec57.dll">
+        <File Id ="avcodec57.dll" Source = "$(var.CameraCapturer.TargetDir)avcodec-57.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="avdevice57.dll">
+        <File Id ="avdevice57.dll" Source = "$(var.CameraCapturer.TargetDir)avdevice-57.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="avfilter6.dll">
+        <File Id ="avfilter6.dll" Source = "$(var.CameraCapturer.TargetDir)avfilter-6.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="avformat57.dll">
+        <File Id ="avformat57.dll" Source = "$(var.CameraCapturer.TargetDir)avformat-57.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="avutil55.dll">
+        <File Id ="avutil55.dll" Source = "$(var.CameraCapturer.TargetDir)avutil-55.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="CameraCapturer.exe">
+        <File Id ="CameraCapturer.exe" Source = "$(var.CameraCapturer.TargetDir)CameraCapturer.exe" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="CameraCapturer.exe.config">
+        <File Id ="CameraCapturer.exe.config" Source = "$(var.CameraCapturer.TargetDir)CameraCapturer.exe.config" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="CameraCapturer.pdb">
+        <File Id ="CameraCapturer.pdb" Source = "$(var.CameraCapturer.TargetDir)CameraCapturer.pdb" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="postproc54.dll">
+        <File Id ="postproc54.dll" Source = "$(var.CameraCapturer.TargetDir)postproc-54.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="swresample2.dll">
+        <File Id ="swresample2.dll" Source = "$(var.CameraCapturer.TargetDir)swresample-2.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+      <Component Id="swscale4.dll">
+        <File Id ="swscale4.dll" Source = "$(var.CameraCapturer.TargetDir)swscale-4.dll" KeyPath = "yes" Checksum = "yes" />
+      </Component>
+		</ComponentGroup>
+	</Fragment>
+
+
+
+
+  <!--<?define NetFx462MinRelease = 394802 ?>
+  <?define NetFx462WebLink = http://go.microsoft.com/fwlink/?LinkId=780596 ?>
+  <?define NetFx462RedistLink = http://go.microsoft.com/fwlink/?LinkId=780600 ?>
+  <?define NetFx462EulaLink = http://referencesource.microsoft.com/license.html ?>
+
+  <Fragment>
+    <PropertyRef Id="WIXNETFX4RELEASEINSTALLED" />
+    <Property Id="WIX_IS_NETFRAMEWORK_462_OR_LATER_INSTALLED" Secure="yes" />
+    <SetProperty Id="WIX_IS_NETFRAMEWORK_462_OR_LATER_INSTALLED" Value="1" After="AppSearch">
+      WIXNETFX4RELEASEINSTALLED >= "#$(var.NetFx462MinRelease)"
+    </SetProperty>
+  </Fragment>
+
+  <Fragment>
+
+    <WixVariable Id="WixMbaPrereqPackageId" Value="NetFx462Web" />
+    <WixVariable Id="WixMbaPrereqLicenseUrl" Value="$(var.NetFx462EulaLink)" Overridable="yes" />
+    <WixVariable Id="NetFx462WebDetectCondition" Value="NETFRAMEWORK45 &gt;= $(var.NetFx462MinRelease)" Overridable="yes" />
+    <WixVariable Id="NetFx462WebInstallCondition" Value="" Overridable="yes" />
+    <WixVariable Id="NetFx462WebPackageDirectory" Value="redist\" Overridable="yes" />
+
+    <PackageGroup Id="NetFx462Web">
+      <ExePackage
+          InstallCommand="/norestart /ChainingPackage &quot;[WixBundleName]&quot; /log &quot;[NetFx462FullLog].html&quot;"
+          RepairCommand="/q /norestart /repair /ChainingPackage &quot;[WixBundleName]&quot; /log &quot;[NetFx462FullLog].html&quot;"
+          UninstallCommand="/uninstall /q /norestart /ChainingPackage &quot;[WixBundleName]&quot; /log &quot;[NetFx462FullLog].html&quot;"
+          PerMachine="yes"
+          DetectCondition="!(wix.NetFx462WebDetectCondition)"
+          InstallCondition="!(wix.NetFx462WebInstallCondition)"
+          Id="NetFx462Web"
+          Vital="yes"
+          Permanent="yes"
+          Protocol="netfx4"
+          DownloadUrl="$(var.NetFx462WebLink)"
+          LogPathVariable="NetFx462FullLog"
+          Compressed="no"
+          Name="!(wix.NetFx462WebPackageDirectory)NDP462-KB3151802-Web.exe">
+        <RemotePayload
+          CertificatePublicKey="52868DFCA6E3AF2632389E6C1EE7D0468D3797D0"
+          CertificateThumbprint="3BDA323E552DB1FDE5F4FBEE75D6D5B2B187EEDC"
+          Description="Microsoft .NET Framework 4.6.2 Setup"
+          Hash="C42E6ED280290648BBD59F664008852F4CFE4548"
+          ProductName="Microsoft .NET Framework 4.6.2"
+          Size="1429344"
+          Version="4.6.1590.0" />
+      </ExePackage>
+    </PackageGroup>
+  </Fragment>
+
+  <Fragment>
+    <WixVariable Id="WixMbaPrereqPackageId" Value="NetFx462Redist" />
+    <WixVariable Id="WixMbaPrereqLicenseUrl" Value="$(var.NetFx462EulaLink)" Overridable="yes" />
+    <WixVariable Id="NetFx462RedistDetectCondition" Value="NETFRAMEWORK45 &gt;= $(var.NetFx462MinRelease)" Overridable="yes" />
+    <WixVariable Id="NetFx462RedistInstallCondition" Value="" Overridable="yes" />
+    <WixVariable Id="NetFx462RedistPackageDirectory" Value="redist\" Overridable="yes" />
+
+    <PackageGroup Id="NetFx462Redist">
+      <ExePackage
+          InstallCommand=" /norestart /ChainingPackage &quot;[WixBundleName]&quot; /log &quot;[NetFx462FullLog].html&quot;"
+          RepairCommand="/q /norestart /repair /ChainingPackage &quot;[WixBundleName]&quot; /log &quot;[NetFx462FullLog].html&quot;"
+          UninstallCommand="/uninstall /q /norestart /ChainingPackage &quot;[WixBundleName]&quot; /log &quot;[NetFx462FullLog].html&quot;"
+          PerMachine="yes"
+          DetectCondition="!(wix.NetFx462RedistDetectCondition)"
+          InstallCondition="!(wix.NetFx462RedistInstallCondition)"
+          Id="NetFx462Redist"
+          Vital="yes"
+          Permanent="yes"
+          Protocol="netfx4"
+          DownloadUrl="$(var.NetFx462RedistLink)"
+          LogPathVariable="NetFx462FullLog"
+          Compressed="no"
+          Name="!(wix.NetFx462RedistPackageDirectory)NDP462-KB3151800-x86-x64-AllOS-ENU.exe">
+        <RemotePayload
+          CertificatePublicKey="52868DFCA6E3AF2632389E6C1EE7D0468D3797D0"
+          CertificateThumbprint="3BDA323E552DB1FDE5F4FBEE75D6D5B2B187EEDC"
+          Description="Microsoft .NET Framework 4.6.2 Setup"
+          Hash="A70F856BDA33D45AD0A8AD035F73092441715431"
+          ProductName="Microsoft .NET Framework 4.6.2"
+          Size="62008080"
+          Version="4.6.1590.0" />
+      </ExePackage>
+    </PackageGroup>
+  </Fragment>-->
+
+
+</Wix>
