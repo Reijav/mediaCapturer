@@ -69,44 +69,65 @@ namespace CameraCapturer
 
         private void CapturandoImagen(object sender , NewFrameEventArgs newFrameEventArgs)
         {
-            long numeroActual = DateTime.Now.Ticks;
-            Imagen = (Bitmap)newFrameEventArgs.Frame.Clone();
-            pictureBox1.Image = (Bitmap)newFrameEventArgs.Frame.Clone();
-
-            //SI SE ENCUENTRA GRABANDO
-            if (buttonGrabar.Text == PARAR_GRABAR)
+            if (MiWebCam != null && MiWebCam.IsRunning)
             {
-                var lapsoTiempo = numeroActual - numeroPrevio;
-                var lapsoTiempoTS = new TimeSpan(numeroActual - numeroPrevio);
 
-                //if (lapsoTiempoTS.TotalSeconds > 1)
-                //{
-                //    FileWriter.WriteVideoFrame(Imagen, lapsoTiempoTS);
-                //}
-                //else
-                //{
+                long numeroActual = DateTime.Now.Ticks;
+                Imagen = (Bitmap)newFrameEventArgs.Frame.Clone();
 
-                if(FileWriter!=null && FileWriter.IsOpen)
+                //System.Drawing.Imaging.BitmapData bmpData =
+                //Imagen.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite,
+                //Imagen.PixelFormat);
+
+
+                pictureBox1.Image = (Bitmap)newFrameEventArgs.Frame.Clone();
+
+                //SI SE ENCUENTRA GRABANDO
+                if (buttonGrabar.Text == PARAR_GRABAR && FileWriter!=null)
                 {
-                    FileWriter.WriteVideoFrame(Imagen);
-                }
-                    
-                //}
+                    var lapsoTiempo = numeroActual - numeroPrevio;
+                    var lapsoTiempoTS = new TimeSpan(numeroActual - numeroPrevio);
 
-                
+
+
+                    try
+                    {
+
+                        if (lapsoTiempoTS.TotalSeconds > 1)
+                        {
+                            FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone(), lapsoTiempoTS);
+                        }
+                        else
+                        {
+                            FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone());
+                        }
+                    }
+                    catch(Exception er)
+                    {
+                        
+                        FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone());
+                    }
+
+                }
             }
            // numeroPrevio = numeroActual;
         }
 
         private void CerrarWebCam()
         {
-            buttonGrabar.Text = GRABAR_VIDEO;
-            Task.Delay(100); 
+            if (buttonGrabar.Text == PARAR_GRABAR)
+            {
+                buttonGrabarVideo_Click(this,null);
+            }
+
+
+                Task.Delay(100); 
             if (MiWebCam!=null && MiWebCam.IsRunning)
             {
                 if(FileWriter!=null && FileWriter.IsOpen)
                 {
                     FileWriter.Close();
+                    FileWriter.Dispose();
                 }
 
 
@@ -143,18 +164,20 @@ namespace CameraCapturer
             {
                 if(MiWebCam!=null && MiWebCam.IsRunning)
                 {
-                    saveAvi = new SaveFileDialog();
-                    saveAvi.Filter = "Avi Files (*.avi)|*.avi";
-                    if (saveAvi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    {
+                    //saveAvi = new SaveFileDialog();
+                    //saveAvi.Filter = "Avi Files (*.avi)|*.avi";
+                    //if (saveAvi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    //{
+
+                    var nombreArchivo = $"{path}{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.avi";
                         numeroPrevio = DateTime.Now.Ticks;
                         int h = MiWebCam.VideoResolution.FrameSize.Height;
                         int w = MiWebCam.VideoResolution.FrameSize.Width;
-                        FileWriter.Open(saveAvi.FileName, w, h, 25, VideoCodec.Default, 5000000);
+                        FileWriter.Open(nombreArchivo, w, h, 25, VideoCodec.Default, 5000000);
                         FileWriter.WriteVideoFrame(Imagen);
                         buttonGrabar.Text = PARAR_GRABAR;
 
-                    }
+                    //}
                 }
                 else
                 {
@@ -169,7 +192,7 @@ namespace CameraCapturer
 
             if (buttonObtenerVideo.Text == DESCONECTAR)
             {
-                Bitmap imagenCapturada = Imagen;
+                Bitmap imagenCapturada = (Bitmap)Imagen.Clone();
                 string nombreArchivo = $"{path}{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.jpg";
 
                 using (MemoryStream memory = new MemoryStream())
@@ -180,7 +203,7 @@ namespace CameraCapturer
                         byte[] bytes = memory.ToArray();
                         fs.Write(bytes, 0, bytes.Length);
                     }
-                    MessageBox.Show($"Imagen guardada en {path}");
+                   // MessageBox.Show($"Imagen guardada en {path}");
                 }
 
                 //Este codigo causa  "A generic error occurred in GDI+."
