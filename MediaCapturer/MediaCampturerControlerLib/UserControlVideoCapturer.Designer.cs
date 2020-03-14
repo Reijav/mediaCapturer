@@ -17,6 +17,14 @@
             {
                 components.Dispose();
             }
+            if (FileWriter != null)
+            {
+                CerrarWebCam();
+                FileWriter.Dispose();
+            }
+            
+
+
             base.Dispose(disposing);
         }
 
@@ -30,13 +38,13 @@
         {
             this.components = new System.ComponentModel.Container();
             this.listViewImages = new System.Windows.Forms.ListView();
+            this.imageListCaptured = new System.Windows.Forms.ImageList(this.components);
             this.buttonGrabar = new System.Windows.Forms.Button();
             this.buttonCapturarImg = new System.Windows.Forms.Button();
             this.buttonObtenerVideo = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxDispositivos = new System.Windows.Forms.ComboBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.imageListCaptured = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,6 +58,12 @@
             this.listViewImages.SmallImageList = this.imageListCaptured;
             this.listViewImages.TabIndex = 14;
             this.listViewImages.UseCompatibleStateImageBehavior = false;
+            // 
+            // imageListCaptured
+            // 
+            this.imageListCaptured.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageListCaptured.ImageSize = new System.Drawing.Size(160, 120);
+            this.imageListCaptured.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // buttonGrabar
             // 
@@ -108,12 +122,6 @@
             this.pictureBox1.TabIndex = 8;
             this.pictureBox1.TabStop = false;
             // 
-            // imageListCaptured
-            // 
-            this.imageListCaptured.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageListCaptured.ImageSize = new System.Drawing.Size(160, 120);
-            this.imageListCaptured.TransparentColor = System.Drawing.Color.Transparent;
-            // 
             // UserControlVideoCapturer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -127,6 +135,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "UserControlVideoCapturer";
             this.Size = new System.Drawing.Size(1164, 616);
+            this.Load += new System.EventHandler(this.UserControlVideoCapturer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

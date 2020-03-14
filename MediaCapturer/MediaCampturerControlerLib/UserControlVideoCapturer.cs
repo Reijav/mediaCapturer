@@ -17,11 +17,6 @@ namespace MediaCampturerControlerLib
 {
     public partial class UserControlVideoCapturer: UserControl
     {
-        public UserControlVideoCapturer()
-        {
-            InitializeComponent();
-        }
-
 
 
         public string path { get; set; }
@@ -41,7 +36,17 @@ namespace MediaCampturerControlerLib
         private const string GRABAR_VIDEO = "Grabar Video";
         private const string DESCONECTAR = "Desconectar de Dispositivo";
 
- 
+
+
+        public UserControlVideoCapturer()
+        {
+            InitializeComponent();
+            this.path = @"c:\temp\capturador";
+            this.PathImagenes = new List<string>();
+            this.PathVideos = new List<string>();
+        }
+
+
 
         public UserControlVideoCapturer(string path)
         {
@@ -57,10 +62,12 @@ namespace MediaCampturerControlerLib
             this.PathVideos = new List<string>();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+
+        private void UserControlVideoCapturer_Load(object sender, EventArgs e)
         {
             CargarDispositivos();
         }
+
 
         public void CargarDispositivos()
         {
@@ -82,44 +89,60 @@ namespace MediaCampturerControlerLib
 
         private void CapturandoImagen(object sender, NewFrameEventArgs newFrameEventArgs)
         {
-            long numeroActual = DateTime.Now.Ticks;
-            Imagen = (Bitmap)newFrameEventArgs.Frame.Clone();
-            pictureBox1.Image = (Bitmap)newFrameEventArgs.Frame.Clone();
-
-            //SI SE ENCUENTRA GRABANDO
-            if (buttonGrabar.Text == PARAR_GRABAR)
+            if (MiWebCam != null && MiWebCam.IsRunning)
             {
-                var lapsoTiempo = numeroActual - numeroPrevio;
-                var lapsoTiempoTS = new TimeSpan(numeroActual - numeroPrevio);
 
-                //if (lapsoTiempoTS.TotalSeconds > 1)
-                //{
-                //    FileWriter.WriteVideoFrame(Imagen, lapsoTiempoTS);
-                //}
-                //else
-                //{
+                long numeroActual = DateTime.Now.Ticks;
+                Imagen = (Bitmap)newFrameEventArgs.Frame.Clone();
 
-                if (FileWriter != null && FileWriter.IsOpen)
+                pictureBox1.Image = (Bitmap)newFrameEventArgs.Frame.Clone();
+
+                //SI SE ENCUENTRA GRABANDO
+                if (buttonGrabar.Text == PARAR_GRABAR && FileWriter != null)
                 {
-                    FileWriter.WriteVideoFrame(Imagen);
+                    var lapsoTiempo = numeroActual - numeroPrevio;
+                    var lapsoTiempoTS = new TimeSpan(numeroActual - numeroPrevio);
+
+
+
+                    try
+                    {
+
+                        if (lapsoTiempoTS.TotalSeconds > 1)
+                        {
+                            FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone(), lapsoTiempoTS);
+                        }
+                        else
+                        {
+                            FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone());
+                        }
+                    }
+                    catch (Exception er)
+                    {
+
+                        FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone());
+                    }
+
                 }
-
-                //}
-
-
             }
-
         }
+
 
         private void CerrarWebCam()
         {
-            buttonGrabar.Text = GRABAR_VIDEO;
+            if (buttonGrabar.Text == PARAR_GRABAR)
+            {
+                buttonGrabarVideo_Click(this, null);
+            }
+
+
             Task.Delay(100);
             if (MiWebCam != null && MiWebCam.IsRunning)
             {
                 if (FileWriter != null && FileWriter.IsOpen)
                 {
                     FileWriter.Close();
+                    FileWriter.Dispose();
                 }
 
 
@@ -146,10 +169,7 @@ namespace MediaCampturerControlerLib
                 { return; }
                 if (MiWebCam.IsRunning)
                 {
-                    //this.FinalVideo.Stop();
                     FileWriter.Close();
-                    //this.AVIwriter.Close();
-                    // pictureBox1.Image = null;
                 }
             }
             else
@@ -160,12 +180,15 @@ namespace MediaCampturerControlerLib
                     //saveAvi.Filter = "Avi Files (*.avi)|*.avi";
                     //if (saveAvi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     //{
+
+                    var nombreArchivo = $"{path}{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.avi";
                     numeroPrevio = DateTime.Now.Ticks;
                     int h = MiWebCam.VideoResolution.FrameSize.Height;
                     int w = MiWebCam.VideoResolution.FrameSize.Width;
-                    string filename = $"{path}{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.avi";
-                    PathVideos.Add(filename);
-                    FileWriter.Open(filename, w, h, 25, VideoCodec.Default, 5000000);
+
+                    PathVideos.Add(nombreArchivo);
+
+                    FileWriter.Open(nombreArchivo, w, h, 25, VideoCodec.Default, 5000000);
                     FileWriter.WriteVideoFrame(Imagen);
                     buttonGrabar.Text = PARAR_GRABAR;
 
@@ -179,12 +202,13 @@ namespace MediaCampturerControlerLib
             }
         }
 
+
         private void buttonCapturarImg_Click_1(object sender, EventArgs e)
         {
 
             if (buttonObtenerVideo.Text == DESCONECTAR)
             {
-                Bitmap imagenCapturada = Imagen;
+                Bitmap imagenCapturada = (Bitmap)Imagen.Clone();
                 string nombreArchivo = $"{path}{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.jpg";
 
                 using (MemoryStream memory = new MemoryStream())
@@ -195,13 +219,13 @@ namespace MediaCampturerControlerLib
                         byte[] bytes = memory.ToArray();
                         fs.Write(bytes, 0, bytes.Length);
                     }
-                    MessageBox.Show($"Imagen guardada en {path}");
+                    // MessageBox.Show($"Imagen guardada en {path}");
                 }
 
                 //Este codigo causa  "A generic error occurred in GDI+."
                 //imagenCapturada.Save(nombreArchivo, System.Drawing.Imaging.ImageFormat.Jpeg);
                 imageListCaptured.Images.Add(imagenCapturada);
-                
+                PathImagenes.Add(nombreArchivo);
                 listViewImages.Refresh();
                 listViewImages.Items.Add(nombreArchivo, listViewImages.Items.Count);
             }
@@ -241,5 +265,9 @@ namespace MediaCampturerControlerLib
 
 
 
+        public void CerrarComponente()
+        {
+            CerrarWebCam();
+        }
     }
 }

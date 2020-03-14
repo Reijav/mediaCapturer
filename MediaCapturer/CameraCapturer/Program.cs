@@ -24,7 +24,7 @@ namespace CameraCapturer
             }
             else
             {
-                Application.Run(new FormCapturador());
+                Application.Run(new FormUsandoControlLib());
             }
         }
     }
