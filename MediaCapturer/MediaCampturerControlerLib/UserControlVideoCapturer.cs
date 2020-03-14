@@ -108,7 +108,7 @@ namespace MediaCampturerControlerLib
 
 
             }
-            // numeroPrevio = numeroActual;
+
         }
 
         private void CerrarWebCam()
