@@ -164,7 +164,9 @@ namespace MediaCampturerControlerLib
 
             if (buttonGrabar.Text == PARAR_GRABAR)
             {
+                timerRecording.Enabled = false;
                 buttonGrabar.Text = GRABAR_VIDEO;
+                buttonGrabar.ImageIndex = 1;
                 if (MiWebCam == null)
                 { return; }
                 if (MiWebCam.IsRunning)
@@ -174,13 +176,15 @@ namespace MediaCampturerControlerLib
             }
             else
             {
+               
                 if (MiWebCam != null && MiWebCam.IsRunning)
                 {
                     //saveAvi = new SaveFileDialog();
                     //saveAvi.Filter = "Avi Files (*.avi)|*.avi";
                     //if (saveAvi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     //{
-
+                    timerRecording.Enabled = true ;
+                    buttonGrabar.ImageIndex = 0;
                     var nombreArchivo = $"{path}{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.avi";
                     numeroPrevio = DateTime.Now.Ticks;
                     int h = MiWebCam.VideoResolution.FrameSize.Height;
@@ -240,6 +244,7 @@ namespace MediaCampturerControlerLib
             CerrarWebCam();
             if (buttonObtenerVideo.Text != DESCONECTAR)
             {
+
                 if (comboBoxDispositivos.SelectedIndex >= 0)
                 {
                     buttonObtenerVideo.Text = DESCONECTAR;
@@ -249,6 +254,7 @@ namespace MediaCampturerControlerLib
                     MiWebCam.VideoResolution = MiWebCam.VideoCapabilities[0];
                     MiWebCam.NewFrame += new NewFrameEventHandler(CapturandoImagen);
                     MiWebCam.Start();
+                    buttonObtenerVideo.ImageIndex = 4;
                 }
                 else
                 {
@@ -259,6 +265,7 @@ namespace MediaCampturerControlerLib
             else
             {
                 buttonObtenerVideo.Text = "Conectar con dispositivo";
+                buttonObtenerVideo.ImageIndex = 3;
             }
 
         }
@@ -268,6 +275,14 @@ namespace MediaCampturerControlerLib
         public void CerrarComponente()
         {
             CerrarWebCam();
+        }
+
+        private void timerRecording_Tick(object sender, EventArgs e)
+        {
+            if (buttonGrabar.ImageIndex == 5)
+                buttonGrabar.ImageIndex = 6;
+            else
+                buttonGrabar.ImageIndex = 5;
         }
     }
 }
