@@ -36,6 +36,8 @@ namespace MediaCampturerControlerLib
         private const string GRABAR_VIDEO = "Grabar Video";
         private const string DESCONECTAR = "Desconectar de Dispositivo";
 
+        private string nombreArchivoVideo;
+        private Image imagenVideo;
 
 
         public UserControlVideoCapturer()
@@ -87,6 +89,11 @@ namespace MediaCampturerControlerLib
 
         private long numeroPrevio;
 
+        /// <summary>
+        /// Evento de obtención de imagenes desde camara, tambien se guarda frames en el video .avi
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="newFrameEventArgs"></param>
         private void CapturandoImagen(object sender, NewFrameEventArgs newFrameEventArgs)
         {
             if (MiWebCam != null && MiWebCam.IsRunning)
@@ -102,9 +109,7 @@ namespace MediaCampturerControlerLib
                 {
                     var lapsoTiempo = numeroActual - numeroPrevio;
                     var lapsoTiempoTS = new TimeSpan(numeroActual - numeroPrevio);
-
-
-
+                                       
                     try
                     {
 
@@ -172,27 +177,36 @@ namespace MediaCampturerControlerLib
                 if (MiWebCam.IsRunning)
                 {
                     FileWriter.Close();
+
+                    if (imagenVideo != null)
+                    {
+                        imageListVideos.Images.Add(nombreArchivoVideo ,imagenVideo);
+                        listViewIamgenesVideos.Items.Add(nombreArchivoVideo, Path.GetFileName(nombreArchivoVideo), listViewIamgenesVideos.Items.Count );
+                        listViewIamgenesVideos.Refresh();
+                    }
+                   
                 }
             }
             else
             {
                
-                if (MiWebCam != null && MiWebCam.IsRunning)
+                if (MiWebCam != null && MiWebCam.IsRunning && Imagen!=null)
                 {
                     //saveAvi = new SaveFileDialog();
                     //saveAvi.Filter = "Avi Files (*.avi)|*.avi";
                     //if (saveAvi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     //{
+                    imagenVideo =(Bitmap) Imagen.Clone();
                     timerRecording.Enabled = true ;
                     buttonGrabar.ImageIndex = 0;
-                    var nombreArchivo = $"{path}{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.avi";
+                    nombreArchivoVideo = $"{path}{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.avi";
                     numeroPrevio = DateTime.Now.Ticks;
                     int h = MiWebCam.VideoResolution.FrameSize.Height;
                     int w = MiWebCam.VideoResolution.FrameSize.Width;
 
-                    PathVideos.Add(nombreArchivo);
+                    PathVideos.Add(nombreArchivoVideo);
 
-                    FileWriter.Open(nombreArchivo, w, h, 25, VideoCodec.Default, 5000000);
+                    FileWriter.Open(nombreArchivoVideo, w, h, 25, VideoCodec.Default, 5000000);
                     FileWriter.WriteVideoFrame(Imagen);
                     buttonGrabar.Text = PARAR_GRABAR;
 
@@ -212,14 +226,14 @@ namespace MediaCampturerControlerLib
 
             if (buttonObtenerVideo.Text == DESCONECTAR)
             {
-                Bitmap imagenCapturada = (Bitmap)Imagen.Clone();
+                
                 string nombreArchivo = $"{path}{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.jpg";
 
                 using (MemoryStream memory = new MemoryStream())
                 {
                     using (FileStream fs = new FileStream(nombreArchivo, FileMode.Create, FileAccess.Write))
                     {
-                        imagenCapturada.Save(memory, ImageFormat.Jpeg);
+                        Imagen.Save(memory, ImageFormat.Jpeg);
                         byte[] bytes = memory.ToArray();
                         fs.Write(bytes, 0, bytes.Length);
                     }
@@ -228,10 +242,10 @@ namespace MediaCampturerControlerLib
 
                 //Este codigo causa  "A generic error occurred in GDI+."
                 //imagenCapturada.Save(nombreArchivo, System.Drawing.Imaging.ImageFormat.Jpeg);
-                imageListCaptured.Images.Add(imagenCapturada);
+                imageListCaptured.Images.Add(Imagen);
                 PathImagenes.Add(nombreArchivo);
+                listViewImages.Items.Add(nombreArchivo, Path.GetFileName(nombreArchivo), listViewImages.Items.Count);
                 listViewImages.Refresh();
-                listViewImages.Items.Add(nombreArchivo, listViewImages.Items.Count);
             }
             else
             {
@@ -283,6 +297,94 @@ namespace MediaCampturerControlerLib
                 buttonGrabar.ImageIndex = 6;
             else
                 buttonGrabar.ImageIndex = 5;
+        }
+
+
+
+        private void listViewImages_DoubleClick(object sender, EventArgs e)
+        {
+            if (listViewImages.SelectedIndices.Count > 0)
+            {
+                foreach (int indice in listViewImages.SelectedIndices)
+                {
+                    System.Diagnostics.Process.Start(listViewImages.Items[indice].Name);
+                }
+
+            }
+                
+        }
+
+        private void listViewIamgenesVideos_DoubleClick(object sender, EventArgs e)
+        {
+            if (listViewIamgenesVideos.SelectedIndices.Count > 0)
+            {
+                foreach (int indice in listViewIamgenesVideos.SelectedIndices)
+                {
+                    System.Diagnostics.Process.Start(listViewIamgenesVideos.Items[indice].Name);
+                }
+
+            }
+        }
+
+        private void eliminarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+
+                if(listaSeleccionada!=null && listaSeleccionada.Equals( "listViewImages"))
+                {
+                    if (listViewImages.SelectedIndices.Count > 0)
+                    {
+
+                        foreach (ListViewItem item in listViewImages.SelectedItems)
+                        {
+
+
+                            listViewImages.Items.Remove(item);
+                            PathImagenes.Remove(item.Name);
+
+                        }
+                    }
+                    listViewImages.Refresh();
+                }
+                else if(listaSeleccionada != null && listaSeleccionada.Equals("listViewIamgenesVideos"))
+                {
+                    if (listViewIamgenesVideos.SelectedIndices.Count > 0)
+                    {
+
+                        foreach (ListViewItem item in listViewIamgenesVideos.SelectedItems)
+                        {
+
+
+                            listViewIamgenesVideos.Items.Remove(item);
+                            PathVideos.Remove(item.Name);
+
+                        }
+                    }
+                    listViewIamgenesVideos.Refresh();
+                }
+
+
+        }
+
+        private string listaSeleccionada;
+        private void listViewImages_Click(object sender, EventArgs e)
+        {
+            listaSeleccionada = "listViewImages";
+        }
+
+        private void listViewIamgenesVideos_Click(object sender, EventArgs e)
+        {
+            listaSeleccionada = "listViewIamgenesVideos";
+        }
+
+        private void listViewIamgenesVideos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listaSeleccionada = "listViewIamgenesVideos";
+        }
+
+        private void listViewImages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listaSeleccionada = "listViewImages";
         }
     }
 }

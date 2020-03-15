@@ -137,9 +137,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MediaCampturerControlerLib\MediaCampturerControlerLib.csproj">
+    <ProjectReference Include="..\MediaCampturerControlerLib\MediaCapturerControlerLib.csproj">
       <Project>{4bf59f34-1350-4e61-bcdc-603e5b8cd0e5}</Project>
-      <Name>MediaCampturerControlerLib</Name>
+      <Name>MediaCapturerControlerLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

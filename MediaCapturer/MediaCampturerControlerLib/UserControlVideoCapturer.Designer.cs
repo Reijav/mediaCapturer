@@ -48,19 +48,28 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.imageListIconos = new System.Windows.Forms.ImageList(this.components);
             this.timerRecording = new System.Windows.Forms.Timer(this.components);
+            this.imageListVideos = new System.Windows.Forms.ImageList(this.components);
+            this.listViewIamgenesVideos = new System.Windows.Forms.ListView();
+            this.contextMenuStripEliminar = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.eliminarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.contextMenuStripEliminar.SuspendLayout();
             this.SuspendLayout();
             // 
             // listViewImages
             // 
+            this.listViewImages.ContextMenuStrip = this.contextMenuStripEliminar;
             this.listViewImages.HideSelection = false;
             this.listViewImages.LargeImageList = this.imageListCaptured;
             this.listViewImages.Location = new System.Drawing.Point(672, 125);
             this.listViewImages.Name = "listViewImages";
-            this.listViewImages.Size = new System.Drawing.Size(463, 483);
+            this.listViewImages.Size = new System.Drawing.Size(463, 619);
             this.listViewImages.SmallImageList = this.imageListCaptured;
             this.listViewImages.TabIndex = 14;
             this.listViewImages.UseCompatibleStateImageBehavior = false;
+            this.listViewImages.SelectedIndexChanged += new System.EventHandler(this.listViewImages_SelectedIndexChanged);
+            this.listViewImages.Click += new System.EventHandler(this.listViewImages_Click);
+            this.listViewImages.DoubleClick += new System.EventHandler(this.listViewImages_DoubleClick);
             // 
             // imageListCaptured
             // 
@@ -74,10 +83,10 @@
             this.buttonGrabar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonGrabar.ImageIndex = 1;
             this.buttonGrabar.ImageList = this.imageListIconos;
-            this.buttonGrabar.Location = new System.Drawing.Point(454, 31);
+            this.buttonGrabar.Location = new System.Drawing.Point(454, 40);
             this.buttonGrabar.Name = "buttonGrabar";
             this.buttonGrabar.Padding = new System.Windows.Forms.Padding(20, 0, 20, 0);
-            this.buttonGrabar.Size = new System.Drawing.Size(198, 88);
+            this.buttonGrabar.Size = new System.Drawing.Size(198, 79);
             this.buttonGrabar.TabIndex = 13;
             this.buttonGrabar.Text = "Grabar Video";
             this.buttonGrabar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -90,10 +99,10 @@
             this.buttonCapturarImg.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonCapturarImg.ImageIndex = 2;
             this.buttonCapturarImg.ImageList = this.imageListIconos;
-            this.buttonCapturarImg.Location = new System.Drawing.Point(672, 31);
+            this.buttonCapturarImg.Location = new System.Drawing.Point(672, 40);
             this.buttonCapturarImg.Name = "buttonCapturarImg";
             this.buttonCapturarImg.Padding = new System.Windows.Forms.Padding(20, 0, 20, 0);
-            this.buttonCapturarImg.Size = new System.Drawing.Size(221, 88);
+            this.buttonCapturarImg.Size = new System.Drawing.Size(221, 79);
             this.buttonCapturarImg.TabIndex = 12;
             this.buttonCapturarImg.Text = "Capturar Imagen";
             this.buttonCapturarImg.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -106,7 +115,7 @@
             this.buttonObtenerVideo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonObtenerVideo.ImageIndex = 3;
             this.buttonObtenerVideo.ImageList = this.imageListIconos;
-            this.buttonObtenerVideo.Location = new System.Drawing.Point(16, 40);
+            this.buttonObtenerVideo.Location = new System.Drawing.Point(12, 40);
             this.buttonObtenerVideo.Name = "buttonObtenerVideo";
             this.buttonObtenerVideo.Padding = new System.Windows.Forms.Padding(20, 0, 20, 0);
             this.buttonObtenerVideo.Size = new System.Drawing.Size(258, 79);
@@ -160,10 +169,47 @@
             this.timerRecording.Interval = 200;
             this.timerRecording.Tick += new System.EventHandler(this.timerRecording_Tick);
             // 
+            // imageListVideos
+            // 
+            this.imageListVideos.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.imageListVideos.ImageSize = new System.Drawing.Size(80, 60);
+            this.imageListVideos.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // listViewIamgenesVideos
+            // 
+            this.listViewIamgenesVideos.ContextMenuStrip = this.contextMenuStripEliminar;
+            this.listViewIamgenesVideos.HideSelection = false;
+            this.listViewIamgenesVideos.LargeImageList = this.imageListVideos;
+            this.listViewIamgenesVideos.Location = new System.Drawing.Point(12, 623);
+            this.listViewIamgenesVideos.Name = "listViewIamgenesVideos";
+            this.listViewIamgenesVideos.Size = new System.Drawing.Size(640, 121);
+            this.listViewIamgenesVideos.SmallImageList = this.imageListVideos;
+            this.listViewIamgenesVideos.TabIndex = 15;
+            this.listViewIamgenesVideos.UseCompatibleStateImageBehavior = false;
+            this.listViewIamgenesVideos.SelectedIndexChanged += new System.EventHandler(this.listViewIamgenesVideos_SelectedIndexChanged);
+            this.listViewIamgenesVideos.Click += new System.EventHandler(this.listViewIamgenesVideos_Click);
+            this.listViewIamgenesVideos.DoubleClick += new System.EventHandler(this.listViewIamgenesVideos_DoubleClick);
+            // 
+            // contextMenuStripEliminar
+            // 
+            this.contextMenuStripEliminar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.eliminarToolStripMenuItem});
+            this.contextMenuStripEliminar.Name = "contextMenuStripEliminar";
+            this.contextMenuStripEliminar.Size = new System.Drawing.Size(118, 26);
+            this.contextMenuStripEliminar.Text = "Eliminar";
+            // 
+            // eliminarToolStripMenuItem
+            // 
+            this.eliminarToolStripMenuItem.Name = "eliminarToolStripMenuItem";
+            this.eliminarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.eliminarToolStripMenuItem.Text = "Eliminar";
+            this.eliminarToolStripMenuItem.Click += new System.EventHandler(this.eliminarToolStripMenuItem_Click);
+            // 
             // UserControlVideoCapturer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.listViewIamgenesVideos);
             this.Controls.Add(this.listViewImages);
             this.Controls.Add(this.buttonGrabar);
             this.Controls.Add(this.buttonCapturarImg);
@@ -172,9 +218,10 @@
             this.Controls.Add(this.comboBoxDispositivos);
             this.Controls.Add(this.pictureBox1);
             this.Name = "UserControlVideoCapturer";
-            this.Size = new System.Drawing.Size(1164, 616);
+            this.Size = new System.Drawing.Size(1164, 768);
             this.Load += new System.EventHandler(this.UserControlVideoCapturer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.contextMenuStripEliminar.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -192,5 +239,9 @@
         private System.Windows.Forms.ImageList imageListCaptured;
         private System.Windows.Forms.ImageList imageListIconos;
         private System.Windows.Forms.Timer timerRecording;
+        private System.Windows.Forms.ImageList imageListVideos;
+        private System.Windows.Forms.ListView listViewIamgenesVideos;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripEliminar;
+        private System.Windows.Forms.ToolStripMenuItem eliminarToolStripMenuItem;
     }
 }
