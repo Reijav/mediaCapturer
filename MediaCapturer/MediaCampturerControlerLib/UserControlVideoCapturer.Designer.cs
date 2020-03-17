@@ -39,21 +39,22 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlVideoCapturer));
             this.listViewImages = new System.Windows.Forms.ListView();
+            this.contextMenuStripEliminar = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.eliminarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListCaptured = new System.Windows.Forms.ImageList(this.components);
             this.buttonGrabar = new System.Windows.Forms.Button();
+            this.imageListIconos = new System.Windows.Forms.ImageList(this.components);
             this.buttonCapturarImg = new System.Windows.Forms.Button();
             this.buttonObtenerVideo = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxDispositivos = new System.Windows.Forms.ComboBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.imageListIconos = new System.Windows.Forms.ImageList(this.components);
             this.timerRecording = new System.Windows.Forms.Timer(this.components);
             this.imageListVideos = new System.Windows.Forms.ImageList(this.components);
             this.listViewIamgenesVideos = new System.Windows.Forms.ListView();
-            this.contextMenuStripEliminar = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.eliminarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.comboBoxCapabilitis = new System.Windows.Forms.ComboBox();
             this.contextMenuStripEliminar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // listViewImages
@@ -70,6 +71,21 @@
             this.listViewImages.SelectedIndexChanged += new System.EventHandler(this.listViewImages_SelectedIndexChanged);
             this.listViewImages.Click += new System.EventHandler(this.listViewImages_Click);
             this.listViewImages.DoubleClick += new System.EventHandler(this.listViewImages_DoubleClick);
+            // 
+            // contextMenuStripEliminar
+            // 
+            this.contextMenuStripEliminar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.eliminarToolStripMenuItem});
+            this.contextMenuStripEliminar.Name = "contextMenuStripEliminar";
+            this.contextMenuStripEliminar.Size = new System.Drawing.Size(118, 26);
+            this.contextMenuStripEliminar.Text = "Eliminar";
+            // 
+            // eliminarToolStripMenuItem
+            // 
+            this.eliminarToolStripMenuItem.Name = "eliminarToolStripMenuItem";
+            this.eliminarToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.eliminarToolStripMenuItem.Text = "Eliminar";
+            this.eliminarToolStripMenuItem.Click += new System.EventHandler(this.eliminarToolStripMenuItem_Click);
             // 
             // imageListCaptured
             // 
@@ -92,6 +108,18 @@
             this.buttonGrabar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonGrabar.UseVisualStyleBackColor = true;
             this.buttonGrabar.Click += new System.EventHandler(this.buttonGrabarVideo_Click);
+            // 
+            // imageListIconos
+            // 
+            this.imageListIconos.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListIconos.ImageStream")));
+            this.imageListIconos.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListIconos.Images.SetKeyName(0, "icons8-stop-24.png");
+            this.imageListIconos.Images.SetKeyName(1, "icons8-record-48.png");
+            this.imageListIconos.Images.SetKeyName(2, "icons8-screenshot-50 (1).png");
+            this.imageListIconos.Images.SetKeyName(3, "desconectar.png");
+            this.imageListIconos.Images.SetKeyName(4, "connect.png");
+            this.imageListIconos.Images.SetKeyName(5, "icons8-stop-48 (1).png");
+            this.imageListIconos.Images.SetKeyName(6, "icons8-stop-64.png");
             // 
             // buttonCapturarImg
             // 
@@ -141,6 +169,7 @@
             this.comboBoxDispositivos.Name = "comboBoxDispositivos";
             this.comboBoxDispositivos.Size = new System.Drawing.Size(271, 21);
             this.comboBoxDispositivos.TabIndex = 9;
+            this.comboBoxDispositivos.SelectedIndexChanged += new System.EventHandler(this.comboBoxDispositivos_SelectedIndexChanged);
             // 
             // pictureBox1
             // 
@@ -151,18 +180,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 8;
             this.pictureBox1.TabStop = false;
-            // 
-            // imageListIconos
-            // 
-            this.imageListIconos.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListIconos.ImageStream")));
-            this.imageListIconos.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListIconos.Images.SetKeyName(0, "icons8-stop-24.png");
-            this.imageListIconos.Images.SetKeyName(1, "icons8-record-48.png");
-            this.imageListIconos.Images.SetKeyName(2, "icons8-screenshot-50 (1).png");
-            this.imageListIconos.Images.SetKeyName(3, "desconectar.png");
-            this.imageListIconos.Images.SetKeyName(4, "connect.png");
-            this.imageListIconos.Images.SetKeyName(5, "icons8-stop-48 (1).png");
-            this.imageListIconos.Images.SetKeyName(6, "icons8-stop-64.png");
             // 
             // timerRecording
             // 
@@ -190,25 +207,19 @@
             this.listViewIamgenesVideos.Click += new System.EventHandler(this.listViewIamgenesVideos_Click);
             this.listViewIamgenesVideos.DoubleClick += new System.EventHandler(this.listViewIamgenesVideos_DoubleClick);
             // 
-            // contextMenuStripEliminar
+            // comboBoxCapabilitis
             // 
-            this.contextMenuStripEliminar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.eliminarToolStripMenuItem});
-            this.contextMenuStripEliminar.Name = "contextMenuStripEliminar";
-            this.contextMenuStripEliminar.Size = new System.Drawing.Size(118, 26);
-            this.contextMenuStripEliminar.Text = "Eliminar";
-            // 
-            // eliminarToolStripMenuItem
-            // 
-            this.eliminarToolStripMenuItem.Name = "eliminarToolStripMenuItem";
-            this.eliminarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.eliminarToolStripMenuItem.Text = "Eliminar";
-            this.eliminarToolStripMenuItem.Click += new System.EventHandler(this.eliminarToolStripMenuItem_Click);
+            this.comboBoxCapabilitis.FormattingEnabled = true;
+            this.comboBoxCapabilitis.Location = new System.Drawing.Point(381, 14);
+            this.comboBoxCapabilitis.Name = "comboBoxCapabilitis";
+            this.comboBoxCapabilitis.Size = new System.Drawing.Size(271, 21);
+            this.comboBoxCapabilitis.TabIndex = 16;
             // 
             // UserControlVideoCapturer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.comboBoxCapabilitis);
             this.Controls.Add(this.listViewIamgenesVideos);
             this.Controls.Add(this.listViewImages);
             this.Controls.Add(this.buttonGrabar);
@@ -220,8 +231,8 @@
             this.Name = "UserControlVideoCapturer";
             this.Size = new System.Drawing.Size(1164, 768);
             this.Load += new System.EventHandler(this.UserControlVideoCapturer_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.contextMenuStripEliminar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -243,5 +254,6 @@
         private System.Windows.Forms.ListView listViewIamgenesVideos;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripEliminar;
         private System.Windows.Forms.ToolStripMenuItem eliminarToolStripMenuItem;
+        private System.Windows.Forms.ComboBox comboBoxCapabilitis;
     }
 }

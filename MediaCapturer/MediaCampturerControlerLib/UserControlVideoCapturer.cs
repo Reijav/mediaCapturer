@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
@@ -25,6 +21,8 @@ namespace MediaCampturerControlerLib
 
         private object obj = new object();
         private object obj2 = new object();
+
+
         public List<string> PathImagenes
         {
             get { return PathImagenesPr; }
@@ -150,6 +148,23 @@ namespace MediaCampturerControlerLib
         private void UserControlVideoCapturer_Load(object sender, EventArgs e)
         {
             CargarDispositivos();
+        }
+
+
+        private void comboBoxDispositivos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+          
+            int indice = comboBoxDispositivos.SelectedIndex;
+            string nombreVideo = MisDispositivos[indice].MonikerString;
+            MiWebCam = new VideoCaptureDevice(nombreVideo);
+            comboBoxCapabilitis.Items.Clear();
+
+            foreach (var capability in MiWebCam.VideoCapabilities)
+            {
+                string nombre = $"{capability.FrameSize.Width.ToString()} x {capability.FrameSize.Height.ToString()} - FrameRate {capability.FrameRate.ToString()} - {capability.MaximumFrameRate.ToString()} - Bitcount {capability.BitCount.ToString()}";
+                comboBoxCapabilitis.Items.Add(nombre);
+            }
+            
         }
 
 
@@ -289,7 +304,7 @@ namespace MediaCampturerControlerLib
 
                     PathVideosPr.Add(nombreArchivoVideo);
 
-                    FileWriter.Open(nombreArchivoVideo, w, h, 25, VideoCodec.Default, 5000000);
+                    FileWriter.Open(nombreArchivoVideo, w, h, 20, VideoCodec.Default, 2500000);
                     FileWriter.WriteVideoFrame(Imagen);
                     buttonGrabar.Text = PARAR_GRABAR;
 
@@ -343,14 +358,15 @@ namespace MediaCampturerControlerLib
             if (buttonObtenerVideo.Text != DESCONECTAR)
             {
 
-                if (comboBoxDispositivos.SelectedIndex >= 0)
+                if (comboBoxDispositivos.SelectedIndex >= 0 && comboBoxCapabilitis.SelectedIndex >= 0)
                 {
                     buttonObtenerVideo.Text = DESCONECTAR;
                     int indice = comboBoxDispositivos.SelectedIndex;
                     string nombreVideo = MisDispositivos[indice].MonikerString;
                     MiWebCam = new VideoCaptureDevice(nombreVideo);
-                    MiWebCam.VideoResolution = MiWebCam.VideoCapabilities[0];
+                    MiWebCam.VideoResolution = MiWebCam.VideoCapabilities[comboBoxCapabilitis.SelectedIndex];
                     MiWebCam.NewFrame += new NewFrameEventHandler(CapturandoImagen);
+
                     MiWebCam.Start();
                     buttonObtenerVideo.ImageIndex = 4;
                 }
@@ -472,5 +488,7 @@ namespace MediaCampturerControlerLib
         {
             listaSeleccionada = "listViewImages";
         }
+
+
     }
 }
