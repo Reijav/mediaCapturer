@@ -29,27 +29,32 @@ namespace MediaCampturerControlerLib
             set {
 
                 PathImagenesPr = value;
+                var error = false;
                 Parallel.ForEach(PathImagenesPr, (pathImagen) => {
                     Bitmap imagenCapt = null;
+     
                     try
                     {
                         imagenCapt = new Bitmap(pathImagen);
+
+                        lock (obj)
+                        {
+                            imageListCaptured.Images.Add(imagenCapt);
+                            listViewImages.Items.Add(pathImagen, Path.GetFileName(pathImagen), listViewImages.Items.Count);
+                        }
+
+
                     }
                     catch
                     {
+                        error = true;
 
-                    }
-                    
-
-                    lock(obj)
-                    {
-                        imageListCaptured.Images.Add(imagenCapt);
-                        listViewImages.Items.Add(pathImagen, Path.GetFileName(pathImagen), listViewImages.Items.Count);
                     }
                     
                     
                 });
-
+                if (error)
+                    MessageBox.Show("Error, no se pudo cargar uno o varios archivos");
                 listViewImages.Refresh();
             }
         }
@@ -62,29 +67,46 @@ namespace MediaCampturerControlerLib
             set {
 
                 PathVideosPr = value;
-
+                var error = false;
                 Parallel.ForEach(PathVideosPr, (pathVideo) => {
-
-                    VideoFileReader reader = new VideoFileReader();
-                    reader.Open(pathVideo);
-
-                    var imagen=  reader.ReadVideoFrame();
-
-                    reader.Close();
-
                     
-                    lock (obj)
+                    try
                     {
-                        imageListVideos.Images.Add(pathVideo, imagen);
-                        var listViewIte = new ListViewItem()
+                        VideoFileReader reader = new VideoFileReader();
+                        reader.Open(pathVideo);
+
+                        var imagen = reader.ReadVideoFrame();
+
+                        reader.Close();
+
+
+                        lock (obj)
                         {
-                            Name = pathVideo,
-                            Text = Path.GetFileName(pathVideo),
-                            ImageIndex = imageListVideos.Images.IndexOfKey(pathVideo),
-                        };
-                        listViewIamgenesVideos.Items.Add(listViewIte);
+                            imageListVideos.Images.Add(pathVideo, imagen);
+                            var listViewIte = new ListViewItem()
+                            {
+                                Name = pathVideo,
+                                Text = Path.GetFileName(pathVideo),
+                                ImageIndex = imageListVideos.Images.IndexOfKey(pathVideo),
+                            };
+                            listViewIamgenesVideos.Items.Add(listViewIte);
+                        }
+
+
                     }
+                    catch
+                    {
+                        error = true;
+                    }
+
+
+
+
                 } );
+                if (error)
+                    MessageBox.Show("Error, no se pudo cargar uno o varios archivos");
+
+
                 listViewIamgenesVideos.Refresh();
 
 
@@ -161,8 +183,13 @@ namespace MediaCampturerControlerLib
 
             foreach (var capability in MiWebCam.VideoCapabilities)
             {
-                string nombre = $"{capability.FrameSize.Width.ToString()} x {capability.FrameSize.Height.ToString()} - FrameRate {capability.FrameRate.ToString()} - {capability.MaximumFrameRate.ToString()} - Bitcount {capability.BitCount.ToString()}";
+                string nombre = $"{capability.FrameSize.Width.ToString()} x {capability.FrameSize.Height.ToString()} - FrameRate {capability.AverageFrameRate.ToString()} - {capability.MaximumFrameRate.ToString()} - Bitcount {capability.BitCount.ToString()}";
                 comboBoxCapabilitis.Items.Add(nombre);
+            }
+
+            if (comboBoxCapabilitis.Items.Count > 0)
+            {
+                comboBoxCapabilitis.SelectedIndex = 0;
             }
             
         }
@@ -304,7 +331,10 @@ namespace MediaCampturerControlerLib
 
                     PathVideosPr.Add(nombreArchivoVideo);
 
-                    FileWriter.Open(nombreArchivoVideo, w, h, 20, VideoCodec.Default, 2500000);
+                    int bitrate = (MiWebCam.VideoResolution.BitCount/8) * h * w;
+                    int fotogramasPorSegundo = MiWebCam.VideoResolution.AverageFrameRate;
+
+                    FileWriter.Open(nombreArchivoVideo, w, h, fotogramasPorSegundo, VideoCodec.Default, bitrate);
                     FileWriter.WriteVideoFrame(Imagen);
                     buttonGrabar.Text = PARAR_GRABAR;
 
