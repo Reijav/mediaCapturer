@@ -39,8 +39,15 @@ namespace MediaCampturerControlerLib
 
                         lock (obj)
                         {
-                            imageListCaptured.Images.Add(imagenCapt);
-                            listViewImages.Items.Add(pathImagen, Path.GetFileName(pathImagen), listViewImages.Items.Count);
+                            imageListCaptured.Images.Add(pathImagen,imagenCapt);
+                            var listViewIte = new ListViewItem()
+                            {
+                                Name = pathImagen,
+                                Text = Path.GetFileName(pathImagen),
+                                ImageIndex = imageListCaptured.Images.IndexOfKey(pathImagen),
+                            };
+
+                            listViewImages.Items.Add(listViewIte);
                         }
 
 
@@ -355,7 +362,7 @@ namespace MediaCampturerControlerLib
             if (buttonObtenerVideo.Text == DESCONECTAR)
             {
 
-                string nombreArchivo = $"{path}/{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.jpg";
+                string nombreArchivo = $"{path}/{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff")}.jpg";
 
                 using (MemoryStream memory = new MemoryStream())
                 {

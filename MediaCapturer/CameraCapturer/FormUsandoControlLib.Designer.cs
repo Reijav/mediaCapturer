@@ -18,6 +18,7 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+            VideoCapturer.Dispose();
         }
 
         #region Windows Form Designer generated code
