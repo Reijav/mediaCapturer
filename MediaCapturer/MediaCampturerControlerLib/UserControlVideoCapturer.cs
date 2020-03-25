@@ -331,7 +331,7 @@ namespace MediaCampturerControlerLib
                     imagenVideo = (Bitmap)Imagen.Clone();
                     timerRecording.Enabled = true;
                     buttonGrabar.ImageIndex = 0;
-                    nombreArchivoVideo = $"{path}/{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.avi";
+                    nombreArchivoVideo = $"{path}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.avi";
                     numeroPrevio = DateTime.Now.Ticks;
                     int h = MiWebCam.VideoResolution.FrameSize.Height;
                     int w = MiWebCam.VideoResolution.FrameSize.Width;
@@ -362,7 +362,7 @@ namespace MediaCampturerControlerLib
             if (buttonObtenerVideo.Text == DESCONECTAR)
             {
 
-                string nombreArchivo = $"{path}/{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff")}.jpg";
+                string nombreArchivo = $"{path}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff")}.jpg";
 
                 using (MemoryStream memory = new MemoryStream())
                 {
