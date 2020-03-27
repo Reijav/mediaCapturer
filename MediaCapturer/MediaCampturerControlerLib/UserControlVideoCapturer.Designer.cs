@@ -53,6 +53,9 @@
             this.imageListVideos = new System.Windows.Forms.ImageList(this.components);
             this.listViewIamgenesVideos = new System.Windows.Forms.ListView();
             this.comboBoxCapabilitis = new System.Windows.Forms.ComboBox();
+            this.comboBoxInputs = new System.Windows.Forms.ComboBox();
+            this.labelInput = new System.Windows.Forms.Label();
+            this.labelCalidad = new System.Windows.Forms.Label();
             this.contextMenuStripEliminar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -156,9 +159,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(13, 14);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(63, 13);
+            this.label1.Size = new System.Drawing.Size(75, 13);
             this.label1.TabIndex = 10;
             this.label1.Text = "Dispositivos";
             // 
@@ -210,15 +214,46 @@
             // comboBoxCapabilitis
             // 
             this.comboBoxCapabilitis.FormattingEnabled = true;
-            this.comboBoxCapabilitis.Location = new System.Drawing.Point(381, 14);
+            this.comboBoxCapabilitis.Location = new System.Drawing.Point(656, 12);
             this.comboBoxCapabilitis.Name = "comboBoxCapabilitis";
             this.comboBoxCapabilitis.Size = new System.Drawing.Size(271, 21);
             this.comboBoxCapabilitis.TabIndex = 16;
+            // 
+            // comboBoxInputs
+            // 
+            this.comboBoxInputs.FormattingEnabled = true;
+            this.comboBoxInputs.Location = new System.Drawing.Point(434, 11);
+            this.comboBoxInputs.Name = "comboBoxInputs";
+            this.comboBoxInputs.Size = new System.Drawing.Size(151, 21);
+            this.comboBoxInputs.TabIndex = 17;
+            // 
+            // labelInput
+            // 
+            this.labelInput.AutoSize = true;
+            this.labelInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelInput.Location = new System.Drawing.Point(384, 15);
+            this.labelInput.Name = "labelInput";
+            this.labelInput.Size = new System.Drawing.Size(42, 13);
+            this.labelInput.TabIndex = 18;
+            this.labelInput.Text = "Inputs";
+            // 
+            // labelCalidad
+            // 
+            this.labelCalidad.AutoSize = true;
+            this.labelCalidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCalidad.Location = new System.Drawing.Point(598, 15);
+            this.labelCalidad.Name = "labelCalidad";
+            this.labelCalidad.Size = new System.Drawing.Size(52, 13);
+            this.labelCalidad.TabIndex = 19;
+            this.labelCalidad.Text = "Formato";
             // 
             // UserControlVideoCapturer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.labelCalidad);
+            this.Controls.Add(this.labelInput);
+            this.Controls.Add(this.comboBoxInputs);
             this.Controls.Add(this.comboBoxCapabilitis);
             this.Controls.Add(this.listViewIamgenesVideos);
             this.Controls.Add(this.listViewImages);
@@ -255,5 +290,8 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStripEliminar;
         private System.Windows.Forms.ToolStripMenuItem eliminarToolStripMenuItem;
         private System.Windows.Forms.ComboBox comboBoxCapabilitis;
+        private System.Windows.Forms.ComboBox comboBoxInputs;
+        private System.Windows.Forms.Label labelInput;
+        private System.Windows.Forms.Label labelCalidad;
     }
 }

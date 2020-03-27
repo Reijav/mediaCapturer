@@ -185,26 +185,44 @@ namespace MediaCampturerControlerLib
           
             int indice = comboBoxDispositivos.SelectedIndex;
             string nombreVideo = MisDispositivos[indice].MonikerString;
-            MiWebCam = new VideoCaptureDevice(nombreVideo);
+            var WebCam = new VideoCaptureDevice(nombreVideo);
             comboBoxCapabilitis.Items.Clear();
 
-            foreach (var capability in MiWebCam.VideoCapabilities)
+            foreach (var capability in WebCam.VideoCapabilities)
             {
                 string nombre = $"{capability.FrameSize.Width.ToString()} x {capability.FrameSize.Height.ToString()} - FrameRate {capability.AverageFrameRate.ToString()} - {capability.MaximumFrameRate.ToString()} - Bitcount {capability.BitCount.ToString()}";
                 comboBoxCapabilitis.Items.Add(nombre);
+            }
+
+
+
+            foreach (var input in WebCam.AvailableCrossbarVideoInputs)
+            {
+                comboBoxInputs.Items.Add(input.Index + "-" +  input.Type.ToString());
+                    
             }
 
             if (comboBoxCapabilitis.Items.Count > 0)
             {
                 comboBoxCapabilitis.SelectedIndex = 0;
             }
-            
+
+            comboBoxInputs.Enabled = false;
+            if (comboBoxInputs.Items.Count > 0)
+            {
+                comboBoxInputs.SelectedIndex = 0;
+                comboBoxInputs.Enabled = true;
+            }
+
+            WebCam = null;
         }
 
+        FilterInfoCollection MisDispositivosCompresores;
 
         public void CargarDispositivos()
         {
             MisDispositivos = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            MisDispositivosCompresores = new FilterInfoCollection(FilterCategory.VideoCompressorCategory);
 
             if (MisDispositivos != null && MisDispositivos.Count > 0)
             {
@@ -272,8 +290,6 @@ namespace MediaCampturerControlerLib
                 buttonGrabarVideo_Click(this, null);
             }
 
-
-            Task.Delay(100);
             if (MiWebCam != null && MiWebCam.IsRunning)
             {
                 if (FileWriter != null && FileWriter.IsOpen)
@@ -284,6 +300,8 @@ namespace MediaCampturerControlerLib
 
 
                 MiWebCam.SignalToStop();
+                MiWebCam.WaitForStop();
+                MiWebCam.Stop();
                 MiWebCam = null;
                 pictureBox1.Image = null;
             }
@@ -306,7 +324,7 @@ namespace MediaCampturerControlerLib
                 buttonGrabar.ImageIndex = 1;
                 if (MiWebCam == null)
                 { return; }
-                if (MiWebCam.IsRunning)
+                else if (MiWebCam.IsRunning)
                 {
                     FileWriter.Close();
 
@@ -389,6 +407,8 @@ namespace MediaCampturerControlerLib
             }
         }
 
+        
+
         private void buttonConectarDispositivo_Click(object sender, EventArgs e)
         {
             CerrarWebCam();
@@ -402,6 +422,12 @@ namespace MediaCampturerControlerLib
                     string nombreVideo = MisDispositivos[indice].MonikerString;
                     MiWebCam = new VideoCaptureDevice(nombreVideo);
                     MiWebCam.VideoResolution = MiWebCam.VideoCapabilities[comboBoxCapabilitis.SelectedIndex];
+
+                    if (MiWebCam.AvailableCrossbarVideoInputs.Length > 0)
+                    {
+                        MiWebCam.CrossbarVideoInput = MiWebCam.AvailableCrossbarVideoInputs[comboBoxInputs.SelectedIndex];
+                    }
+
                     MiWebCam.NewFrame += new NewFrameEventHandler(CapturandoImagen);
 
                     MiWebCam.Start();
