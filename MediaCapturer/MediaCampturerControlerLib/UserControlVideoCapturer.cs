@@ -30,39 +30,44 @@ namespace MediaCampturerControlerLib
 
                 PathImagenesPr = value;
                 var error = false;
-                Parallel.ForEach(PathImagenesPr, (pathImagen) => {
-                    Bitmap imagenCapt = null;
-     
-                    try
+                Task.Factory.StartNew(() =>
+                {
+                    Parallel.ForEach(PathImagenesPr, (pathImagen) =>
                     {
-                        imagenCapt = new Bitmap(pathImagen);
+                        Bitmap imagenCapt = null;
 
-                        lock (obj)
+                        try
                         {
-                            imageListCaptured.Images.Add(pathImagen,imagenCapt);
-                            var listViewIte = new ListViewItem()
-                            {
-                                Name = pathImagen,
-                                Text = Path.GetFileName(pathImagen),
-                                ImageIndex = imageListCaptured.Images.IndexOfKey(pathImagen),
-                            };
+                            imagenCapt = new Bitmap(pathImagen);
 
-                            listViewImages.Items.Add(listViewIte);
+                            lock (obj)
+                            {
+                                imageListCaptured.Images.Add(pathImagen, imagenCapt);
+                                var listViewIte = new ListViewItem()
+                                {
+                                    Name = pathImagen,
+                                    Text = Path.GetFileName(pathImagen),
+                                    ImageIndex = imageListCaptured.Images.IndexOfKey(pathImagen),
+                                };
+
+                                listViewImages.Items.Add(listViewIte);
+                            }
+
+
+                        }
+                        catch
+                        {
+                            error = true;
+
                         }
 
 
-                    }
-                    catch
-                    {
-                        error = true;
-
-                    }
-                    
-                    
-                });
-                if (error)
-                    MessageBox.Show("Error, no se pudo cargar uno o varios archivos");
-                listViewImages.Refresh();
+                    });
+                    if (error)
+                        MessageBox.Show("Error, no se pudo cargar uno o varios archivos");
+                    listViewImages.Refresh();
+                }
+                );
             }
         }
 
