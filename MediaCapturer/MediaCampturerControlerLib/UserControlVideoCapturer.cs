@@ -64,7 +64,7 @@ namespace MediaCampturerControlerLib
 
                     });
                     if (error)
-                        MessageBox.Show("Error, no se pudo cargar uno o varios archivos");
+                        MessageBox.Show("Error, no se pudo cargar uno o varios archivos", "Error");
                     listViewImages.Refresh();
                 }
                 );
@@ -506,7 +506,7 @@ namespace MediaCampturerControlerLib
                     foreach (ListViewItem item in listViewImages.SelectedItems)
                     {
 
-
+                        imageListCaptured.Images.RemoveAt(item.ImageIndex);
                         listViewImages.Items.Remove(item);
                         PathImagenesPr.Remove(item.Name);
                         ArchivosEliminadosPr.Add(item.Name);
@@ -523,7 +523,7 @@ namespace MediaCampturerControlerLib
                     foreach (ListViewItem item in listViewIamgenesVideos.SelectedItems)
                     {
 
-
+                        imageListVideos.Images.RemoveAt(item.ImageIndex);
                         listViewIamgenesVideos.Items.Remove(item);
                         PathVideosPr.Remove(item.Name);
                         ArchivosEliminadosPr.Add(item.Name);
