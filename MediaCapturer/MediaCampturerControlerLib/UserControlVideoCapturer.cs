@@ -30,6 +30,8 @@ namespace MediaCampturerControlerLib
 
                 PathImagenesPr = value;
                 var error = false;
+                string msgerror = "";
+
                 Task.Factory.StartNew(() =>
                 {
                     Parallel.ForEach(PathImagenesPr, (pathImagen) =>
@@ -38,7 +40,7 @@ namespace MediaCampturerControlerLib
 
                         try
                         {
-                            imagenCapt = new Bitmap(pathImagen);
+                            imagenCapt = (Bitmap) new Bitmap(pathImagen).Clone();
 
                             lock (obj)
                             {
@@ -55,16 +57,17 @@ namespace MediaCampturerControlerLib
 
 
                         }
-                        catch
+                        catch(Exception er)
                         {
                             error = true;
 
+                            msgerror += "\n"+er.Message;
                         }
 
 
                     });
                     if (error)
-                        MessageBox.Show("Error, no se pudo cargar uno o varios archivos", "Error");
+                        MessageBox.Show("Error, no se pudo cargar uno o varios archivos" + msgerror, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     listViewImages.Refresh();
                 }
                 );
@@ -80,17 +83,20 @@ namespace MediaCampturerControlerLib
 
                 PathVideosPr = value;
                 var error = false;
+                string msgerror = "";
                 Parallel.ForEach(PathVideosPr, (pathVideo) => {
                     
                     try
                     {
-                        VideoFileReader reader = new VideoFileReader();
-                        reader.Open(pathVideo);
+                        Bitmap imagen = null;
+                        using (VideoFileReader reader = new VideoFileReader())
+                        {
+                            reader.Open(pathVideo);
 
-                        var imagen = reader.ReadVideoFrame();
+                            imagen = (Bitmap)reader.ReadVideoFrame().Clone();
 
-                        reader.Close();
-
+                            reader.Close();
+                        }
 
                         lock (obj)
                         {
@@ -106,9 +112,10 @@ namespace MediaCampturerControlerLib
 
 
                     }
-                    catch
+                    catch(Exception er)
                     {
                         error = true;
+                        msgerror += msgerror + "\n"; 
                     }
 
 
@@ -116,7 +123,7 @@ namespace MediaCampturerControlerLib
 
                 } );
                 if (error)
-                    MessageBox.Show("Error, no se pudo cargar uno o varios archivos");
+                    MessageBox.Show("Error, no se pudo cargar uno o varios archivos. \n" + msgerror , "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 
                 listViewIamgenesVideos.Refresh();

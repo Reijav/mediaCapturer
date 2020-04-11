@@ -236,6 +236,7 @@
             this.listViewIamgenesVideos.SmallImageList = this.imageListVideos;
             this.listViewIamgenesVideos.TabIndex = 18;
             this.listViewIamgenesVideos.UseCompatibleStateImageBehavior = false;
+            this.listViewIamgenesVideos.Click += new System.EventHandler(this.listViewIamgenesVideos_Click);
             this.listViewIamgenesVideos.DoubleClick += new System.EventHandler(this.listViewIamgenesVideos_DoubleClick);
             // 
             // listViewImages
@@ -249,6 +250,7 @@
             this.listViewImages.SmallImageList = this.imageListCaptured;
             this.listViewImages.TabIndex = 17;
             this.listViewImages.UseCompatibleStateImageBehavior = false;
+            this.listViewImages.Click += new System.EventHandler(this.listViewImages_Click);
             this.listViewImages.DoubleClick += new System.EventHandler(this.listViewImages_DoubleClick);
             // 
             // pictureBox1
