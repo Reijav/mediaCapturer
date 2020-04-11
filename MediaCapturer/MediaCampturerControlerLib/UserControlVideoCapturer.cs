@@ -25,7 +25,13 @@ namespace MediaCampturerControlerLib
 
         public List<string> PathImagenes
         {
-            get { return PathImagenesPr; }
+            get {
+                if (PathImagenesPr == null)
+                {
+                    PathImagenesPr = new List<string>();
+                }
+                return PathImagenesPr;
+            }
             set {
 
                 PathImagenesPr = value;
@@ -78,7 +84,14 @@ namespace MediaCampturerControlerLib
 
         public List<string> PathVideos
         {
-            get { return PathVideosPr; }
+            get
+            {
+                if (PathVideosPr == null)
+                {
+                    PathVideosPr = new List<string>();
+                }
+                return PathVideosPr;
+            }
             set {
 
                 PathVideosPr = value;
@@ -137,7 +150,14 @@ namespace MediaCampturerControlerLib
 
         public List<String> ArchivosEliminados
         {
-            get { return ArchivosEliminadosPr; }
+            get
+            {
+                if (ArchivosEliminadosPr == null)
+                {
+                    ArchivosEliminadosPr = new List<string>();
+                }
+                return ArchivosEliminadosPr;
+            }
             set { ArchivosEliminadosPr = value; }
         }
 
