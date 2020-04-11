@@ -38,7 +38,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlVideoCapturer));
-            this.listViewImages = new System.Windows.Forms.ListView();
             this.contextMenuStripEliminar = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.eliminarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListCaptured = new System.Windows.Forms.ImageList(this.components);
@@ -48,32 +47,20 @@
             this.buttonObtenerVideo = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxDispositivos = new System.Windows.Forms.ComboBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.timerRecording = new System.Windows.Forms.Timer(this.components);
             this.imageListVideos = new System.Windows.Forms.ImageList(this.components);
-            this.listViewIamgenesVideos = new System.Windows.Forms.ListView();
             this.comboBoxCapabilitis = new System.Windows.Forms.ComboBox();
             this.comboBoxInputs = new System.Windows.Forms.ComboBox();
             this.labelInput = new System.Windows.Forms.Label();
             this.labelCalidad = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.listViewIamgenesVideos = new System.Windows.Forms.ListView();
+            this.listViewImages = new System.Windows.Forms.ListView();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.contextMenuStripEliminar.SuspendLayout();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // listViewImages
-            // 
-            this.listViewImages.ContextMenuStrip = this.contextMenuStripEliminar;
-            this.listViewImages.HideSelection = false;
-            this.listViewImages.LargeImageList = this.imageListCaptured;
-            this.listViewImages.Location = new System.Drawing.Point(672, 125);
-            this.listViewImages.Name = "listViewImages";
-            this.listViewImages.Size = new System.Drawing.Size(463, 619);
-            this.listViewImages.SmallImageList = this.imageListCaptured;
-            this.listViewImages.TabIndex = 14;
-            this.listViewImages.UseCompatibleStateImageBehavior = false;
-            this.listViewImages.SelectedIndexChanged += new System.EventHandler(this.listViewImages_SelectedIndexChanged);
-            this.listViewImages.Click += new System.EventHandler(this.listViewImages_Click);
-            this.listViewImages.DoubleClick += new System.EventHandler(this.listViewImages_DoubleClick);
             // 
             // contextMenuStripEliminar
             // 
@@ -175,16 +162,6 @@
             this.comboBoxDispositivos.TabIndex = 9;
             this.comboBoxDispositivos.SelectedIndexChanged += new System.EventHandler(this.comboBoxDispositivos_SelectedIndexChanged);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 125);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(640, 480);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 8;
-            this.pictureBox1.TabStop = false;
-            // 
             // timerRecording
             // 
             this.timerRecording.Interval = 200;
@@ -195,21 +172,6 @@
             this.imageListVideos.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
             this.imageListVideos.ImageSize = new System.Drawing.Size(80, 60);
             this.imageListVideos.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // listViewIamgenesVideos
-            // 
-            this.listViewIamgenesVideos.ContextMenuStrip = this.contextMenuStripEliminar;
-            this.listViewIamgenesVideos.HideSelection = false;
-            this.listViewIamgenesVideos.LargeImageList = this.imageListVideos;
-            this.listViewIamgenesVideos.Location = new System.Drawing.Point(12, 623);
-            this.listViewIamgenesVideos.Name = "listViewIamgenesVideos";
-            this.listViewIamgenesVideos.Size = new System.Drawing.Size(640, 121);
-            this.listViewIamgenesVideos.SmallImageList = this.imageListVideos;
-            this.listViewIamgenesVideos.TabIndex = 15;
-            this.listViewIamgenesVideos.UseCompatibleStateImageBehavior = false;
-            this.listViewIamgenesVideos.SelectedIndexChanged += new System.EventHandler(this.listViewIamgenesVideos_SelectedIndexChanged);
-            this.listViewIamgenesVideos.Click += new System.EventHandler(this.listViewIamgenesVideos_Click);
-            this.listViewIamgenesVideos.DoubleClick += new System.EventHandler(this.listViewIamgenesVideos_DoubleClick);
             // 
             // comboBoxCapabilitis
             // 
@@ -247,6 +209,58 @@
             this.labelCalidad.TabIndex = 19;
             this.labelCalidad.Text = "Formato";
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.AutoScroll = true;
+            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.listViewIamgenesVideos);
+            this.panel1.Controls.Add(this.listViewImages);
+            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Location = new System.Drawing.Point(0, 143);
+            this.panel1.MinimumSize = new System.Drawing.Size(600, 314);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1174, 638);
+            this.panel1.TabIndex = 20;
+            // 
+            // listViewIamgenesVideos
+            // 
+            this.listViewIamgenesVideos.ContextMenuStrip = this.contextMenuStripEliminar;
+            this.listViewIamgenesVideos.HideSelection = false;
+            this.listViewIamgenesVideos.LargeImageList = this.imageListVideos;
+            this.listViewIamgenesVideos.Location = new System.Drawing.Point(12, 501);
+            this.listViewIamgenesVideos.Name = "listViewIamgenesVideos";
+            this.listViewIamgenesVideos.Size = new System.Drawing.Size(640, 121);
+            this.listViewIamgenesVideos.SmallImageList = this.imageListVideos;
+            this.listViewIamgenesVideos.TabIndex = 18;
+            this.listViewIamgenesVideos.UseCompatibleStateImageBehavior = false;
+            this.listViewIamgenesVideos.DoubleClick += new System.EventHandler(this.listViewIamgenesVideos_DoubleClick);
+            // 
+            // listViewImages
+            // 
+            this.listViewImages.ContextMenuStrip = this.contextMenuStripEliminar;
+            this.listViewImages.HideSelection = false;
+            this.listViewImages.LargeImageList = this.imageListCaptured;
+            this.listViewImages.Location = new System.Drawing.Point(672, 3);
+            this.listViewImages.Name = "listViewImages";
+            this.listViewImages.Size = new System.Drawing.Size(463, 619);
+            this.listViewImages.SmallImageList = this.imageListCaptured;
+            this.listViewImages.TabIndex = 17;
+            this.listViewImages.UseCompatibleStateImageBehavior = false;
+            this.listViewImages.DoubleClick += new System.EventHandler(this.listViewImages_DoubleClick);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pictureBox1.Location = new System.Drawing.Point(12, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(640, 480);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 16;
+            this.pictureBox1.TabStop = false;
+            // 
             // UserControlVideoCapturer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -255,18 +269,17 @@
             this.Controls.Add(this.labelInput);
             this.Controls.Add(this.comboBoxInputs);
             this.Controls.Add(this.comboBoxCapabilitis);
-            this.Controls.Add(this.listViewIamgenesVideos);
-            this.Controls.Add(this.listViewImages);
             this.Controls.Add(this.buttonGrabar);
             this.Controls.Add(this.buttonCapturarImg);
             this.Controls.Add(this.buttonObtenerVideo);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxDispositivos);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.panel1);
             this.Name = "UserControlVideoCapturer";
-            this.Size = new System.Drawing.Size(1164, 768);
+            this.Size = new System.Drawing.Size(1192, 784);
             this.Load += new System.EventHandler(this.UserControlVideoCapturer_Load);
             this.contextMenuStripEliminar.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -274,24 +287,24 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ListView listViewImages;
         private System.Windows.Forms.Button buttonGrabar;
         private System.Windows.Forms.Button buttonCapturarImg;
         private System.Windows.Forms.Button buttonObtenerVideo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxDispositivos;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ImageList imageListCaptured;
         private System.Windows.Forms.ImageList imageListIconos;
         private System.Windows.Forms.Timer timerRecording;
         private System.Windows.Forms.ImageList imageListVideos;
-        private System.Windows.Forms.ListView listViewIamgenesVideos;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripEliminar;
         private System.Windows.Forms.ToolStripMenuItem eliminarToolStripMenuItem;
         private System.Windows.Forms.ComboBox comboBoxCapabilitis;
         private System.Windows.Forms.ComboBox comboBoxInputs;
         private System.Windows.Forms.Label labelInput;
         private System.Windows.Forms.Label labelCalidad;
+        private System.Windows.Forms.ListView listViewIamgenesVideos;
+        private System.Windows.Forms.ListView listViewImages;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        public System.Windows.Forms.Panel panel1;
     }
 }
