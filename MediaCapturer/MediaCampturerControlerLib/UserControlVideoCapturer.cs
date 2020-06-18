@@ -22,6 +22,8 @@ namespace MediaCampturerControlerLib
         private object obj = new object();
         private object obj2 = new object();
 
+        private long ticksInicioGrabado = 0;
+
 
         public List<string> PathImagenes
         {
@@ -234,15 +236,15 @@ namespace MediaCampturerControlerLib
                     
             }
 
-            if (comboBoxCapabilitis.Items.Count > 0)
+            if (comboBoxCapabilitis.Items.Count > 1)
             {
                 comboBoxCapabilitis.SelectedIndex = 0;
             }
 
             comboBoxInputs.Enabled = false;
-            if (comboBoxInputs.Items.Count > 0)
+            if (comboBoxInputs.Items.Count > 1)
             {
-                comboBoxInputs.SelectedIndex = 0;
+                comboBoxInputs.SelectedIndex = 1;
                 comboBoxInputs.Enabled = true;
             }
 
@@ -371,6 +373,7 @@ namespace MediaCampturerControlerLib
             }
             else
             {
+                
 
                 if (MiWebCam != null && MiWebCam.IsRunning && Imagen != null)
                 {
@@ -380,6 +383,7 @@ namespace MediaCampturerControlerLib
                     //{
                     imagenVideo = (Bitmap)Imagen.Clone();
                     timerRecording.Enabled = true;
+                    ticksInicioGrabado = DateTime.Now.Ticks;
                     buttonGrabar.ImageIndex = 0;
                     nombreArchivoVideo = $"{path}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.avi";
                     numeroPrevio = DateTime.Now.Ticks;
@@ -486,12 +490,24 @@ namespace MediaCampturerControlerLib
             CerrarWebCam();
         }
 
+
+        
+
         private void timerRecording_Tick(object sender, EventArgs e)
         {
             if (buttonGrabar.ImageIndex == 5)
                 buttonGrabar.ImageIndex = 6;
             else
                 buttonGrabar.ImageIndex = 5;
+
+            long ticksActualGrabando = DateTime.Now.Ticks;
+
+            long ticksTiempoGrabacion = ticksActualGrabando - ticksInicioGrabado;
+
+            var tiempoGrabacion = new TimeSpan(ticksTiempoGrabacion);
+
+           labelTiempoGrabacion.Text=$"{tiempoGrabacion.Hours.ToString("D2")}:{tiempoGrabacion.Minutes.ToString("D2")}:{tiempoGrabacion.Seconds.ToString("D2")}";
+
         }
 
 

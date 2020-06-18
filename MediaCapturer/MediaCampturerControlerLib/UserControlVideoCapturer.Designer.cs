@@ -57,6 +57,7 @@
             this.listViewIamgenesVideos = new System.Windows.Forms.ListView();
             this.listViewImages = new System.Windows.Forms.ListView();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.labelTiempoGrabacion = new System.Windows.Forms.Label();
             this.contextMenuStripEliminar.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -263,10 +264,21 @@
             this.pictureBox1.TabIndex = 16;
             this.pictureBox1.TabStop = false;
             // 
+            // labelTiempoGrabacion
+            // 
+            this.labelTiempoGrabacion.AutoSize = true;
+            this.labelTiempoGrabacion.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTiempoGrabacion.Location = new System.Drawing.Point(312, 77);
+            this.labelTiempoGrabacion.Name = "labelTiempoGrabacion";
+            this.labelTiempoGrabacion.Size = new System.Drawing.Size(96, 26);
+            this.labelTiempoGrabacion.TabIndex = 21;
+            this.labelTiempoGrabacion.Text = "00:00:00";
+            // 
             // UserControlVideoCapturer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.labelTiempoGrabacion);
             this.Controls.Add(this.labelCalidad);
             this.Controls.Add(this.labelInput);
             this.Controls.Add(this.comboBoxInputs);
@@ -308,5 +320,6 @@
         private System.Windows.Forms.ListView listViewImages;
         private System.Windows.Forms.PictureBox pictureBox1;
         public System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label labelTiempoGrabacion;
     }
 }
