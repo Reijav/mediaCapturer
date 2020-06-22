@@ -221,7 +221,9 @@ namespace MediaCampturerControlerLib
             string nombreVideo = MisDispositivos[indice].MonikerString;
             var WebCam = new VideoCaptureDevice(nombreVideo);
             comboBoxCapabilitis.Items.Clear();
+            comboBoxInputs.Items.Clear();
 
+            //CARGA CAPACIDADES DEL DISPOSITIVO
             foreach (var capability in WebCam.VideoCapabilities)
             {
                 string nombre = $"{capability.FrameSize.Width.ToString()} x {capability.FrameSize.Height.ToString()} - FrameRate {capability.AverageFrameRate.ToString()} - {capability.MaximumFrameRate.ToString()} - Bitcount {capability.BitCount.ToString()}";
@@ -229,23 +231,31 @@ namespace MediaCampturerControlerLib
             }
 
 
-
+            //CARGA VIDEO INPUTS DISPONIBLES
             foreach (var input in WebCam.AvailableCrossbarVideoInputs)
             {
                 comboBoxInputs.Items.Add(input.Index + "-" +  input.Type.ToString());
                     
             }
 
-            if (comboBoxCapabilitis.Items.Count > 1)
+            if (comboBoxCapabilitis.Items.Count > 0)
             {
                 comboBoxCapabilitis.SelectedIndex = 0;
             }
+            else
+            {
+                comboBoxCapabilitis.SelectedIndex = -1;
+            }
 
             comboBoxInputs.Enabled = false;
-            if (comboBoxInputs.Items.Count > 1)
+            if (comboBoxInputs.Items.Count > 0)
             {
                 comboBoxInputs.SelectedIndex = 1;
                 comboBoxInputs.Enabled = true;
+            }
+            else
+            {
+                comboBoxInputs.SelectedIndex = -1;
             }
 
             WebCam = null;
@@ -286,7 +296,7 @@ namespace MediaCampturerControlerLib
                 
                 Imagen = (Bitmap)newFrameEventArgs.Frame.Clone();
 
-                pictureBox1.Image = (Bitmap)newFrameEventArgs.Frame.Clone();
+                pictureBox1.Image = Imagen;//(Bitmap)newFrameEventArgs.Frame.Clone();
 
                 //SI SE ENCUENTRA GRABANDO
                 if (buttonGrabar.Text == PARAR_GRABAR && FileWriter != null)
@@ -296,15 +306,10 @@ namespace MediaCampturerControlerLib
 
                     try
                     {
+                        //FileWriter.WriteVideoFrame(Imagen, lapsoTiempoTS);
 
-                        //if (lapsoTiempoTS.TotalSeconds > 1)
-                        //{
-                            FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone(), lapsoTiempoTS);
-                        //}
-                        //else
-                        //{
-                        //    FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone());
-                        //}
+                        FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone(), lapsoTiempoTS);
+
                     }
                     catch (Exception er)
                     {
@@ -458,6 +463,13 @@ namespace MediaCampturerControlerLib
                     string nombreVideo = MisDispositivos[indice].MonikerString;
                     MiWebCam = new VideoCaptureDevice(nombreVideo);
                     MiWebCam.VideoResolution = MiWebCam.VideoCapabilities[comboBoxCapabilitis.SelectedIndex];
+
+
+                    
+
+                    int alto = MiWebCam.VideoResolution.FrameSize.Height * pictureBox1.Width / MiWebCam.VideoResolution.FrameSize.Width;
+
+                    pictureBox1.Height = alto;
 
                     if (MiWebCam.AvailableCrossbarVideoInputs.Length > 0)
                     {
