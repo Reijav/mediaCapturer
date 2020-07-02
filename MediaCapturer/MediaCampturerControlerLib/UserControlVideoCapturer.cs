@@ -465,7 +465,8 @@ namespace MediaCampturerControlerLib
                     MiWebCam.VideoResolution = MiWebCam.VideoCapabilities[comboBoxCapabilitis.SelectedIndex];
 
 
-                    
+
+
 
                     int alto = MiWebCam.VideoResolution.FrameSize.Height * pictureBox1.Width / MiWebCam.VideoResolution.FrameSize.Width;
 
@@ -612,6 +613,37 @@ namespace MediaCampturerControlerLib
             listaSeleccionada = "listViewImages";
         }
 
+        private void buttonAgregarDesdeArchivo_Click(object sender, EventArgs e)
+        {
+            if (openFileDialogImagen.ShowDialog() == DialogResult.OK)
+            {
+                string fileExtention =  Path.GetExtension(openFileDialogImagen.FileName);
 
+                Bitmap imagenDesdeArchivo = new Bitmap(openFileDialogImagen.OpenFile());
+
+
+                string nombreArchivo = $"{path}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff")}.jpg";
+
+                using (MemoryStream memory = new MemoryStream())
+                {
+                    using (FileStream fs = new FileStream(nombreArchivo, FileMode.Create, FileAccess.Write))
+                    {
+                        imagenDesdeArchivo.Save(memory, ImageFormat.Jpeg);
+                        byte[] bytes = memory.ToArray();
+                        fs.Write(bytes, 0, bytes.Length);
+                    }
+                    // MessageBox.Show($"Imagen guardada en {path}");
+                }
+
+                //Este codigo causa  "A generic error occurred in GDI+."
+                //imagenCapturada.Save(nombreArchivo, System.Drawing.Imaging.ImageFormat.Jpeg);
+                imageListCaptured.Images.Add(nombreArchivo, imagenDesdeArchivo);
+
+                PathImagenes.Add(nombreArchivo);
+                listViewImages.Items.Add(nombreArchivo, Path.GetFileName(nombreArchivo), imageListCaptured.Images.IndexOfKey(nombreArchivo));
+                listViewImages.Refresh();
+            }
+
+        }
     }
 }

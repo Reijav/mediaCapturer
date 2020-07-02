@@ -58,6 +58,8 @@
             this.listViewImages = new System.Windows.Forms.ListView();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.labelTiempoGrabacion = new System.Windows.Forms.Label();
+            this.buttonAgregarDesdeArchivo = new System.Windows.Forms.Button();
+            this.openFileDialogImagen = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStripEliminar.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -274,10 +276,30 @@
             this.labelTiempoGrabacion.TabIndex = 21;
             this.labelTiempoGrabacion.Text = "00:00:00";
             // 
+            // buttonAgregarDesdeArchivo
+            // 
+            this.buttonAgregarDesdeArchivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonAgregarDesdeArchivo.Image = ((System.Drawing.Image)(resources.GetObject("buttonAgregarDesdeArchivo.Image")));
+            this.buttonAgregarDesdeArchivo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonAgregarDesdeArchivo.Location = new System.Drawing.Point(938, 40);
+            this.buttonAgregarDesdeArchivo.Name = "buttonAgregarDesdeArchivo";
+            this.buttonAgregarDesdeArchivo.Padding = new System.Windows.Forms.Padding(20, 0, 20, 0);
+            this.buttonAgregarDesdeArchivo.Size = new System.Drawing.Size(197, 79);
+            this.buttonAgregarDesdeArchivo.TabIndex = 22;
+            this.buttonAgregarDesdeArchivo.Text = "Agregar Foto";
+            this.buttonAgregarDesdeArchivo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonAgregarDesdeArchivo.UseVisualStyleBackColor = true;
+            this.buttonAgregarDesdeArchivo.Click += new System.EventHandler(this.buttonAgregarDesdeArchivo_Click);
+            // 
+            // openFileDialogImagen
+            // 
+            this.openFileDialogImagen.FileName = "openFileDialog1";
+            // 
             // UserControlVideoCapturer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.buttonAgregarDesdeArchivo);
             this.Controls.Add(this.labelTiempoGrabacion);
             this.Controls.Add(this.labelCalidad);
             this.Controls.Add(this.labelInput);
@@ -321,5 +343,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         public System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label labelTiempoGrabacion;
+        private System.Windows.Forms.Button buttonAgregarDesdeArchivo;
+        private System.Windows.Forms.OpenFileDialog openFileDialogImagen;
     }
 }
