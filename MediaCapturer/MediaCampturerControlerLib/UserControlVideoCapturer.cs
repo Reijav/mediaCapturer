@@ -361,6 +361,7 @@ namespace MediaCampturerControlerLib
                 timerRecording.Enabled = false;
                 buttonGrabar.Text = GRABAR_VIDEO;
                 buttonGrabar.ImageIndex = 1;
+                buttonObtenerVideo.Enabled = true;
                 if (MiWebCam == null)
                 { return; }
                 else if (MiWebCam.IsRunning)
@@ -382,6 +383,8 @@ namespace MediaCampturerControlerLib
 
                 if (MiWebCam != null && MiWebCam.IsRunning && Imagen != null)
                 {
+                    buttonObtenerVideo.Enabled = false;
+
                     //saveAvi = new SaveFileDialog();
                     //saveAvi.Filter = "Avi Files (*.avi)|*.avi";
                     //if (saveAvi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -412,6 +415,7 @@ namespace MediaCampturerControlerLib
                 }
 
             }
+            this.pictureBox1.Focus();
         }
 
 
@@ -446,6 +450,7 @@ namespace MediaCampturerControlerLib
             {
                 MessageBox.Show("No se encuentra conectado a ningún dispositivo.");
             }
+            this.pictureBox1.Focus();
         }
 
         
@@ -484,7 +489,7 @@ namespace MediaCampturerControlerLib
                 }
                 else
                 {
-                    MessageBox.Show("Debe seleccionar un dispositivo");
+                    MessageBox.Show("Debe seleccionar un dispositivo", "Dispositivos", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
             }
@@ -493,7 +498,7 @@ namespace MediaCampturerControlerLib
                 buttonObtenerVideo.Text = "Conectar con dispositivo";
                 buttonObtenerVideo.ImageIndex = 3;
             }
-
+            this.pictureBox1.Focus();
         }
 
 
@@ -558,16 +563,17 @@ namespace MediaCampturerControlerLib
             {
                 if (listViewImages.SelectedIndices.Count > 0)
                 {
-
+                    List<ListViewItem> listaEliminar = new List<ListViewItem>();
                     foreach (ListViewItem item in listViewImages.SelectedItems)
                     {
 
-                        imageListCaptured.Images.RemoveAt(item.ImageIndex);
+                       // imageListCaptured.Images.RemoveAt( item.ImageIndex);
                         listViewImages.Items.Remove(item);
                         PathImagenesPr.Remove(item.Name);
                         ArchivosEliminadosPr.Add(item.Name);
 
                     }
+                    
                 }
                 listViewImages.Refresh();
             }
@@ -579,7 +585,7 @@ namespace MediaCampturerControlerLib
                     foreach (ListViewItem item in listViewIamgenesVideos.SelectedItems)
                     {
 
-                        imageListVideos.Images.RemoveAt(item.ImageIndex);
+                      //  imageListVideos.Images.RemoveAt(item.ImageIndex);
                         listViewIamgenesVideos.Items.Remove(item);
                         PathVideosPr.Remove(item.Name);
                         ArchivosEliminadosPr.Add(item.Name);
@@ -643,7 +649,23 @@ namespace MediaCampturerControlerLib
                 listViewImages.Items.Add(nombreArchivo, Path.GetFileName(nombreArchivo), imageListCaptured.Images.IndexOfKey(nombreArchivo));
                 listViewImages.Refresh();
             }
+            this.pictureBox1.Focus();
 
+        }
+
+        public Boolean SavingVideo()
+        {
+            return !buttonObtenerVideo.Enabled;
+        }
+
+        public void CapturarImagen()
+        {
+            buttonCapturarImg_Click_1(null, null);
+        }
+
+        public void IniciarPararGrabacion()
+        {
+            buttonGrabarVideo_Click(null, null);
         }
     }
 }

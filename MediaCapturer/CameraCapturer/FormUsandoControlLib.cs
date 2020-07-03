@@ -56,5 +56,15 @@ namespace CameraCapturer
         {
             
         }
+
+        private void FormUsandoControlLib_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (VideoCapturer.SavingVideo())
+            {
+                e.Cancel = true;
+                MessageBox.Show("Se encuentra grabando, debe parar la grabación", "Cerrar Ventana", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            
+        }
     }
 }

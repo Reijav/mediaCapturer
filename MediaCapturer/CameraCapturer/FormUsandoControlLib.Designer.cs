@@ -52,6 +52,7 @@
             this.Controls.Add(this.panelControl);
             this.Name = "FormUsandoControlLib";
             this.Text = "FormUsandoControlLib";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormUsandoControlLib_FormClosing);
             this.Load += new System.EventHandler(this.FormUsandoControlLib_Load);
             this.ResumeLayout(false);
 
