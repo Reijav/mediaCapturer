@@ -393,7 +393,7 @@ namespace MediaCampturerControlerLib
                     timerRecording.Enabled = true;
                     ticksInicioGrabado = DateTime.Now.Ticks;
                     buttonGrabar.ImageIndex = 0;
-                    nombreArchivoVideo = $"{path}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")}.avi";
+                    nombreArchivoVideo = $"{path}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff")}.avi";
                     numeroPrevio = DateTime.Now.Ticks;
                     int h = MiWebCam.VideoResolution.FrameSize.Height;
                     int w = MiWebCam.VideoResolution.FrameSize.Width;
