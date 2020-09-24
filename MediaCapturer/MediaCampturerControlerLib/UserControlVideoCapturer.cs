@@ -8,6 +8,7 @@ using AForge.Video.DirectShow;
 using Accord.Video.FFMPEG;
 using AForge.Video;
 using System.Drawing.Imaging;
+using System.Reflection;
 
 namespace MediaCampturerControlerLib
 {
@@ -129,8 +130,24 @@ namespace MediaCampturerControlerLib
                     }
                     catch(Exception er)
                     {
-                        error = true;
-                        msgerror += msgerror + "\n"; 
+                        //error = true;
+                        msgerror += msgerror + "\n";
+
+                        Assembly myAssembly = Assembly.GetExecutingAssembly();
+                        Stream myStream = myAssembly.GetManifestResourceStream("MediaCampturerControlerLib.imagenVideoDefault.jpg");
+                        Bitmap imagen = new Bitmap(myStream);
+
+                        lock (obj)
+                        {
+                            imageListVideos.Images.Add(pathVideo, imagen);
+                            var listViewIte = new ListViewItem()
+                            {
+                                Name = pathVideo,
+                                Text = Path.GetFileName(pathVideo),
+                                ImageIndex = imageListVideos.Images.IndexOfKey(pathVideo),
+                            };
+                            listViewIamgenesVideos.Items.Add(listViewIte);
+                        }
                     }
 
 
