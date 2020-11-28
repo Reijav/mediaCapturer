@@ -59,5 +59,45 @@ namespace MediaCampturerControlerLib.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap iconfinder_fullscreen_exit_326649 {
+            get {
+                object obj = ResourceManager.GetObject("iconfinder_fullscreen-exit_326649", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap iconfinder_fullscreen_expand_maximize_full_screen_3994367 {
+            get {
+                object obj = ResourceManager.GetObject("iconfinder_fullscreen_expand_maximize_full_screen_3994367", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap iconfinder_ic_pause_48px_3669310 {
+            get {
+                object obj = ResourceManager.GetObject("iconfinder_ic_pause_48px_3669310", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap iconfinder_play_music_triangle_media_2203515 {
+            get {
+                object obj = ResourceManager.GetObject("iconfinder_play-music-triangle-media_2203515", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
