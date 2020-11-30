@@ -44,6 +44,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlVideoCapturer));
             this.contextMenuStripEliminar = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.eliminarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.obtenerFotoDeVideoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListCaptured = new System.Windows.Forms.ImageList(this.components);
             this.imageListIconos = new System.Windows.Forms.ImageList(this.components);
             this.label1 = new System.Windows.Forms.Label();
@@ -55,7 +56,6 @@
             this.labelInput = new System.Windows.Forms.Label();
             this.labelCalidad = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.buttonAdelantar = new System.Windows.Forms.Button();
             this.buttonRetroceder = new System.Windows.Forms.Button();
             this.buttonStop = new System.Windows.Forms.Button();
@@ -64,6 +64,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.listViewIamgenesVideos = new System.Windows.Forms.ListView();
             this.listViewImages = new System.Windows.Forms.ListView();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.labelTiempoGrabacion = new System.Windows.Forms.Label();
             this.openFileDialogImagen = new System.Windows.Forms.OpenFileDialog();
             this.timerPlaying = new System.Windows.Forms.Timer(this.components);
@@ -73,11 +74,10 @@
             this.buttonGrabar = new System.Windows.Forms.Button();
             this.buttonCapturarImg = new System.Windows.Forms.Button();
             this.buttonObtenerVideo = new System.Windows.Forms.Button();
-            this.obtenerFotoDeVideoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripEliminar.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMaximizado)).BeginInit();
             this.SuspendLayout();
             // 
@@ -97,10 +97,17 @@
             this.eliminarToolStripMenuItem.Text = "Eliminar";
             this.eliminarToolStripMenuItem.Click += new System.EventHandler(this.eliminarToolStripMenuItem_Click);
             // 
+            // obtenerFotoDeVideoToolStripMenuItem
+            // 
+            this.obtenerFotoDeVideoToolStripMenuItem.Name = "obtenerFotoDeVideoToolStripMenuItem";
+            this.obtenerFotoDeVideoToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.obtenerFotoDeVideoToolStripMenuItem.Text = "Obtener Foto de Video";
+            this.obtenerFotoDeVideoToolStripMenuItem.Click += new System.EventHandler(this.obtenerFotoDeVideoToolStripMenuItem_Click);
+            // 
             // imageListCaptured
             // 
             this.imageListCaptured.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.imageListCaptured.ImageSize = new System.Drawing.Size(160, 120);
+            this.imageListCaptured.ImageSize = new System.Drawing.Size(140, 110);
             this.imageListCaptured.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // imageListIconos
@@ -188,7 +195,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoScroll = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel1.Controls.Add(this.trackBar1);
             this.panel1.Controls.Add(this.buttonAdelantar);
             this.panel1.Controls.Add(this.buttonRetroceder);
             this.panel1.Controls.Add(this.buttonStop);
@@ -197,22 +203,12 @@
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.listViewIamgenesVideos);
             this.panel1.Controls.Add(this.listViewImages);
+            this.panel1.Controls.Add(this.trackBar1);
             this.panel1.Location = new System.Drawing.Point(0, 143);
             this.panel1.MinimumSize = new System.Drawing.Size(600, 314);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1098, 638);
             this.panel1.TabIndex = 20;
-            // 
-            // trackBar1
-            // 
-            this.trackBar1.CausesValidation = false;
-            this.trackBar1.Location = new System.Drawing.Point(16, 489);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(743, 45);
-            this.trackBar1.TabIndex = 24;
-            this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
-            this.trackBar1.MouseLeave += new System.EventHandler(this.trackBar1_MouseLeave);
-            this.trackBar1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar1_MouseUp);
             // 
             // buttonAdelantar
             // 
@@ -222,6 +218,7 @@
             this.buttonAdelantar.Size = new System.Drawing.Size(31, 27);
             this.buttonAdelantar.TabIndex = 23;
             this.buttonAdelantar.UseVisualStyleBackColor = true;
+            this.buttonAdelantar.Visible = false;
             this.buttonAdelantar.Click += new System.EventHandler(this.buttonAdelantar_Click);
             // 
             // buttonRetroceder
@@ -232,6 +229,7 @@
             this.buttonRetroceder.Size = new System.Drawing.Size(31, 27);
             this.buttonRetroceder.TabIndex = 22;
             this.buttonRetroceder.UseVisualStyleBackColor = true;
+            this.buttonRetroceder.Visible = false;
             this.buttonRetroceder.Click += new System.EventHandler(this.buttonRetroceder_Click);
             // 
             // buttonStop
@@ -242,6 +240,7 @@
             this.buttonStop.Size = new System.Drawing.Size(31, 27);
             this.buttonStop.TabIndex = 21;
             this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Visible = false;
             this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
             // 
             // buttonPlay
@@ -253,6 +252,7 @@
             this.buttonPlay.Size = new System.Drawing.Size(40, 27);
             this.buttonPlay.TabIndex = 20;
             this.buttonPlay.UseVisualStyleBackColor = true;
+            this.buttonPlay.Visible = false;
             this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
             // 
             // buttonMaximizar
@@ -290,8 +290,9 @@
             this.listViewIamgenesVideos.SmallImageList = this.imageListVideos;
             this.listViewIamgenesVideos.TabIndex = 18;
             this.listViewIamgenesVideos.UseCompatibleStateImageBehavior = false;
-            this.listViewIamgenesVideos.Click += new System.EventHandler(this.listViewIamgenesVideos_Click);
+            this.listViewIamgenesVideos.Click += new System.EventHandler(this.listViewIamgenesVideos_SelectedIndexChanged);
             this.listViewIamgenesVideos.DoubleClick += new System.EventHandler(this.listViewIamgenesVideos_DoubleClick);
+            this.listViewIamgenesVideos.MouseEnter += new System.EventHandler(this.listViewIamgenesVideos_MouseEnter);
             // 
             // listViewImages
             // 
@@ -299,7 +300,7 @@
             this.listViewImages.HideSelection = false;
             this.listViewImages.LargeImageList = this.imageListCaptured;
             this.listViewImages.Location = new System.Drawing.Point(782, 3);
-            this.listViewImages.MaximumSize = new System.Drawing.Size(400, 920);
+            this.listViewImages.MaximumSize = new System.Drawing.Size(1280, 920);
             this.listViewImages.MinimumSize = new System.Drawing.Size(100, 360);
             this.listViewImages.Name = "listViewImages";
             this.listViewImages.Size = new System.Drawing.Size(314, 619);
@@ -308,6 +309,19 @@
             this.listViewImages.UseCompatibleStateImageBehavior = false;
             this.listViewImages.Click += new System.EventHandler(this.listViewImages_Click);
             this.listViewImages.DoubleClick += new System.EventHandler(this.listViewImages_DoubleClick);
+            this.listViewImages.MouseEnter += new System.EventHandler(this.listViewImages_MouseEnter);
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.CausesValidation = false;
+            this.trackBar1.Location = new System.Drawing.Point(16, 489);
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(743, 45);
+            this.trackBar1.TabIndex = 24;
+            this.trackBar1.Visible = false;
+            this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            this.trackBar1.MouseLeave += new System.EventHandler(this.trackBar1_MouseLeave);
+            this.trackBar1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar1_MouseUp);
             // 
             // labelTiempoGrabacion
             // 
@@ -342,11 +356,13 @@
             // pictureBoxMaximizado
             // 
             this.pictureBoxMaximizado.Location = new System.Drawing.Point(1102, 0);
+            this.pictureBoxMaximizado.MinimumSize = new System.Drawing.Size(320, 240);
             this.pictureBoxMaximizado.Name = "pictureBoxMaximizado";
-            this.pictureBoxMaximizado.Size = new System.Drawing.Size(92, 50);
+            this.pictureBoxMaximizado.Size = new System.Drawing.Size(320, 240);
             this.pictureBoxMaximizado.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxMaximizado.TabIndex = 23;
             this.pictureBoxMaximizado.TabStop = false;
+            this.pictureBoxMaximizado.Visible = false;
             // 
             // buttonAgregarDesdeArchivo
             // 
@@ -411,13 +427,6 @@
             this.buttonObtenerVideo.UseVisualStyleBackColor = true;
             this.buttonObtenerVideo.Click += new System.EventHandler(this.buttonConectarDispositivo_Click);
             // 
-            // obtenerFotoDeVideoToolStripMenuItem
-            // 
-            this.obtenerFotoDeVideoToolStripMenuItem.Name = "obtenerFotoDeVideoToolStripMenuItem";
-            this.obtenerFotoDeVideoToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.obtenerFotoDeVideoToolStripMenuItem.Text = "Obtener Foto de Video";
-            this.obtenerFotoDeVideoToolStripMenuItem.Click += new System.EventHandler(this.obtenerFotoDeVideoToolStripMenuItem_Click);
-            // 
             // UserControlVideoCapturer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -439,11 +448,12 @@
             this.Name = "UserControlVideoCapturer";
             this.Size = new System.Drawing.Size(1194, 784);
             this.Load += new System.EventHandler(this.UserControlVideoCapturer_Load);
+            this.SizeChanged += new System.EventHandler(this.UserControlVideoCapturer_SizeChanged);
             this.contextMenuStripEliminar.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMaximizado)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

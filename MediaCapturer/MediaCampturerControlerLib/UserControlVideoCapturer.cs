@@ -9,6 +9,7 @@ using Accord.Video.FFMPEG;
 using AForge.Video;
 using System.Drawing.Imaging;
 using System.Reflection;
+using static System.Windows.Forms.ImageList;
 
 namespace MediaCampturerControlerLib
 {
@@ -477,6 +478,7 @@ namespace MediaCampturerControlerLib
 
                 //Este codigo causa  "A generic error occurred in GDI+."
                 //imagenCapturada.Save(nombreArchivo, System.Drawing.Imaging.ImageFormat.Jpeg);
+
                 imageListCaptured.Images.Add(nombreArchivo, Imagen);
 
                 PathImagenes.Add(nombreArchivo);
@@ -490,7 +492,7 @@ namespace MediaCampturerControlerLib
             this.pictureBoxEnUso.Focus();
         }
 
-
+        
 
         private void buttonConectarDispositivo_Click(object sender, EventArgs e)
         {
@@ -509,17 +511,31 @@ namespace MediaCampturerControlerLib
                     MiWebCam.VideoResolution = MiWebCam.VideoCapabilities[comboBoxCapabilitis.SelectedIndex];
 
                     int alto = MiWebCam.VideoResolution.FrameSize.Height * pictureBox1.Width / MiWebCam.VideoResolution.FrameSize.Width;
-
-
-
-
                     int diffAlto = alto - pictureBox1.Height;
                     pictureBox1.Height = alto;
+
 
                     listViewIamgenesVideos.Top += diffAlto;
 
                     listViewImages.Height += diffAlto;
 
+
+                    if(imageListCaptured.Images.Count == 0)
+                    {
+                        imageListCaptured.ImageSize = new Size(imageListCaptured.ImageSize.Width, MiWebCam.VideoResolution.FrameSize.Height * imageListCaptured.ImageSize.Width / MiWebCam.VideoResolution.FrameSize.Width);
+                    }
+
+
+                    if (imageListVideos.Images.Count == 0)
+                    {
+                        imageListVideos.ImageSize = new Size(imageListVideos.ImageSize.Width, MiWebCam.VideoResolution.FrameSize.Height * imageListVideos.ImageSize.Width / MiWebCam.VideoResolution.FrameSize.Width);
+                    }
+                    
+
+                    
+
+
+                    listViewImages.Refresh();
 
                     if (MiWebCam.AvailableCrossbarVideoInputs.Length > 0)
                     {
@@ -846,46 +862,142 @@ namespace MediaCampturerControlerLib
         private Point posicionInicialBtnCapturarImg;
         private Size sizeInicialBtnCapturarImg;
 
+        private Point posicionInicialListViewImagenes;
+        private Size sizeInicialListViewImagenes;
+
+        private Point posicionCronometroRegistro;
+        private Size sizeInicialCronometroRegistro;
+
+        private Point posicionBotonObtenerVideo;
+        private Size sizeBotonObtenerVideo;
+
         private void buttonMaximizar_Click(object sender, EventArgs e)
         {
+
+            pictureBox1.Visible = false;
+            listViewIamgenesVideos.Visible = false;
+
+            buttonMinimizar.Visible = true;
             pictureBoxMaximizado.Visible = true;
-            pictureBoxEnUso = pictureBoxMaximizado;
-            pictureBoxEnUso.Top = 0;
-            pictureBoxEnUso.Left = 0;
-            pictureBoxEnUso.Size = new Size(this.Width, this.Height);
-            pictureBoxEnUso.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 
 
             posicionInicialBtnGrabar = buttonGrabar.Location;
             sizeInicialBtnGrabar = buttonGrabar.Size;
 
-
-            buttonGrabar.BringToFront();
-            //buttonGrabar.Width = 92;
-            //buttonGrabar.Height = 50;
-
-            buttonGrabar.Top = this.Height - buttonGrabar.Height - 5;
-            buttonGrabar.Left = (this.Width / 2) - (buttonGrabar.Width) - 5;
-
-
             posicionInicialBtnCapturarImg = buttonCapturarImg.Location;
             sizeInicialBtnCapturarImg = buttonCapturarImg.Size;
 
-            buttonCapturarImg.BringToFront();
-            //buttonCapturarImg.Text = "";
-            //buttonCapturarImg.Width = 92;
-            //buttonCapturarImg.Height = 50;
-            buttonCapturarImg.Top = this.Height - buttonCapturarImg.Height - 5;
-            buttonCapturarImg.Left = (this.Width / 2) + 5;
+            posicionInicialListViewImagenes = listViewImages.Location;
+            sizeInicialListViewImagenes = listViewImages.Size;
 
-            buttonMinimizar.Visible = true;
+            posicionCronometroRegistro = labelTiempoGrabacion.Location;
+            sizeInicialCronometroRegistro = labelTiempoGrabacion.Size;
 
+            posicionBotonObtenerVideo = buttonObtenerVideo.Location;
+            sizeBotonObtenerVideo = buttonObtenerVideo.Size;
+
+            ModificarPosicionPicture();
+
+            
+
+        }
+        private const int anchoListaImagenes = 230;
+        private void ModificarPosicionPicture()
+        {
+            
+            if (pictureBoxMaximizado.Visible && buttonMinimizar.Visible)
+            {
+                pictureBoxEnUso = pictureBoxMaximizado;
+
+                //MiWebCam.VideoResolution.FrameSize.Width
+
+                int nuevoAncho = Convert.ToInt32(this.Width - anchoListaImagenes);
+                int nuevoAlto = MiWebCam.VideoResolution.FrameSize.Height * nuevoAncho / MiWebCam.VideoResolution.FrameSize.Width;
+
+                if (nuevoAlto < this.Height - buttonGrabar.Height - 10)
+                {
+                    pictureBoxEnUso.Height = nuevoAlto;
+                }
+                else
+                {
+                    nuevoAlto = this.Height - buttonGrabar.Height - 10;
+                    nuevoAncho = MiWebCam.VideoResolution.FrameSize.Width * nuevoAlto / MiWebCam.VideoResolution.FrameSize.Height;
+                }
+
+                pictureBoxEnUso.Size = new Size(nuevoAncho, nuevoAlto);
+
+                pictureBoxEnUso.Top = 0;
+                pictureBoxEnUso.Left = 0;
+
+
+                listViewImages.Parent = this;
+                listViewImages.Top = pictureBoxEnUso.Top;
+                listViewImages.Height = this.Height - buttonCapturarImg.Height - 5;
+
+
+                listViewImages.Left = pictureBoxEnUso.Width;
+                listViewImages.Width = anchoListaImagenes - 15;
+                listViewImages.BringToFront();
+
+
+
+                buttonObtenerVideo.Top = this.Height - buttonCapturarImg.Height - 5;
+                buttonObtenerVideo.Left = 180 + 10;
+                buttonObtenerVideo.BringToFront();
+
+
+                labelTiempoGrabacion.Top = this.Height - (buttonCapturarImg.Height / 2);
+                labelTiempoGrabacion.Left = this.buttonObtenerVideo.Left + this.buttonObtenerVideo.Width + 10;
+                labelTiempoGrabacion.BringToFront();
+
+
+                buttonGrabar.Top = this.Height - buttonGrabar.Height - 5;
+                buttonGrabar.Left = this.labelTiempoGrabacion.Left + this.labelTiempoGrabacion.Width + 10; //(this.Width / 2) - (buttonGrabar.Width) - 5;
+                buttonGrabar.BringToFront();
+
+
+                buttonCapturarImg.Top = this.Height - buttonCapturarImg.Height - 5;
+                buttonCapturarImg.Left = this.buttonGrabar.Left + this.buttonGrabar.Width + 10;  // (this.Width / 2) + 5;
+                buttonCapturarImg.BringToFront();
+
+
+
+                buttonMinimizar.Left = pictureBoxMaximizado.Width - buttonMinimizar.Width;
+                buttonMinimizar.Top = pictureBoxMaximizado.Top;
+
+                buttonMinimizar.BringToFront();
+
+
+                var visibleComponentes = false;
+
+                CambiarVisibilidadControles(visibleComponentes);
+                //buttonObtenerVideo
+                //labelTiempoGrabacion
+                //buttonGrabar
+                //buttonCapturarImg
+                //buttonAgregarDesdeArchivo
+
+
+            }
 
 
         }
 
+        private void CambiarVisibilidadControles(bool visibleComponentes)
+        {
+            label1.Visible = visibleComponentes;
+            comboBoxDispositivos.Visible = visibleComponentes;
+            labelInput.Visible = visibleComponentes;
+            comboBoxInputs.Visible = visibleComponentes;
+            labelCalidad.Visible = visibleComponentes;
+            comboBoxCapabilitis.Visible = visibleComponentes;
+        }
+
         private void buttonMinimizar_Click(object sender, EventArgs e)
         {
+            pictureBox1.Visible = true;
+            listViewIamgenesVideos.Visible = true;
+
             pictureBoxEnUso = pictureBox1;
 
             pictureBoxMaximizado.Visible = false;
@@ -896,6 +1008,19 @@ namespace MediaCampturerControlerLib
 
             buttonCapturarImg.Location = posicionInicialBtnCapturarImg;
             buttonCapturarImg.Size = sizeInicialBtnCapturarImg;
+            listViewImages.Parent = panel1;
+            listViewImages.Size = sizeInicialListViewImagenes;
+            posicionInicialListViewImagenes.Y = 0;
+            listViewImages.Location = posicionInicialListViewImagenes;
+
+            labelTiempoGrabacion.Location = posicionCronometroRegistro;
+            labelTiempoGrabacion.Size = sizeInicialCronometroRegistro;
+
+            buttonObtenerVideo.Location = posicionBotonObtenerVideo;
+            buttonObtenerVideo.Size = sizeBotonObtenerVideo;
+
+            CambiarVisibilidadControles(true);
+
 
         }
 
@@ -923,36 +1048,30 @@ namespace MediaCampturerControlerLib
 
         private void obtenerFotoDeVideoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            reader = new VideoFileReader();
-            // reader.Open(@"G:\VIDEOS\GeforceExperience\Devil May Cry 5\Devil May Cry 5 2020.04.05 - 15.05.19.42  JP.mp4");
-            reader.Open(listViewIamgenesVideos.Items[listViewIamgenesVideos.SelectedIndices[0]].Name);
 
-            pictureBoxEnUso.Image = (Bitmap)reader.ReadVideoFrame().Clone();
+            var formVideoPlayer = new VideoPlayer(listViewIamgenesVideos.Items[listViewIamgenesVideos.SelectedIndices[0]].Name,path);
+            formVideoPlayer.ImagenesSeleccionadasDeVideo += ImagenesSeleccionadasDeVideo;
+            formVideoPlayer.ShowDialog(this);
+            
+        }
 
+        private void ImagenesSeleccionadasDeVideo(object sender, ImagenesSeleccionadasEventArgs e)
+        {
+            if(e.PathImagenes!=null && e.PathImagenes.Count > 0)
+            {
+                foreach (var pathImagen in e.PathImagenes)
+                {
+                   var imagenDeVideo = (Bitmap)new Bitmap(pathImagen).Clone();
+                    imageListCaptured.Images.Add(pathImagen, imagenDeVideo);
 
-            listaBitmap = new List<Bitmap>();
-
-
-            frameIndex = 1;
-            timerPlaying.Interval = Convert.ToInt32(1000 / reader.FrameRate.Value);
-            trackBar1.Minimum = 0;
-            trackBar1.Maximum = Convert.ToInt32(reader.FrameCount);
-            trackBar1.Value = frameIndex;
-
-            // imagen = (Bitmap)reader.ReadVideoFrame().Clone();
-
-
-
-
-
-            //VideoFileSource videoSource = new VideoFileSource(@"G:\VIDEOS\GeforceExperience\videosjp\Devil May Cry 5\Devil May Cry 5 2020.11.13 - 22.43.09.01.mp4"); // new VideoFileSource(listViewIamgenesVideos.Items[indice].Name);
+                    PathImagenes.Add(pathImagen);
+                    listViewImages.Items.Add(pathImagen, Path.GetFileName(pathImagen), imageListCaptured.Images.IndexOfKey(pathImagen));
+                }
 
 
-            ////// set NewFrame event handler
-            //videoSource.NewFrame += new Accord.Video.NewFrameEventHandler(video_NewFrame);
-            ////// start the video source
-            //videoSource.Start();
-            // ...
+                listViewImages.Refresh();
+            }
+
         }
 
         private void trackBar1_MouseUp(object sender, MouseEventArgs e)
@@ -968,6 +1087,23 @@ namespace MediaCampturerControlerLib
             pictureBoxEnUso.Image = (Bitmap)reader.ReadVideoFrame();
 
 
+        }
+
+        private void UserControlVideoCapturer_SizeChanged(object sender, EventArgs e)
+        {
+            ModificarPosicionPicture();
+        }
+
+        private void listViewImages_MouseEnter(object sender, EventArgs e)
+        {
+            obtenerFotoDeVideoToolStripMenuItem.Visible = false;
+        }
+
+
+
+        private void listViewIamgenesVideos_MouseEnter(object sender, EventArgs e)
+        {
+            obtenerFotoDeVideoToolStripMenuItem.Visible = true;
         }
     }
 }
