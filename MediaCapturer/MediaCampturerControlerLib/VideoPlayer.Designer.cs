@@ -16,6 +16,10 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                if (reader != null)
+                {
+                    reader.Dispose();
+                }
             }
             base.Dispose(disposing);
         }
@@ -53,7 +57,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBoxPlayer.Location = new System.Drawing.Point(3, 1);
             this.pictureBoxPlayer.Name = "pictureBoxPlayer";
-            this.pictureBoxPlayer.Size = new System.Drawing.Size(644, 435);
+            this.pictureBoxPlayer.Size = new System.Drawing.Size(562, 455);
             this.pictureBoxPlayer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxPlayer.TabIndex = 4;
             this.pictureBoxPlayer.TabStop = false;
@@ -66,9 +70,9 @@
             this.panelControles.Controls.Add(this.btnRetroceder);
             this.panelControles.Controls.Add(this.btnPlay);
             this.panelControles.Controls.Add(this.btnAdelantar);
-            this.panelControles.Location = new System.Drawing.Point(2, 440);
+            this.panelControles.Location = new System.Drawing.Point(2, 460);
             this.panelControles.Name = "panelControles";
-            this.panelControles.Size = new System.Drawing.Size(645, 100);
+            this.panelControles.Size = new System.Drawing.Size(563, 100);
             this.panelControles.TabIndex = 5;
             // 
             // trackBar1
@@ -77,7 +81,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar1.Location = new System.Drawing.Point(4, 4);
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(638, 45);
+            this.trackBar1.Size = new System.Drawing.Size(556, 45);
             this.trackBar1.TabIndex = 8;
             this.trackBar1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar1_MouseUp);
             // 
@@ -122,16 +126,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewCapturas.HideSelection = false;
             this.listViewCapturas.LargeImageList = this.imageListCapturas;
-            this.listViewCapturas.Location = new System.Drawing.Point(654, 83);
+            this.listViewCapturas.Location = new System.Drawing.Point(572, 83);
             this.listViewCapturas.Name = "listViewCapturas";
-            this.listViewCapturas.Size = new System.Drawing.Size(212, 353);
+            this.listViewCapturas.Size = new System.Drawing.Size(212, 373);
             this.listViewCapturas.SmallImageList = this.imageListCapturas;
             this.listViewCapturas.TabIndex = 6;
             this.listViewCapturas.UseCompatibleStateImageBehavior = false;
             // 
             // imageListCapturas
             // 
-            this.imageListCapturas.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageListCapturas.ColorDepth = System.Windows.Forms.ColorDepth.Depth24Bit;
             this.imageListCapturas.ImageSize = new System.Drawing.Size(128, 128);
             this.imageListCapturas.TransparentColor = System.Drawing.Color.Transparent;
             // 
@@ -141,7 +145,7 @@
             this.buttonCapturarImg.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonCapturarImg.Image = ((System.Drawing.Image)(resources.GetObject("buttonCapturarImg.Image")));
             this.buttonCapturarImg.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonCapturarImg.Location = new System.Drawing.Point(654, 1);
+            this.buttonCapturarImg.Location = new System.Drawing.Point(572, 1);
             this.buttonCapturarImg.Name = "buttonCapturarImg";
             this.buttonCapturarImg.Padding = new System.Windows.Forms.Padding(20, 0, 20, 0);
             this.buttonCapturarImg.Size = new System.Drawing.Size(212, 79);
@@ -157,7 +161,7 @@
             this.buttonAdjuntarFotosParaInforme.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonAdjuntarFotosParaInforme.Image = ((System.Drawing.Image)(resources.GetObject("buttonAdjuntarFotosParaInforme.Image")));
             this.buttonAdjuntarFotosParaInforme.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonAdjuntarFotosParaInforme.Location = new System.Drawing.Point(653, 442);
+            this.buttonAdjuntarFotosParaInforme.Location = new System.Drawing.Point(571, 462);
             this.buttonAdjuntarFotosParaInforme.Name = "buttonAdjuntarFotosParaInforme";
             this.buttonAdjuntarFotosParaInforme.Padding = new System.Windows.Forms.Padding(20, 0, 20, 0);
             this.buttonAdjuntarFotosParaInforme.Size = new System.Drawing.Size(212, 98);
@@ -171,7 +175,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(866, 541);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(784, 561);
             this.Controls.Add(this.buttonAdjuntarFotosParaInforme);
             this.Controls.Add(this.buttonCapturarImg);
             this.Controls.Add(this.listViewCapturas);
@@ -180,6 +185,7 @@
             this.Name = "VideoPlayer";
             this.Text = "VideoPlayer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Resize += new System.EventHandler(this.VideoPlayer_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer)).EndInit();
             this.panelControles.ResumeLayout(false);
             this.panelControles.PerformLayout();

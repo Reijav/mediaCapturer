@@ -449,6 +449,7 @@
             this.Size = new System.Drawing.Size(1194, 784);
             this.Load += new System.EventHandler(this.UserControlVideoCapturer_Load);
             this.SizeChanged += new System.EventHandler(this.UserControlVideoCapturer_SizeChanged);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UserControlVideoCapturer_KeyPress);
             this.contextMenuStripEliminar.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -486,12 +487,12 @@
         private System.Windows.Forms.Button buttonMaximizar;
         private System.Windows.Forms.PictureBox pictureBoxMaximizado;
         private System.Windows.Forms.Button buttonMinimizar;
-        private System.Windows.Forms.Timer timerPlaying;
         private System.Windows.Forms.Button buttonAdelantar;
         private System.Windows.Forms.Button buttonRetroceder;
         private System.Windows.Forms.Button buttonStop;
         private System.Windows.Forms.Button buttonPlay;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.ToolStripMenuItem obtenerFotoDeVideoToolStripMenuItem;
+        public System.Windows.Forms.Timer timerPlaying;
     }
 }

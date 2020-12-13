@@ -389,7 +389,7 @@ namespace MediaCampturerControlerLib
 
             if (buttonGrabar.Text == PARAR_GRABAR)
             {
-                timerRecording.Enabled = false;
+                timerRecording.Stop();
                 //if(this.pictureBox1.Name == this.pictureBoxEnUso.Name)
                 //{
                 buttonGrabar.Text = GRABAR_VIDEO;
@@ -425,7 +425,8 @@ namespace MediaCampturerControlerLib
                     //if (saveAvi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     //{
                     imagenVideo = (Bitmap)Imagen.Clone();
-                    timerRecording.Enabled = true;
+                    
+                    timerRecording.Start();
                     ticksInicioGrabado = DateTime.Now.Ticks;
                     buttonGrabar.ImageIndex = 0;
                     nombreArchivoVideo = $"{path}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff")}.avi";
@@ -535,7 +536,7 @@ namespace MediaCampturerControlerLib
                     
 
 
-                    listViewImages.Refresh();
+                    
 
                     if (MiWebCam.AvailableCrossbarVideoInputs.Length > 0)
                     {
@@ -546,6 +547,8 @@ namespace MediaCampturerControlerLib
 
                     MiWebCam.Start();
                     buttonObtenerVideo.ImageIndex = 4;
+
+                    buttonMaximizar_Click(sender, e);
                 }
                 else
                 {
@@ -558,8 +561,12 @@ namespace MediaCampturerControlerLib
                 buttonObtenerVideo.Text = "Conectar con dispositivo";
                 buttonObtenerVideo.ImageIndex = 3;
                 buttonMaximizar.Visible = false;
+
+                buttonMinimizar_Click(sender, e);
             }
             this.pictureBoxEnUso.Focus();
+            
+
         }
 
 
@@ -848,6 +855,7 @@ namespace MediaCampturerControlerLib
 
         public void CapturarImagen()
         {
+           
             buttonCapturarImg_Click_1(null, null);
         }
 
@@ -911,7 +919,7 @@ namespace MediaCampturerControlerLib
 
                 //MiWebCam.VideoResolution.FrameSize.Width
 
-                int nuevoAncho = Convert.ToInt32(this.Width - anchoListaImagenes);
+                int nuevoAncho = Convert.ToInt32(this.Width);// - anchoListaImagenes);
                 int nuevoAlto = MiWebCam.VideoResolution.FrameSize.Height * nuevoAncho / MiWebCam.VideoResolution.FrameSize.Width;
 
                 if (nuevoAlto < this.Height - buttonGrabar.Height - 10)
@@ -940,6 +948,8 @@ namespace MediaCampturerControlerLib
                 listViewImages.BringToFront();
 
 
+                listViewIamgenesVideos.Parent = this;
+
 
                 buttonObtenerVideo.Top = this.Height - buttonCapturarImg.Height - 5;
                 buttonObtenerVideo.Left = 180 + 10;
@@ -949,6 +959,7 @@ namespace MediaCampturerControlerLib
                 labelTiempoGrabacion.Top = this.Height - (buttonCapturarImg.Height / 2);
                 labelTiempoGrabacion.Left = this.buttonObtenerVideo.Left + this.buttonObtenerVideo.Width + 10;
                 labelTiempoGrabacion.BringToFront();
+                labelTiempoGrabacion.Refresh();
 
 
                 buttonGrabar.Top = this.Height - buttonGrabar.Height - 5;
@@ -959,6 +970,7 @@ namespace MediaCampturerControlerLib
                 buttonCapturarImg.Top = this.Height - buttonCapturarImg.Height - 5;
                 buttonCapturarImg.Left = this.buttonGrabar.Left + this.buttonGrabar.Width + 10;  // (this.Width / 2) + 5;
                 buttonCapturarImg.BringToFront();
+                buttonCapturarImg.Refresh();
 
 
 
@@ -971,12 +983,6 @@ namespace MediaCampturerControlerLib
                 var visibleComponentes = false;
 
                 CambiarVisibilidadControles(visibleComponentes);
-                //buttonObtenerVideo
-                //labelTiempoGrabacion
-                //buttonGrabar
-                //buttonCapturarImg
-                //buttonAgregarDesdeArchivo
-
 
             }
 
@@ -991,11 +997,15 @@ namespace MediaCampturerControlerLib
             comboBoxInputs.Visible = visibleComponentes;
             labelCalidad.Visible = visibleComponentes;
             comboBoxCapabilitis.Visible = visibleComponentes;
+
+            buttonAgregarDesdeArchivo.Visible = visibleComponentes;
+            panel1.Visible = visibleComponentes;
         }
 
         private void buttonMinimizar_Click(object sender, EventArgs e)
         {
             pictureBox1.Visible = true;
+            listViewIamgenesVideos.Parent = panel1;
             listViewIamgenesVideos.Visible = true;
 
             pictureBoxEnUso = pictureBox1;
@@ -1020,6 +1030,11 @@ namespace MediaCampturerControlerLib
             buttonObtenerVideo.Size = sizeBotonObtenerVideo;
 
             CambiarVisibilidadControles(true);
+
+            
+            listViewImages.Refresh();
+            listViewIamgenesVideos.Refresh();
+            
 
 
         }
@@ -1104,6 +1119,21 @@ namespace MediaCampturerControlerLib
         private void listViewIamgenesVideos_MouseEnter(object sender, EventArgs e)
         {
             obtenerFotoDeVideoToolStripMenuItem.Visible = true;
+        }
+
+        private void UserControlVideoCapturer_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+
+                if (e.KeyChar == (char)Keys.Return)
+                {
+                    CapturarImagen();
+                }
+                else if (e.KeyChar == (char)Keys.Space)
+                {
+                    IniciarPararGrabacion();
+                }
+           
         }
     }
 }

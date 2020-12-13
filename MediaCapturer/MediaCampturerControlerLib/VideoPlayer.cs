@@ -35,6 +35,17 @@ namespace MediaCampturerControlerLib
             this.PathBaseImagenes = pathBaseImagenes;
 
             reader.Open(PathVideo);
+
+            pictureBoxPlayer.Height = this.Height - panelControles.Height - trackBar1.Height - 5;
+            pictureBoxPlayer.Width = pictureBoxPlayer.Height * reader.Width / reader.Height;
+
+            if(pictureBoxPlayer.Width > this.Width - listViewCapturas.Width)
+            {
+                pictureBoxPlayer.Width = this.Width - listViewCapturas.Width;
+
+                pictureBoxPlayer.Height = pictureBoxPlayer.Width * reader.Height / reader.Width;
+            }
+
             trackBar1.Maximum =Convert.ToInt32( reader.FrameCount.ToString());
 
             timerPlayer.Interval =Convert.ToInt32(1000 / reader.FrameRate.Value );
@@ -56,7 +67,7 @@ namespace MediaCampturerControlerLib
 
                 if (frame != null)
                 {
-                    pictureBoxPlayer.Image = (Bitmap)frame.Clone();
+                    pictureBoxPlayer.Image = (Bitmap)frame;
                     frameIndex++;
 
                 }
@@ -146,7 +157,12 @@ namespace MediaCampturerControlerLib
                 }
                 if (frameIndex < reader.FrameCount)
                 {
-                    pictureBoxPlayer.Image = (Bitmap)reader.ReadVideoFrame().Clone();
+                    var frame = reader.ReadVideoFrame();
+                    if (frame != null)
+                    {
+                        pictureBoxPlayer.Image = (Bitmap)reader.ReadVideoFrame().Clone();
+                    }
+                   
                 }
 
                 trackBar1.Value = frameIndex;
@@ -155,7 +171,7 @@ namespace MediaCampturerControlerLib
 
         private void trackBar1_MouseUp(object sender, MouseEventArgs e)
         {
-            timerPlayer.Stop();
+            PararReproduccion();
             frameIndex = trackBar1.Value;
            
         
@@ -169,8 +185,8 @@ namespace MediaCampturerControlerLib
 
             var imagen = reader.ReadVideoFrame();
 
-            if(imagen!=null)
-                pictureBoxPlayer.Image = (Bitmap)imagen.Clone();
+            if (imagen != null)
+                pictureBoxPlayer.Image = (Bitmap)imagen;// (Bitmap)imagen.Clone();
 
 
         }
@@ -210,6 +226,23 @@ namespace MediaCampturerControlerLib
         {
             ImagenesSeleccionadasDeVideo.Invoke(sender, new ImagenesSeleccionadasEventArgs(PathImagenes));
             this.Close();
+        }
+
+        private void VideoPlayer_Resize(object sender, EventArgs e)
+        {
+            
+            pictureBoxPlayer.Height = this.Height-panelControles.Height - trackBar1.Height - 5;
+
+            pictureBoxPlayer.Width = pictureBoxPlayer.Height * reader.Width / reader.Height;
+
+            if (pictureBoxPlayer.Width > this.Width - listViewCapturas.Width)
+            {
+                pictureBoxPlayer.Width = this.Width - listViewCapturas.Width;
+
+                pictureBoxPlayer.Height = pictureBoxPlayer.Width * reader.Height / reader.Width;
+
+
+            }
         }
     }
 
