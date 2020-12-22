@@ -1,6 +1,7 @@
-﻿using Accord.Video.FFMPEG;
-using AForge.Video;
-using AForge.Video.DirectShow;
+﻿using Accord.Video;
+using Accord.Video.DirectShow;
+using Accord.Video.FFMPEG;
+
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;

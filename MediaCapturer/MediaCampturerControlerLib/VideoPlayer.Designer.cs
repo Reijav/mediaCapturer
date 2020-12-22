@@ -16,11 +16,21 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
-                if (reader != null)
-                {
-                    reader.Dispose();
-                }
+
+                
             }
+
+            if (reader != null)
+            {
+                if (reader.IsOpen)
+                {
+                    reader.Close();
+                }
+                reader.Dispose();
+            }
+
+            
+
             base.Dispose(disposing);
         }
 
@@ -36,6 +46,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VideoPlayer));
             this.pictureBoxPlayer = new System.Windows.Forms.PictureBox();
             this.panelControles = new System.Windows.Forms.Panel();
+            this.labelTiempo = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.btnRetroceder = new System.Windows.Forms.Button();
             this.btnPlay = new System.Windows.Forms.Button();
@@ -45,6 +56,8 @@
             this.imageListCapturas = new System.Windows.Forms.ImageList(this.components);
             this.buttonCapturarImg = new System.Windows.Forms.Button();
             this.buttonAdjuntarFotosParaInforme = new System.Windows.Forms.Button();
+            this.videoSourcePlayerVideo = new Accord.Controls.VideoSourcePlayer();
+            this.timerVp = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer)).BeginInit();
             this.panelControles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -55,9 +68,9 @@
             this.pictureBoxPlayer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxPlayer.Location = new System.Drawing.Point(3, 1);
+            this.pictureBoxPlayer.Location = new System.Drawing.Point(2, 1);
             this.pictureBoxPlayer.Name = "pictureBoxPlayer";
-            this.pictureBoxPlayer.Size = new System.Drawing.Size(562, 455);
+            this.pictureBoxPlayer.Size = new System.Drawing.Size(461, 170);
             this.pictureBoxPlayer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxPlayer.TabIndex = 4;
             this.pictureBoxPlayer.TabStop = false;
@@ -66,6 +79,7 @@
             // 
             this.panelControles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelControles.Controls.Add(this.labelTiempo);
             this.panelControles.Controls.Add(this.trackBar1);
             this.panelControles.Controls.Add(this.btnRetroceder);
             this.panelControles.Controls.Add(this.btnPlay);
@@ -74,6 +88,16 @@
             this.panelControles.Name = "panelControles";
             this.panelControles.Size = new System.Drawing.Size(563, 100);
             this.panelControles.TabIndex = 5;
+            // 
+            // labelTiempo
+            // 
+            this.labelTiempo.AutoSize = true;
+            this.labelTiempo.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTiempo.Location = new System.Drawing.Point(10, 60);
+            this.labelTiempo.Name = "labelTiempo";
+            this.labelTiempo.Size = new System.Drawing.Size(96, 26);
+            this.labelTiempo.TabIndex = 9;
+            this.labelTiempo.Text = "00:00:00";
             // 
             // trackBar1
             // 
@@ -102,7 +126,7 @@
             this.btnPlay.Name = "btnPlay";
             this.btnPlay.Size = new System.Drawing.Size(122, 23);
             this.btnPlay.TabIndex = 5;
-            this.btnPlay.Text = "Play";
+            this.btnPlay.Text = "Reproducir";
             this.btnPlay.UseVisualStyleBackColor = true;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
@@ -171,6 +195,20 @@
             this.buttonAdjuntarFotosParaInforme.UseVisualStyleBackColor = true;
             this.buttonAdjuntarFotosParaInforme.Click += new System.EventHandler(this.buttonAdjuntarFotosParaInforme_Click);
             // 
+            // videoSourcePlayerVideo
+            // 
+            this.videoSourcePlayerVideo.Location = new System.Drawing.Point(2, 1);
+            this.videoSourcePlayerVideo.Name = "videoSourcePlayerVideo";
+            this.videoSourcePlayerVideo.Size = new System.Drawing.Size(560, 268);
+            this.videoSourcePlayerVideo.TabIndex = 15;
+            this.videoSourcePlayerVideo.Text = "videoSourcePlayer1";
+            this.videoSourcePlayerVideo.VideoSource = null;
+            // 
+            // timerVp
+            // 
+            this.timerVp.Interval = 1000;
+            this.timerVp.Tick += new System.EventHandler(this.timerVp_Tick);
+            // 
             // VideoPlayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -182,9 +220,12 @@
             this.Controls.Add(this.listViewCapturas);
             this.Controls.Add(this.pictureBoxPlayer);
             this.Controls.Add(this.panelControles);
+            this.Controls.Add(this.videoSourcePlayerVideo);
             this.Name = "VideoPlayer";
             this.Text = "VideoPlayer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VideoPlayer_FormClosing);
+            this.Load += new System.EventHandler(this.VideoPlayer_Load);
             this.Resize += new System.EventHandler(this.VideoPlayer_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer)).EndInit();
             this.panelControles.ResumeLayout(false);
@@ -206,5 +247,8 @@
         private System.Windows.Forms.ImageList imageListCapturas;
         private System.Windows.Forms.Button buttonCapturarImg;
         private System.Windows.Forms.Button buttonAdjuntarFotosParaInforme;
+        private System.Windows.Forms.Label labelTiempo;
+        private Accord.Controls.VideoSourcePlayer videoSourcePlayerVideo;
+        private System.Windows.Forms.Timer timerVp;
     }
 }

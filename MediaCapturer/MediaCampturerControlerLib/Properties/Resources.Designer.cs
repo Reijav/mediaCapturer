@@ -63,6 +63,16 @@ namespace MediaCampturerControlerLib.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap iconfinder_199_CircledPlus_183316 {
+            get {
+                object obj = ResourceManager.GetObject("iconfinder_199_CircledPlus_183316", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap iconfinder_fullscreen_exit_326649 {
             get {
                 object obj = ResourceManager.GetObject("iconfinder_fullscreen-exit_326649", resourceCulture);

@@ -61,6 +61,7 @@ namespace CameraCapturer
         {
             if (VideoCapturer.SavingVideo())
             {
+
                 e.Cancel = true;
                 MessageBox.Show("Se encuentra grabando, debe parar la grabación", "Cerrar Ventana", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
