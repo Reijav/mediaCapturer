@@ -54,14 +54,11 @@
             this.labelInput = new System.Windows.Forms.Label();
             this.labelCalidad = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.videoSourcePlayerCamera = new Accord.Controls.VideoSourcePlayer();
-            this.buttonAdelantar = new System.Windows.Forms.Button();
-            this.buttonRetroceder = new System.Windows.Forms.Button();
-            this.buttonStop = new System.Windows.Forms.Button();
-            this.buttonPlay = new System.Windows.Forms.Button();
+            this.labelCntImgVideos = new System.Windows.Forms.Label();
             this.buttonMaximizar = new System.Windows.Forms.Button();
             this.listViewIamgenesVideos = new System.Windows.Forms.ListView();
             this.listViewImages = new System.Windows.Forms.ListView();
+            this.videoSourcePlayerCamera = new Accord.Controls.VideoSourcePlayer();
             this.labelTiempoGrabacion = new System.Windows.Forms.Label();
             this.openFileDialogImagen = new System.Windows.Forms.OpenFileDialog();
             this.timerPlaying = new System.Windows.Forms.Timer(this.components);
@@ -70,6 +67,8 @@
             this.buttonGrabar = new System.Windows.Forms.Button();
             this.buttonCapturarImg = new System.Windows.Forms.Button();
             this.buttonObtenerVideo = new System.Windows.Forms.Button();
+            this.LabelCantidadImagenes = new System.Windows.Forms.Label();
+            this.buttonProperties = new System.Windows.Forms.Button();
             this.contextMenuStripEliminar.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -188,10 +187,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoScroll = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel1.Controls.Add(this.buttonAdelantar);
-            this.panel1.Controls.Add(this.buttonRetroceder);
-            this.panel1.Controls.Add(this.buttonStop);
-            this.panel1.Controls.Add(this.buttonPlay);
+            this.panel1.Controls.Add(this.labelCntImgVideos);
             this.panel1.Controls.Add(this.buttonMaximizar);
             this.panel1.Controls.Add(this.listViewIamgenesVideos);
             this.panel1.Controls.Add(this.listViewImages);
@@ -202,59 +198,15 @@
             this.panel1.Size = new System.Drawing.Size(1098, 638);
             this.panel1.TabIndex = 20;
             // 
-            // videoSourcePlayerCamera
+            // labelCntImgVideos
             // 
-            this.videoSourcePlayerCamera.Location = new System.Drawing.Point(12, 4);
-            this.videoSourcePlayerCamera.Name = "videoSourcePlayerCamera";
-            this.videoSourcePlayerCamera.Size = new System.Drawing.Size(763, 479);
-            this.videoSourcePlayerCamera.TabIndex = 25;
-            this.videoSourcePlayerCamera.Text = "videoSourcePlayer1";
-            this.videoSourcePlayerCamera.VideoSource = null;
-            // 
-            // buttonAdelantar
-            // 
-            this.buttonAdelantar.Image = global::MediaCampturerControlerLib.Properties.Resources.iconfinder_fullscreen_expand_maximize_full_screen_3994367;
-            this.buttonAdelantar.Location = new System.Drawing.Point(343, 443);
-            this.buttonAdelantar.Name = "buttonAdelantar";
-            this.buttonAdelantar.Size = new System.Drawing.Size(31, 27);
-            this.buttonAdelantar.TabIndex = 23;
-            this.buttonAdelantar.UseVisualStyleBackColor = true;
-            this.buttonAdelantar.Visible = false;
-
-            // 
-            // buttonRetroceder
-            // 
-            this.buttonRetroceder.Image = global::MediaCampturerControlerLib.Properties.Resources.iconfinder_fullscreen_expand_maximize_full_screen_3994367;
-            this.buttonRetroceder.Location = new System.Drawing.Point(202, 443);
-            this.buttonRetroceder.Name = "buttonRetroceder";
-            this.buttonRetroceder.Size = new System.Drawing.Size(31, 27);
-            this.buttonRetroceder.TabIndex = 22;
-            this.buttonRetroceder.UseVisualStyleBackColor = true;
-            this.buttonRetroceder.Visible = false;
-
-            // 
-            // buttonStop
-            // 
-            this.buttonStop.Image = global::MediaCampturerControlerLib.Properties.Resources.iconfinder_ic_pause_48px_3669310;
-            this.buttonStop.Location = new System.Drawing.Point(294, 443);
-            this.buttonStop.Name = "buttonStop";
-            this.buttonStop.Size = new System.Drawing.Size(31, 27);
-            this.buttonStop.TabIndex = 21;
-            this.buttonStop.UseVisualStyleBackColor = true;
-            this.buttonStop.Visible = false;
-
-            // 
-            // buttonPlay
-            // 
-            this.buttonPlay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.buttonPlay.Image = global::MediaCampturerControlerLib.Properties.Resources.iconfinder_play_music_triangle_media_2203515;
-            this.buttonPlay.Location = new System.Drawing.Point(248, 443);
-            this.buttonPlay.Name = "buttonPlay";
-            this.buttonPlay.Size = new System.Drawing.Size(40, 27);
-            this.buttonPlay.TabIndex = 20;
-            this.buttonPlay.UseVisualStyleBackColor = true;
-            this.buttonPlay.Visible = false;
-
+            this.labelCntImgVideos.AutoSize = true;
+            this.labelCntImgVideos.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCntImgVideos.Location = new System.Drawing.Point(762, 486);
+            this.labelCntImgVideos.Name = "labelCntImgVideos";
+            this.labelCntImgVideos.Size = new System.Drawing.Size(14, 13);
+            this.labelCntImgVideos.TabIndex = 24;
+            this.labelCntImgVideos.Text = "0";
             // 
             // buttonMaximizar
             // 
@@ -302,6 +254,15 @@
             this.listViewImages.DoubleClick += new System.EventHandler(this.listViewImages_DoubleClick);
             this.listViewImages.MouseEnter += new System.EventHandler(this.listViewImages_MouseEnter);
             // 
+            // videoSourcePlayerCamera
+            // 
+            this.videoSourcePlayerCamera.Location = new System.Drawing.Point(12, 4);
+            this.videoSourcePlayerCamera.Name = "videoSourcePlayerCamera";
+            this.videoSourcePlayerCamera.Size = new System.Drawing.Size(763, 479);
+            this.videoSourcePlayerCamera.TabIndex = 25;
+            this.videoSourcePlayerCamera.Text = "videoSourcePlayer1";
+            this.videoSourcePlayerCamera.VideoSource = null;
+            // 
             // labelTiempoGrabacion
             // 
             this.labelTiempoGrabacion.AutoSize = true;
@@ -319,7 +280,6 @@
             // timerPlaying
             // 
             this.timerPlaying.Interval = 30;
-
             // 
             // buttonMinimizar
             // 
@@ -395,10 +355,33 @@
             this.buttonObtenerVideo.UseVisualStyleBackColor = true;
             this.buttonObtenerVideo.Click += new System.EventHandler(this.buttonConectarDispositivo_Click);
             // 
+            // LabelCantidadImagenes
+            // 
+            this.LabelCantidadImagenes.AutoSize = true;
+            this.LabelCantidadImagenes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelCantidadImagenes.Location = new System.Drawing.Point(1083, 127);
+            this.LabelCantidadImagenes.Name = "LabelCantidadImagenes";
+            this.LabelCantidadImagenes.Size = new System.Drawing.Size(14, 13);
+            this.LabelCantidadImagenes.TabIndex = 23;
+            this.LabelCantidadImagenes.Text = "0";
+            // 
+            // buttonProperties
+            // 
+            this.buttonProperties.Location = new System.Drawing.Point(298, 41);
+            this.buttonProperties.Name = "buttonProperties";
+            this.buttonProperties.Size = new System.Drawing.Size(75, 23);
+            this.buttonProperties.TabIndex = 24;
+            this.buttonProperties.Text = "button1";
+            this.buttonProperties.UseVisualStyleBackColor = true;
+            this.buttonProperties.Visible = false;
+            this.buttonProperties.Click += new System.EventHandler(this.buttonProperties_Click);
+            // 
             // UserControlVideoCapturer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.buttonProperties);
+            this.Controls.Add(this.LabelCantidadImagenes);
             this.Controls.Add(this.buttonMinimizar);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.buttonAgregarDesdeArchivo);
@@ -418,6 +401,7 @@
             this.SizeChanged += new System.EventHandler(this.UserControlVideoCapturer_SizeChanged);
             this.contextMenuStripEliminar.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -426,7 +410,6 @@
         #endregion
         private System.Windows.Forms.Button buttonGrabar;
         private System.Windows.Forms.Button buttonCapturarImg;
-        private System.Windows.Forms.Button buttonObtenerVideo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxDispositivos;
         private System.Windows.Forms.ImageList imageListCaptured;
@@ -447,12 +430,12 @@
         private System.Windows.Forms.OpenFileDialog openFileDialogImagen;
         private System.Windows.Forms.Button buttonMaximizar;
         private System.Windows.Forms.Button buttonMinimizar;
-        private System.Windows.Forms.Button buttonAdelantar;
-        private System.Windows.Forms.Button buttonRetroceder;
-        private System.Windows.Forms.Button buttonStop;
-        private System.Windows.Forms.Button buttonPlay;
         private System.Windows.Forms.ToolStripMenuItem obtenerFotoDeVideoToolStripMenuItem;
         public System.Windows.Forms.Timer timerPlaying;
         private Accord.Controls.VideoSourcePlayer videoSourcePlayerCamera;
+        private System.Windows.Forms.Label LabelCantidadImagenes;
+        private System.Windows.Forms.Label labelCntImgVideos;
+        public System.Windows.Forms.Button buttonObtenerVideo;
+        private System.Windows.Forms.Button buttonProperties;
     }
 }

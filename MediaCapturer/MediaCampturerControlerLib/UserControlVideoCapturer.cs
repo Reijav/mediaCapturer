@@ -30,6 +30,11 @@ namespace MediaCampturerControlerLib
 
         private long ticksInicioGrabado = 0;
 
+        private VideoCodec videoCodecGrabacion = VideoCodec.MPEG4;
+        private string contenedorExtencion = "avi";
+
+
+
 
         public List<string> PathImagenes
         {
@@ -85,6 +90,7 @@ namespace MediaCampturerControlerLib
                     if (error)
                         MessageBox.Show("Error, no se pudo cargar uno o varios archivos" + msgerror, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     listViewImages.Refresh();
+                    LabelCantidadImagenes.Text = listViewImages.Items.Count.ToString();
                 }
                 );
             }
@@ -109,23 +115,41 @@ namespace MediaCampturerControlerLib
                 var error = false;
                 string msgerror = "";
                 List<ListViewItem> listaViewItems = new List<ListViewItem>();
-                Parallel.ForEach(PathVideosPr, (pathVideo) =>
+                Parallel.ForEach( PathVideosPr, new ParallelOptions { MaxDegreeOfParallelism=8 }, (pathVideo) =>
                 {
 
                     try
                     {
                         Bitmap imagen = null;
+
+                        var finfo = new FileInfo(pathVideo);
+
+                        if (!finfo.Exists)
+                        {
+                            throw new Exception("Error");
+                        }
+                       
                         using (VideoFileReader reader = new VideoFileReader())
                         {
                             reader.Open(pathVideo);
 
-                            imagen = (Bitmap)reader.ReadVideoFrame().Clone();
-
-                            reader.Close();
+                            var frame= reader.ReadVideoFrame();
+                            if (frame != null)
+                            {
+                                imagen = (Bitmap)reader.ReadVideoFrame().Clone();
+                                reader.Close();
+                            }
+                            else
+                            {
+                                reader.Close();
+                                throw new Exception("Error leyedo archivo");
+                            }
+                            
                         }
 
                         lock (obj)
                         {
+                    
                             imageListVideos.Images.Add(pathVideo, imagen);
                             var listViewIte = new ListViewItem()
                             {
@@ -163,6 +187,7 @@ namespace MediaCampturerControlerLib
                     }
                 });
                 listViewIamgenesVideos.Items.AddRange(listaViewItems.ToArray());
+                labelCntImgVideos.Text = listViewIamgenesVideos.Items.Count.ToString();
                 if (error)
                     MessageBox.Show("Error, no se pudo cargar uno o varios archivos. \n" + msgerror, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -266,6 +291,9 @@ namespace MediaCampturerControlerLib
             }
 
 
+            
+
+
             //CARGA VIDEO INPUTS DISPONIBLES
             foreach (var input in WebCam.AvailableCrossbarVideoInputs)
             {
@@ -292,8 +320,7 @@ namespace MediaCampturerControlerLib
             {
                 comboBoxInputs.SelectedIndex = -1;
             }
-
-            WebCam = null;
+            MiWebCam = WebCam;            
         }
 
         FilterInfoCollection MisDispositivosCompresores;
@@ -301,6 +328,9 @@ namespace MediaCampturerControlerLib
         public void CargarDispositivos()
         {
             MisDispositivos = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+
+            
+
             MisDispositivosCompresores = new FilterInfoCollection(FilterCategory.VideoCompressorCategory);
 
             if (MisDispositivos != null && MisDispositivos.Count > 0)
@@ -345,6 +375,11 @@ namespace MediaCampturerControlerLib
                     var lapsoTiempo = numeroActual - numeroPrevio;
                     var lapsoTiempoTS = new TimeSpan(numeroActual - numeroPrevio);
 
+                    if (imagenVideo == null)
+                    {
+                        imagenVideo = (Bitmap)newFrameEventArgs.Frame.Clone();
+                    }
+
            
                     if (!pararGrabar &&  buttonGrabar.Text == PARAR_GRABAR &&   FileWriter != null && FileWriter.IsOpen)
                     {
@@ -353,8 +388,7 @@ namespace MediaCampturerControlerLib
 
                             if (lapsoTiempoTS.Milliseconds > 100)
                             {
-                                if(!pararGrabar)
-                                    FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone(), lapsoTiempoTS);
+                                FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone(), lapsoTiempoTS);
                             }
                             else
                             {
@@ -368,6 +402,9 @@ namespace MediaCampturerControlerLib
                                 FileWriter.Flush();
                                 horaInicioGrabacion = DateTime.Now.Ticks; ;
                             }
+
+
+
                         }
 
                         catch (AccessViolationException ex)
@@ -386,7 +423,6 @@ namespace MediaCampturerControlerLib
 
 
                     }
-
 
                 }
 
@@ -431,7 +467,7 @@ namespace MediaCampturerControlerLib
         {
 
 
-            if (buttonGrabar.Text == PARAR_GRABAR)  //CUANDO ESTÁ GRABANDO
+            if (buttonGrabar.Text == PARAR_GRABAR)  //CUANDO ESTÁ GRABANDO (y se da clic para PARAR DE GRABAR)
             {
 
                 buttonGrabar.Text = GRABAR_VIDEO;
@@ -447,12 +483,21 @@ namespace MediaCampturerControlerLib
                     
                     pararGrabar = true;
 
-                    Thread.Sleep(300);
+                    Thread.Sleep(200);
 
-                    FileWriter.Flush();
-                    FileWriter.Close();
-                    FileWriter.Dispose();
-                    FileWriter = null;
+                    try
+                    {
+                        FileWriter.Flush();
+
+                        FileWriter.Close();
+                        FileWriter.Dispose();
+                        FileWriter = null;
+                    }
+                    catch(Exception er)
+                    {
+                        MessageBox.Show(er.Message);
+                    }
+
                     
 
 
@@ -464,6 +509,8 @@ namespace MediaCampturerControlerLib
                                 imageListVideos.Images.Add(nombreArchivoVideo, imagenVideo);
                                 listViewIamgenesVideos.Items.Add(nombreArchivoVideo, Path.GetFileName(nombreArchivoVideo), imageListVideos.Images.IndexOfKey(nombreArchivoVideo));
                                 listViewIamgenesVideos.Refresh();
+                                labelCntImgVideos.Text =  listViewIamgenesVideos.Items.Count.ToString();
+                                imagenVideo = null;
                             }
 
                         });
@@ -473,7 +520,7 @@ namespace MediaCampturerControlerLib
 
                 }
             }
-            else  //CUANDO ESTA SIN GRABAR
+            else  //CUANDO ESTA SIN GRABAR Y SE DA CLIC PARA EMPEZAR A GRABAR
             {
                 pararGrabar = false;
                 if ((MiWebCam == null || !MiWebCam.IsRunning) && comboBoxDispositivos.SelectedIndex >= 0)
@@ -488,12 +535,13 @@ namespace MediaCampturerControlerLib
                 {
                     buttonObtenerVideo.Enabled = false;
 
-                    imagenVideo = (Bitmap)videoSourcePlayerCamera.GetCurrentVideoFrame();
+                    
+                    
 
                     timerRecording.Start();
                     ticksInicioGrabado = DateTime.Now.Ticks;
                     buttonGrabar.ImageIndex = 0;
-                    nombreArchivoVideo = $"{path}\\{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-fff")}.mp4";
+                    nombreArchivoVideo = $"{path}\\{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-fff")}.{contenedorExtencion}";
                     numeroPrevio = DateTime.Now.Ticks;
                     horaInicioGrabacion = numeroPrevio;
                     int h = MiWebCam.VideoResolution.FrameSize.Height;
@@ -504,21 +552,34 @@ namespace MediaCampturerControlerLib
                     int bitrate = (MiWebCam.VideoResolution.BitCount) * h * w;
                     int fotogramasPorSegundo = MiWebCam.VideoResolution.AverageFrameRate;
 
-                    if (FileWriter != null)
+                    try
                     {
-                        FileWriter.Flush();
-                        FileWriter.Close();
-                        FileWriter.Dispose();
+                        if (FileWriter != null)
+                        {
+                            FileWriter.Flush();
+                            FileWriter.Close();
+                            FileWriter.Dispose();
+                            FileWriter = null;
+                        }
+
+                        FileWriter = new VideoFileWriter();
+                        FileWriter.Open(nombreArchivoVideo, w, h, fotogramasPorSegundo, videoCodecGrabacion, bitrate);
+
+                        buttonGrabar.Text = PARAR_GRABAR;
+
+                    }
+                    catch
+                    {
+
                     }
 
-                    FileWriter = new VideoFileWriter();
-                    FileWriter.Open(nombreArchivoVideo, w, h, fotogramasPorSegundo, VideoCodec.MPEG4, bitrate);
 
-                    buttonGrabar.Text = PARAR_GRABAR;
+
+
                 }
                 else
                 {
-                    MessageBox.Show("No hay conexión a ningún dispositivo de video.");
+                    MessageBox.Show("No hay conexión a ningún dispositivo de video.", "Conexión" , MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
 
             }
@@ -540,12 +601,13 @@ namespace MediaCampturerControlerLib
                     {
 
                         var Imagen =  videoSourcePlayerCamera.GetCurrentVideoFrame();
-
-                        Imagen.Save(memory, ImageFormat.Jpeg);
-                        byte[] bytes = memory.ToArray();
-                        fs.Write(bytes, 0, bytes.Length);
-                        imageListCaptured.Images.Add(nombreArchivo, Imagen);
-
+                        if (Imagen != null)
+                        {
+                            Imagen.Save(memory, ImageFormat.Jpeg);
+                            byte[] bytes = memory.ToArray();
+                            fs.Write(bytes, 0, bytes.Length);
+                            imageListCaptured.Images.Add(nombreArchivo, Imagen);
+                        }
 
                     }
                     // MessageBox.Show($"Imagen guardada en {path}");
@@ -556,6 +618,7 @@ namespace MediaCampturerControlerLib
 
                 PathImagenes.Add(nombreArchivo);
                 listViewImages.Items.Add(nombreArchivo, Path.GetFileName(nombreArchivo), imageListCaptured.Images.IndexOfKey(nombreArchivo));
+                LabelCantidadImagenes.Text = listViewImages.Items.Count.ToString();
                 listViewImages.Refresh();
             }
             else
@@ -592,6 +655,8 @@ namespace MediaCampturerControlerLib
 
                     listViewIamgenesVideos.Top += diffAlto;
 
+                    labelCntImgVideos.Top = listViewIamgenesVideos.Top - labelCntImgVideos.Height - 2;
+
                     listViewImages.Height += diffAlto;
 
 
@@ -624,20 +689,30 @@ namespace MediaCampturerControlerLib
 
                     OpenVideoSource(MiWebCam);
 
-                  // videoSourcePlayerCamera.NewFrame += CapturandoImagen;
+                    // videoSourcePlayerCamera.NewFrame += CapturandoImagen;
 
 
-
-
-                    while (MiWebCam.FramesReceived <= 0)
+                    try
                     {
-                        Thread.Sleep(100);
+                        int min, max, step, def;
+                        CameraControlFlags ccflags;
+                        // VideoProcAmpFlags vpflags;
+                        MiWebCam.GetCameraPropertyRange(CameraControlProperty.Exposure, out min, out max, out step, out def, out ccflags);
                     }
+                    catch(Exception  ex)
+                    {
+                        var error= ex.Message;
+
+                    }
+
+
+
+
 
                     buttonObtenerVideo.ImageIndex = 4;
 
-                    //   buttonMaximizar_Click(sender, e);
-
+                    buttonMaximizar_Click(sender, e);
+                   
                 }
                 else
                 {
@@ -650,81 +725,13 @@ namespace MediaCampturerControlerLib
                 buttonObtenerVideo.Text = "Conectar con dispositivo";
                 buttonObtenerVideo.ImageIndex = 3;
                 buttonMaximizar.Visible = false;
-
-                buttonMinimizar_Click(sender, e);
+                if(buttonMinimizar.Visible)
+                    buttonMinimizar_Click(sender, e);   
             }
 
 
         }
 
-        //private void CapturandoImagen(object sender, ref Bitmap image)
-        //{
-        //    if (MiWebCam != null && MiWebCam.IsRunning)
-        //    {
-
-        //        long numeroActual = DateTime.Now.Ticks;
-
-
-        //        if (image != null)
-        //        {
-
-
-
-        //            //  Imagen = (Bitmap)newFrameEventArgs.Frame.Clone();
-
-        //            // pictureBoxEnUso.Image = Imagen;//(Bitmap)newFrameEventArgs.Frame.Clone();
-
-        //            //SI SE ENCUENTRA GRABANDO
-        //            var lapsoTiempo = numeroActual - numeroPrevio;
-        //            var lapsoTiempoTS = new TimeSpan(numeroActual - numeroPrevio);
-
-
-        //            if (buttonGrabar.Text == PARAR_GRABAR && FileWriter != null && FileWriter.IsOpen)
-        //            {
-        //                try
-        //                {
-
-        //                    if (lapsoTiempoTS.Milliseconds > 100)
-        //                    {
-        //                        FileWriter.ToString();
-        //                        FileWriter.WriteVideoFrame(image, lapsoTiempoTS);
-        //                    }
-        //                    else
-        //                    {
-        //                        FileWriter.WriteVideoFrame(image);
-        //                    }
-
-        //                    var totalTiempoTS = new TimeSpan(numeroActual - horaInicioGrabacion);
-
-        //                    if (totalTiempoTS.TotalMilliseconds > 30000)
-        //                    {
-        //                        FileWriter.Flush();
-        //                        horaInicioGrabacion = DateTime.Now.Ticks; ;
-        //                    }
-        //                }
-
-        //                catch (AccessViolationException ex)
-        //                {
-                            
-        //                    MessageBox.Show("Error " + ex);
-        //                }
-
-        //                catch (Exception er)
-        //                {
-
-        //                    //FileWriter.WriteVideoFrame(newFrameEventArgs.Frame);
-        //                    // MessageBox.Show("Error " + er.Message);
-        //                }
-
-
-
-        //            }
-
-
-        //        }
-
-        //    }
-        //}
 
         private void OpenVideoSource(IVideoSource source)
         {
@@ -786,25 +793,7 @@ namespace MediaCampturerControlerLib
 
         private void timerRecording_Tick(object sender, EventArgs e)
         {
-            Task.Factory.StartNew(() => AnimacionTick());
-
-            //Task.Factory.StartNew(() =>
-            //{
-
-            //    if (InvokeRequired)
-            //    {
-            //        AnimacionTick();
-            //    }
-            //    else
-            //    {
-            //        AnimacionTick();
-            //    }
-
-
-
-            //});
-
-
+            AnimacionTick();
         }
 
         private void AnimacionTick()
@@ -888,6 +877,7 @@ namespace MediaCampturerControlerLib
                         ArchivosEliminadosPr.Add(item.Name);
 
                     }
+                    LabelCantidadImagenes.Text = listViewImages.Items.Count.ToString();
 
                 }
                 listViewImages.Refresh();
@@ -906,8 +896,10 @@ namespace MediaCampturerControlerLib
                         ArchivosEliminadosPr.Add(item.Name);
 
                     }
+                    labelCntImgVideos.Text = listViewIamgenesVideos.Items.Count.ToString();
                 }
                 listViewIamgenesVideos.Refresh();
+                
             }
 
 
@@ -1001,11 +993,18 @@ namespace MediaCampturerControlerLib
         private Point posicionVideoPlayerCamera;
         private Size sizeVideoPlayerCamera;
 
+        private Point posicionLabelCntImg;
+        private Size sizeLabelCntImg;
+
+        private Point posicionLabelCntImgVideos;
+        private Size sizeLabelCntImgVideos;
+
         private void buttonMaximizar_Click(object sender, EventArgs e)
         {
 
 
             listViewIamgenesVideos.Visible = false;
+            
 
             buttonMinimizar.Visible = true;
 
@@ -1029,6 +1028,12 @@ namespace MediaCampturerControlerLib
             posicionVideoPlayerCamera = videoSourcePlayerCamera.Location;
             sizeVideoPlayerCamera = videoSourcePlayerCamera.Size;
 
+            posicionLabelCntImg = LabelCantidadImagenes.Location;
+            sizeLabelCntImg = LabelCantidadImagenes.Size;
+
+            posicionLabelCntImgVideos = labelCntImgVideos.Location;
+            sizeLabelCntImgVideos = labelCntImgVideos.Size;
+
             ModificarPosicionPicture();
 
 
@@ -1041,9 +1046,9 @@ namespace MediaCampturerControlerLib
             if (  buttonMinimizar.Visible)
             {
 
-                buttonObtenerVideo.Height = 40;
+                buttonObtenerVideo.Height = 50;
                 buttonObtenerVideo.Top = this.Height - buttonObtenerVideo.Height - 1;
-                buttonObtenerVideo.Left = 180 + 10;
+                buttonObtenerVideo.Left = (this.Width - ( buttonObtenerVideo.Width+ labelTiempoGrabacion.Width + buttonGrabar.Width + buttonObtenerVideo.Width + buttonCapturarImg.Width + 30)) / 2;
                 buttonObtenerVideo.BringToFront();
 
 
@@ -1057,12 +1062,23 @@ namespace MediaCampturerControlerLib
                 buttonGrabar.Top = buttonObtenerVideo.Top;
                 buttonGrabar.Left = this.labelTiempoGrabacion.Left + this.labelTiempoGrabacion.Width + 10; //(this.Width / 2) - (buttonGrabar.Width) - 5;
                 buttonGrabar.BringToFront();
-                buttonGrabar.Height = 40;
+                buttonGrabar.Height = buttonObtenerVideo.Height;
+
+                labelCntImgVideos.Parent = this;
+                labelCntImgVideos.Top = buttonGrabar.Top + buttonGrabar.Height - labelCntImgVideos.Height - 3;
+                labelCntImgVideos.Left = buttonGrabar.Right - labelCntImgVideos.Width - 3;
+                labelCntImgVideos.BringToFront();
+
+
 
                 buttonCapturarImg.Top = buttonObtenerVideo.Top;
                 buttonCapturarImg.Left = this.buttonGrabar.Left + this.buttonGrabar.Width + 10;  // (this.Width / 2) + 5;
                 buttonCapturarImg.BringToFront();
-                buttonCapturarImg.Height = 40;
+                buttonCapturarImg.Height = buttonGrabar.Height;
+
+                LabelCantidadImagenes.Top = buttonCapturarImg.Top + buttonCapturarImg.Height - LabelCantidadImagenes.Height -3;
+                LabelCantidadImagenes.Left = buttonCapturarImg.Right - LabelCantidadImagenes.Width -3 ;
+                LabelCantidadImagenes.BringToFront();
 
                 int nuevoAncho = Convert.ToInt32(this.Width);// - anchoListaImagenes);
                 int nuevoAlto = MiWebCam.VideoResolution.FrameSize.Height * nuevoAncho / MiWebCam.VideoResolution.FrameSize.Width;
@@ -1079,8 +1095,18 @@ namespace MediaCampturerControlerLib
 
                 videoSourcePlayerCamera.Size = new Size(nuevoAncho, nuevoAlto);
 
-                videoSourcePlayerCamera.Top = 0;
-                videoSourcePlayerCamera.Left = 0;
+                if(videoSourcePlayerCamera.Width< this.Width)
+                {
+                    var diffAncho = this.Width - videoSourcePlayerCamera.Width;
+                    videoSourcePlayerCamera.Top = 0;
+                    videoSourcePlayerCamera.Left = diffAncho /2;
+                }
+                else
+                {
+                    videoSourcePlayerCamera.Top = 0;
+                    videoSourcePlayerCamera.Left = 0;
+                }
+                
 
                 var visibleComponentes = false;
                 videoSourcePlayerCamera.Parent = this;
@@ -1105,6 +1131,8 @@ namespace MediaCampturerControlerLib
                 buttonMinimizar.BringToFront();
 
 
+
+
                 CambiarVisibilidadControles(visibleComponentes);
 
             }
@@ -1116,6 +1144,7 @@ namespace MediaCampturerControlerLib
 
         private void CambiarVisibilidadControles(bool visibleComponentes)
         {
+            listViewImages.Visible = visibleComponentes;
             label1.Visible = visibleComponentes;
             comboBoxDispositivos.Visible = visibleComponentes;
             labelInput.Visible = visibleComponentes;
@@ -1125,6 +1154,8 @@ namespace MediaCampturerControlerLib
 
             buttonAgregarDesdeArchivo.Visible = visibleComponentes;
             panel1.Visible = visibleComponentes;
+
+            videoSourcePlayerCamera.Focus();
         }
 
         private void buttonMinimizar_Click(object sender, EventArgs e)
@@ -1162,6 +1193,16 @@ namespace MediaCampturerControlerLib
 
             videoSourcePlayerCamera.Size = sizeVideoPlayerCamera;
             videoSourcePlayerCamera.Location = posicionVideoPlayerCamera;
+
+            LabelCantidadImagenes.Location = posicionLabelCntImg;
+            LabelCantidadImagenes.Size = sizeLabelCntImg;
+
+            labelCntImgVideos.Parent = panel1;
+            labelCntImgVideos.Location = posicionLabelCntImgVideos;
+            labelCntImgVideos.Size = sizeLabelCntImgVideos;
+
+            videoSourcePlayerCamera.Focus();
+
 
 
         }
@@ -1257,6 +1298,19 @@ namespace MediaCampturerControlerLib
                 IniciarPararGrabacion();
             }
 
+        }
+
+        private void buttonProperties_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MiWebCam.DisplayPropertyPage(IntPtr.Zero);
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show(er.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
         }
     }
 }

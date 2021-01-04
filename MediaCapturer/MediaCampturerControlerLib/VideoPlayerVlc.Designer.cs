@@ -170,7 +170,7 @@ namespace MediaCampturerControlerLib
             this.Controls.Add(this.button1);
             this.Controls.Add(this.labelInfo);
             this.Name = "VideoPlayerVlc";
-            this.Text = "Capturar de Video";
+            this.Text = "Obtener Fotos de Video";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VideoPlayerVlc_FormClosing);
             this.Load += new System.EventHandler(this.VideoPlayerVlc_Load);
             this.Resize += new System.EventHandler(this.VideoPlayerVlc_Resize);

@@ -32,11 +32,13 @@ namespace MediaCampturerControlerLib
         private int videoWidth = 800;
         private int videoHeight = 640;
 
-        private  int frecuenciaTrack = 500;
+        private int frecuenciaTrack = 100;
 
         private VlcControl vlcControl1;
 
         public event EventHandler<ImagenesSeleccionadasEventArgs> ImagenesSeleccionadasDeVideo;
+
+        private Boolean usandoTrackbar = false;
 
         private void VlcControl1_VlcLibDirectoryNeeded1(object sender, Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs e)
         {
@@ -95,7 +97,7 @@ namespace MediaCampturerControlerLib
                 trackBarVideo.Invoke((MethodInvoker)delegate
                 {
                     var valorTrack = Convert.ToInt32(snapshotInterval / frecuenciaTrack);
-                    if (valorTrack >= trackBarVideo.Minimum && valorTrack <= trackBarVideo.Maximum)
+                    if (!usandoTrackbar && valorTrack >= trackBarVideo.Minimum && valorTrack <= trackBarVideo.Maximum)
                     {
                         trackBarVideo.Value = valorTrack;
                     }
@@ -117,16 +119,16 @@ namespace MediaCampturerControlerLib
 
                 this.vlcControl1.SetMedia(new System.IO.FileInfo(this.PathVideo));
 
-                vlcControl1.Time = vlcControl1.Length-1;
+                vlcControl1.Time = vlcControl1.Length - 1;
 
-                buttonPlayPause.Invoke((MethodInvoker) delegate { buttonPlayPause.Text = "Reproducir"; trackBarVideo.Value = 0; } );
+                buttonPlayPause.Invoke((MethodInvoker)delegate { buttonPlayPause.Text = "Reproducir"; trackBarVideo.Value = 0; });
 
                 vlcControl1.Time = 0;
 
                 ObtenerPresentarTiempo();
 
             });
-            
+
 
         }
 
@@ -163,12 +165,15 @@ namespace MediaCampturerControlerLib
 
         private void vlcControl1_PositionChanged(object sender, VlcMediaPlayerPositionChangedEventArgs e)
         {
-            this.InvokeUpdateControls();
+            if (this.vlcControl1!=null && !this.vlcControl1.IsDisposed)
+                this.InvokeUpdateControls();
         }
 
 
         public void InvokeUpdateControls()
         {
+            
+            
             if (this.InvokeRequired)
 
 
@@ -183,7 +188,15 @@ namespace MediaCampturerControlerLib
 
         private void currentTrackTime()
         {
-            ObtenerPresentarTiempo();
+            try
+            {
+                ObtenerPresentarTiempo();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
         }
 
 
@@ -194,20 +207,20 @@ namespace MediaCampturerControlerLib
                 trackBarVideo.Value = trackBarVideo.Minimum;
                 var vlc = (VlcControl)sender;
 
-                if((int)vlc.Length < 10000)
+                if ((int)vlc.Length < 10000)
                 {
                     frecuenciaTrack = 100;
                 }
-                else if((int)vlc.Length >= 10000 && (int)vlc.Length< 50000)
+                else if ((int)vlc.Length >= 10000 && (int)vlc.Length < 50000)
                 {
-                    frecuenciaTrack = 500;
+                    frecuenciaTrack = 200;
                 }
                 else
                 {
-                    frecuenciaTrack = 1000;
+                    frecuenciaTrack = 400;
                 }
 
-                trackBarVideo.Maximum = ((int)vlc.Length -1)/ frecuenciaTrack;
+                trackBarVideo.Maximum = ((int)vlc.Length - 1) / frecuenciaTrack;
                 //a = (int)vlc.Length / 1000; // Length (s)
                 //c = a / 60; // Length (m)
                 //a = a % 60; // Length (s)
@@ -242,13 +255,13 @@ namespace MediaCampturerControlerLib
         private void buttonAdelantar_Click(object sender, EventArgs e)
         {
 
-            if(vlcControl1.Length > 6000 &&   vlcControl1.Length- vlcControl1.Time > 6000)
+            if (vlcControl1.Length > 6000 && vlcControl1.Length - vlcControl1.Time > 6000)
             {
                 vlcControl1.VlcMediaPlayer.Time += 6000;
             }
             else
             {
-                vlcControl1.VlcMediaPlayer.Time = vlcControl1.Length-1;
+                vlcControl1.VlcMediaPlayer.Time = vlcControl1.Length - 1;
                 trackBarVideo.Value = trackBarVideo.Maximum;
             }
             ObtenerPresentarTiempo();
@@ -266,7 +279,7 @@ namespace MediaCampturerControlerLib
                 var fileInfo = new FileInfo(nombreArchivo);
                 if (this.vlcControl1.TakeSnapshot(Path.Combine(PathBaseImagenes, nombreArchivo)) && fileInfo.Exists)
                 {
-                    
+
                     var Imagen = new Bitmap(nombreArchivo);
 
                     if (this.InvokeRequired)
@@ -320,29 +333,29 @@ namespace MediaCampturerControlerLib
                 var tiempoGrabacion = new TimeSpan(0, 0, 0, 0, Convert.ToInt32(this.vlcControl1.Time));
                 label1.Text = $"{tiempoGrabacion.Hours.ToString("D2")}:{tiempoGrabacion.Minutes.ToString("D2")}:{tiempoGrabacion.Seconds.ToString("D2")}";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
-          
+
         }
 
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(vlcControl1.VlcMediaPlayer.Time > 6000)
+            if (vlcControl1.VlcMediaPlayer.Time > 6000)
             {
                 vlcControl1.VlcMediaPlayer.Time -= 6000;
                 ObtenerPresentarTiempo();
             }
             else
             {
-                vlcControl1.VlcMediaPlayer.Time =0;
+                vlcControl1.VlcMediaPlayer.Time = 0;
                 trackBarVideo.Value = trackBarVideo.Minimum;
                 ObtenerPresentarTiempo();
             }
 
-            
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -352,7 +365,7 @@ namespace MediaCampturerControlerLib
 
                 this.vlcControl1.Stop();
                 ImagenesSeleccionadasDeVideo.Invoke(sender, new ImagenesSeleccionadasEventArgs(PathImagenes));
-                this.vlcControl1.Invoke((MethodInvoker)delegate{ this.Close(); });
+                this.vlcControl1.Invoke((MethodInvoker)delegate { this.Close(); });
             }
             );
         }
@@ -363,7 +376,7 @@ namespace MediaCampturerControlerLib
             {
 
                 this.vlcControl1.Stop();
-                if(this.vlcControl1.GetCurrentMedia()!=null)
+                if (this.vlcControl1.GetCurrentMedia() != null)
                     this.vlcControl1.GetCurrentMedia().Dispose();
                 if (!this.vlcControl1.IsDisposed)
                     this.vlcControl1.Dispose();
@@ -390,13 +403,19 @@ namespace MediaCampturerControlerLib
 
         private void trackBarVideo_MouseUp(object sender, MouseEventArgs e)
         {
+
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 trackBarVideo.Invoke((MethodInvoker)delegate
                 {
+
+
                     this.vlcControl1.Time = trackBarVideo.Value * frecuenciaTrack;
                     ObtenerPresentarTiempo();
-                   
+                    usandoTrackbar = false;
+
+                    this.vlcControl1.Pause();
+                    buttonPlayPause.Text = "Reproducir";
                 });
 
             });
@@ -404,11 +423,18 @@ namespace MediaCampturerControlerLib
 
         private void trackBarVideo_MouseDown(object sender, MouseEventArgs e)
         {
-            //ThreadPool.QueueUserWorkItem(_ =>
-            //{
-            //    this.vlcControl1.Pause();
-            //    buttonPlayPause.Text = "Reproducir";
-            //});
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                trackBarVideo.Invoke((MethodInvoker)delegate
+                {
+
+                    usandoTrackbar = true;
+                    this.vlcControl1.Pause();
+                    buttonPlayPause.Text = "Reproducir";
+                    ObtenerPresentarTiempo();
+
+                });
+            });
         }
     }
 }
