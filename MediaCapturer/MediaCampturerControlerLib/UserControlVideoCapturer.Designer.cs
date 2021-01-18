@@ -432,10 +432,10 @@
         private System.Windows.Forms.Button buttonMinimizar;
         private System.Windows.Forms.ToolStripMenuItem obtenerFotoDeVideoToolStripMenuItem;
         public System.Windows.Forms.Timer timerPlaying;
-        private Accord.Controls.VideoSourcePlayer videoSourcePlayerCamera;
         private System.Windows.Forms.Label LabelCantidadImagenes;
         private System.Windows.Forms.Label labelCntImgVideos;
         public System.Windows.Forms.Button buttonObtenerVideo;
         private System.Windows.Forms.Button buttonProperties;
+        public Accord.Controls.VideoSourcePlayer videoSourcePlayerCamera;
     }
 }

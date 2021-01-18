@@ -1123,17 +1123,13 @@ namespace MediaCampturerControlerLib
 
 
                 listViewIamgenesVideos.Parent = this;
+                
+                CambiarVisibilidadControles(visibleComponentes);
 
-
-                buttonMinimizar.Left = videoSourcePlayerCamera.Width - buttonMinimizar.Width;
+                buttonMinimizar.Left = videoSourcePlayerCamera.Left + videoSourcePlayerCamera.Width - buttonMinimizar.Width;
                 buttonMinimizar.Top = videoSourcePlayerCamera.Top;
 
                 buttonMinimizar.BringToFront();
-
-
-
-
-                CambiarVisibilidadControles(visibleComponentes);
 
             }
 
