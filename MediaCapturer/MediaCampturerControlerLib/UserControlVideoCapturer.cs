@@ -14,6 +14,7 @@ using Accord.Video;
 using Accord.Video.DirectShow;
 using System.Threading;
 using Accord.Video.VFW;
+using System.Linq;
 
 namespace MediaCampturerControlerLib
 {
@@ -32,6 +33,37 @@ namespace MediaCampturerControlerLib
 
         private VideoCodec videoCodecGrabacion = VideoCodec.MPEG4;
         private string contenedorExtencion = "avi";
+        private string pathDispositivoDefecto = AppContext.BaseDirectory + "dispositivodefecto.txt";
+
+        public PropiedadesDispositivo DispositivoPorDefecto {
+            get {
+
+                var binaryFU = new BinaryFileUtil<PropiedadesDispositivo>();
+
+                var fiDispositivoDefecto = new FileInfo(pathDispositivoDefecto);
+                if (!fiDispositivoDefecto.Exists)
+                {
+                    
+                    var propiedadesDefecto = new PropiedadesDispositivo { Entrada="Dispositivo", Formato="HDMI", NombreDispositivo ="Dispositivo"}; 
+                    return propiedadesDefecto;
+                }
+                else
+                {
+                    return binaryFU.Deserialize(pathDispositivoDefecto);
+                }
+               
+            }
+
+            set {
+                var binaryFU = new BinaryFileUtil<PropiedadesDispositivo>();
+                var fiDispositivoDefecto = new FileInfo(pathDispositivoDefecto);
+                binaryFU.Serialize(value,pathDispositivoDefecto);
+                    //File.WriteAllLines(pathDispositivoDefecto, new string[] {value });
+
+            }
+        }
+
+        public PropiedadesDispositivo DispositivoPorDefectoMem { get; set; }
 
 
 
@@ -291,7 +323,28 @@ namespace MediaCampturerControlerLib
             }
 
 
-            
+
+            if (comboBoxCapabilitis.Items.Count > 0)
+            {
+
+                comboBoxCapabilitis.SelectedIndex = String.IsNullOrEmpty(DispositivoPorDefectoMem.Formato) ? -1 : comboBoxCapabilitis.Items.IndexOf(DispositivoPorDefectoMem.Formato);
+
+                if (comboBoxCapabilitis.SelectedIndex < 0)
+                { 
+
+                    //comboBoxDispositivos.Text = MisDispositivos[0].Name;
+                    comboBoxCapabilitis.SelectedIndex = 0;
+                }
+
+                
+            }
+            else
+            {
+                comboBoxCapabilitis.Text = "";
+                comboBoxCapabilitis.SelectedIndex = -1;
+
+            }
+
 
 
             //CARGA VIDEO INPUTS DISPONIBLES
@@ -301,25 +354,29 @@ namespace MediaCampturerControlerLib
 
             }
 
-            if (comboBoxCapabilitis.Items.Count > 0)
-            {
-                comboBoxCapabilitis.SelectedIndex = 0;
-            }
-            else
-            {
-                comboBoxCapabilitis.SelectedIndex = -1;
-            }
 
-            comboBoxInputs.Enabled = false;
             if (comboBoxInputs.Items.Count > 0)
             {
-                comboBoxInputs.SelectedIndex = 1;
+
+                comboBoxInputs.SelectedIndex = String.IsNullOrEmpty(DispositivoPorDefectoMem.Entrada) ? -1:  comboBoxInputs.Items.IndexOf(DispositivoPorDefectoMem.Entrada);
+
+                if (comboBoxInputs.SelectedIndex < 0)
+                {
+                 
+                    //comboBoxDispositivos.Text = MisDispositivos[0].Name;
+                    comboBoxInputs.SelectedIndex = 0;
+                }
+
                 comboBoxInputs.Enabled = true;
             }
             else
             {
                 comboBoxInputs.SelectedIndex = -1;
+                comboBoxInputs.Enabled = false;
+                comboBoxInputs.Text = "";
             }
+
+
             MiWebCam = WebCam;            
         }
 
@@ -329,7 +386,7 @@ namespace MediaCampturerControlerLib
         {
             MisDispositivos = new FilterInfoCollection(FilterCategory.VideoInputDevice);
 
-            
+            DispositivoPorDefectoMem = DispositivoPorDefecto;
 
             MisDispositivosCompresores = new FilterInfoCollection(FilterCategory.VideoCompressorCategory);
 
@@ -340,8 +397,23 @@ namespace MediaCampturerControlerLib
 
                     comboBoxDispositivos.Items.Add(dispositivo.Name);
                 }
-                comboBoxDispositivos.Text = MisDispositivos[0].Name;
-                comboBoxDispositivos.SelectedIndex = 0;
+
+
+                comboBoxDispositivos.SelectedIndex=  String.IsNullOrEmpty(DispositivoPorDefectoMem.NombreDispositivo) ? -1 :  comboBoxDispositivos.Items.IndexOf(DispositivoPorDefectoMem.NombreDispositivo);
+
+                if (comboBoxDispositivos.SelectedIndex >= 0)
+                {
+                    comboBoxDispositivos.Text = DispositivoPorDefectoMem.NombreDispositivo;
+                }
+                else
+                {
+                    comboBoxDispositivos.Text = MisDispositivos[0].Name;
+                    comboBoxDispositivos.SelectedIndex = 0;
+                }
+                
+
+
+               
             }
 
         }
@@ -644,6 +716,7 @@ namespace MediaCampturerControlerLib
                     buttonObtenerVideo.Text = DESCONECTAR;
                     int indice = comboBoxDispositivos.SelectedIndex;
                     string nombreVideo = MisDispositivos[indice].MonikerString;
+                    
                     MiWebCam = new VideoCaptureDevice(nombreVideo);
                     MiWebCam.VideoResolution = MiWebCam.VideoCapabilities[comboBoxCapabilitis.SelectedIndex];
 
@@ -705,8 +778,13 @@ namespace MediaCampturerControlerLib
 
                     }
 
-
-
+                    //guadar dispositivo por defecto
+                    this.DispositivoPorDefecto = new PropiedadesDispositivo
+                    {
+                        NombreDispositivo= comboBoxDispositivos.SelectedItem.ToString(),
+                        Entrada = comboBoxInputs.SelectedIndex > -1 ? comboBoxInputs.SelectedItem.ToString() :"",
+                        Formato = comboBoxCapabilitis.SelectedIndex > -1 ? comboBoxCapabilitis.SelectedItem.ToString(): "",
+                    };
 
 
                     buttonObtenerVideo.ImageIndex = 4;

@@ -87,12 +87,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinaryFileUtil.cs" />
     <Compile Include="InvokableMethod.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="PropiedadesDispositivo.cs" />
     <Compile Include="RoundedButtom.cs">
       <SubType>Component</SubType>
     </Compile>
