@@ -88,7 +88,7 @@ namespace MediaCampturerControlerLib
 
                     });
                     if (error)
-                        MessageBox.Show("Error, no se pudo cargar uno o varios archivos" + msgerror, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(this,"Error, no se pudo cargar uno o varios archivos" + msgerror, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     listViewImages.Refresh();
                     LabelCantidadImagenes.Text = listViewImages.Items.Count.ToString();
                 }
@@ -189,7 +189,7 @@ namespace MediaCampturerControlerLib
                 listViewIamgenesVideos.Items.AddRange(listaViewItems.ToArray());
                 labelCntImgVideos.Text = listViewIamgenesVideos.Items.Count.ToString();
                 if (error)
-                    MessageBox.Show("Error, no se pudo cargar uno o varios archivos. \n" + msgerror, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this,"Error, no se pudo cargar uno o varios archivos. \n" + msgerror, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 
                 listViewIamgenesVideos.Refresh();
@@ -410,14 +410,14 @@ namespace MediaCampturerControlerLib
                         catch (AccessViolationException ex)
                         {
                             FileWriter.WriteVideoFrame(newFrameEventArgs.Frame);
-                            MessageBox.Show("Error " + ex);
+                            MessageBox.Show(this,"Error " + ex);
                         }
 
                         catch (Exception er)
                         {
 
                             //FileWriter.WriteVideoFrame(newFrameEventArgs.Frame);
-                            // MessageBox.Show("Error " + er.Message);
+                            // MessageBox.Show(this,this,"Error " + er.Message);
                         }
 
 
@@ -495,7 +495,7 @@ namespace MediaCampturerControlerLib
                     }
                     catch(Exception er)
                     {
-                        MessageBox.Show(er.Message);
+                        MessageBox.Show(this,er.Message);
                     }
 
                     
@@ -579,7 +579,7 @@ namespace MediaCampturerControlerLib
                 }
                 else
                 {
-                    MessageBox.Show("No hay conexión a ningún dispositivo de video.", "Conexión" , MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(this,"No hay conexión a ningún dispositivo de video.", "Conexión" , MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
 
             }
@@ -610,7 +610,7 @@ namespace MediaCampturerControlerLib
                         }
 
                     }
-                    // MessageBox.Show($"Imagen guardada en {path}");
+                    // MessageBox.Show(this,$"Imagen guardada en {path}");
                 }
 
                 //Este codigo causa  "A generic error occurred in GDI+."
@@ -623,7 +623,7 @@ namespace MediaCampturerControlerLib
             }
             else
             {
-                MessageBox.Show("No se encuentra conectado a ningún dispositivo.");
+                MessageBox.Show(this,"No se encuentra conectado a ningún dispositivo.");
             }
 
         }
@@ -716,7 +716,7 @@ namespace MediaCampturerControlerLib
                 }
                 else
                 {
-                    MessageBox.Show("Debe seleccionar un dispositivo", "Dispositivos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(this,"Debe seleccionar un dispositivo", "Dispositivos", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
             }
@@ -945,7 +945,7 @@ namespace MediaCampturerControlerLib
                         byte[] bytes = memory.ToArray();
                         fs.Write(bytes, 0, bytes.Length);
                     }
-                    // MessageBox.Show($"Imagen guardada en {path}");
+                    // MessageBox.Show(this,$"Imagen guardada en {path}");
                 }
 
                 //Este codigo causa  "A generic error occurred in GDI+."
@@ -1304,7 +1304,7 @@ namespace MediaCampturerControlerLib
             }
             catch (Exception er)
             {
-                MessageBox.Show(er.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this,er.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
         }

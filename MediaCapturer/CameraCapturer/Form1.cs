@@ -182,7 +182,7 @@ namespace CameraCapturer
                 }
                 else
                 {
-                    MessageBox.Show("No hay conexión a ningún dispositivo de video.");
+                    MessageBox.Show(this,"No hay conexión a ningún dispositivo de video.");
                 }
 
             }
@@ -204,7 +204,7 @@ namespace CameraCapturer
                         byte[] bytes = memory.ToArray();
                         fs.Write(bytes, 0, bytes.Length);
                     }
-                   // MessageBox.Show($"Imagen guardada en {path}");
+                   // MessageBox.Show(this,$"Imagen guardada en {path}");
                 }
 
                 //Este codigo causa  "A generic error occurred in GDI+."
@@ -215,7 +215,7 @@ namespace CameraCapturer
             }
             else
             {
-                MessageBox.Show("No se encuentra conectado a ningún dispositivo.");
+                MessageBox.Show(this,"No se encuentra conectado a ningún dispositivo.");
             }
         }
 
@@ -236,7 +236,7 @@ namespace CameraCapturer
                 }
                 else
                 {
-                    MessageBox.Show("Debe seleccionar un dispositivo");
+                    MessageBox.Show(this,"Debe seleccionar un dispositivo");
                 }
 
             }

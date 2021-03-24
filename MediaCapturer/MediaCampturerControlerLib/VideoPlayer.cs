@@ -160,7 +160,7 @@ namespace MediaCampturerControlerLib
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(this,ex.Message);
             }
 
         }
@@ -326,7 +326,7 @@ namespace MediaCampturerControlerLib
                     byte[] bytes = memory.ToArray();
                     fs.Write(bytes, 0, bytes.Length);
                 }
-                // MessageBox.Show($"Imagen guardada en {path}");
+                // MessageBox.Show(this,$"Imagen guardada en {path}");
             }
 
             //Este codigo causa  "A generic error occurred in GDI+."
