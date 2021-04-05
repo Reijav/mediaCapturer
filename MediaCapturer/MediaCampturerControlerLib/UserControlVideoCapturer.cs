@@ -300,6 +300,28 @@ namespace MediaCampturerControlerLib
         }
 
 
+        public UserControlVideoCapturer(string path, string pathDispositivoDefecto)
+        {
+            InitializeComponent();
+            DirectoryInfo dirinfo = new DirectoryInfo(path);
+            if (!dirinfo.Exists)
+            {
+                dirinfo.Create();
+            }
+
+            this.path = path;
+            this.PathImagenesPr = new List<string>();
+            this.PathVideosPr = new List<string>();
+            this.ArchivosEliminadosPr = new List<string>();
+
+            this.buttonMinimizar.Visible = false;
+            buttonMaximizar.Visible = false;
+            this.pathDispositivoDefecto = pathDispositivoDefecto+ "dispositivodefecto.txt";
+        }
+
+
+
+
         private void UserControlVideoCapturer_Load(object sender, EventArgs e)
         {
             CargarDispositivos();
@@ -726,11 +748,11 @@ namespace MediaCampturerControlerLib
                     videoSourcePlayerCamera.Height = alto;
 
 
-                    listViewIamgenesVideos.Top += diffAlto;
+                //    listViewIamgenesVideos.Top += diffAlto;
 
                     labelCntImgVideos.Top = listViewIamgenesVideos.Top - labelCntImgVideos.Height - 2;
 
-                    listViewImages.Height += diffAlto;
+                //    listViewImages.Height += diffAlto;
 
 
                     if (imageListCaptured.Images.Count == 0)
@@ -1079,40 +1101,44 @@ namespace MediaCampturerControlerLib
 
         private void buttonMaximizar_Click(object sender, EventArgs e)
         {
+            if(MiWebCam!=null && MiWebCam.VideoResolution != null)
+            {
+                listViewIamgenesVideos.Visible = false;
 
 
-            listViewIamgenesVideos.Visible = false;
-            
-
-            buttonMinimizar.Visible = true;
+                buttonMinimizar.Visible = true;
+                buttonMaximizar.Visible = false;
 
 
 
-            posicionInicialBtnGrabar = buttonGrabar.Location;
-            sizeInicialBtnGrabar = buttonGrabar.Size;
+                posicionInicialBtnGrabar = buttonGrabar.Location;
+                sizeInicialBtnGrabar = buttonGrabar.Size;
 
-            posicionInicialBtnCapturarImg = buttonCapturarImg.Location;
-            sizeInicialBtnCapturarImg = buttonCapturarImg.Size;
+                posicionInicialBtnCapturarImg = buttonCapturarImg.Location;
+                sizeInicialBtnCapturarImg = buttonCapturarImg.Size;
 
-            posicionInicialListViewImagenes = listViewImages.Location;
-            sizeInicialListViewImagenes = listViewImages.Size;
+                posicionInicialListViewImagenes = listViewImages.Location;
+                sizeInicialListViewImagenes = listViewImages.Size;
 
-            posicionCronometroRegistro = labelTiempoGrabacion.Location;
-            sizeInicialCronometroRegistro = labelTiempoGrabacion.Size;
+                posicionCronometroRegistro = labelTiempoGrabacion.Location;
+                sizeInicialCronometroRegistro = labelTiempoGrabacion.Size;
 
-            posicionBotonObtenerVideo = buttonObtenerVideo.Location;
-            sizeBotonObtenerVideo = buttonObtenerVideo.Size;
+                posicionBotonObtenerVideo = buttonObtenerVideo.Location;
+                sizeBotonObtenerVideo = buttonObtenerVideo.Size;
 
-            posicionVideoPlayerCamera = videoSourcePlayerCamera.Location;
-            sizeVideoPlayerCamera = videoSourcePlayerCamera.Size;
+                posicionVideoPlayerCamera = videoSourcePlayerCamera.Location;
+                sizeVideoPlayerCamera = videoSourcePlayerCamera.Size;
 
-            posicionLabelCntImg = LabelCantidadImagenes.Location;
-            sizeLabelCntImg = LabelCantidadImagenes.Size;
+                posicionLabelCntImg = LabelCantidadImagenes.Location;
+                sizeLabelCntImg = LabelCantidadImagenes.Size;
 
-            posicionLabelCntImgVideos = labelCntImgVideos.Location;
-            sizeLabelCntImgVideos = labelCntImgVideos.Size;
+                posicionLabelCntImgVideos = labelCntImgVideos.Location;
+                sizeLabelCntImgVideos = labelCntImgVideos.Size;
 
-            ModificarPosicionPicture();
+                ModificarPosicionPicture();
+            }
+
+
 
 
 
@@ -1210,6 +1236,101 @@ namespace MediaCampturerControlerLib
                 buttonMinimizar.BringToFront();
 
             }
+            else
+            {
+                var distanciaEntreBotones = 10;
+
+                //buttonObtenerVideo.Left = ((this.Width / 2) - ((buttonObtenerVideo.Width + labelTiempoGrabacion.Width + buttonGrabar.Width + buttonCapturarImg.Width + buttonAgregarDesdeArchivo.Width + (4 * distanciaEntreBotones)) / 2));
+
+                //buttonObtenerVideo.BringToFront();
+
+                //labelTiempoGrabacion.Left = this.buttonObtenerVideo.Left + this.buttonObtenerVideo.Width + distanciaEntreBotones;
+                //labelTiempoGrabacion.BringToFront();
+
+                //buttonGrabar.Left = this.labelTiempoGrabacion.Left + this.labelTiempoGrabacion.Width + distanciaEntreBotones; //(this.Width / 2) - (buttonGrabar.Width) - 5;
+                //buttonGrabar.BringToFront();
+
+                //labelCntImgVideos.Parent = this;
+                //labelCntImgVideos.Left = buttonGrabar.Right - labelCntImgVideos.Width - 3;
+                //labelCntImgVideos.BringToFront();
+
+                //buttonCapturarImg.Left = this.buttonGrabar.Left + this.buttonGrabar.Width + distanciaEntreBotones;  // (this.Width / 2) + 5;
+                //buttonCapturarImg.BringToFront();
+
+                //// LabelCantidadImagenes.Top = buttonCapturarImg.Top + buttonCapturarImg.Height - LabelCantidadImagenes.Height - 3;
+                //LabelCantidadImagenes.Left = buttonCapturarImg.Right - LabelCantidadImagenes.Width - 3;
+                //LabelCantidadImagenes.BringToFront();
+
+                //this.buttonAgregarDesdeArchivo.Left = buttonCapturarImg.Right + distanciaEntreBotones;
+
+                //buttonMaximizar.BringToFront();
+                //buttonMinimizar.BringToFront();
+
+
+
+                int nuevoAncho = Convert.ToInt32(panel1.Width - (listViewImages.Width + 4* distanciaEntreBotones));// - anchoListaImagenes);
+                int nuevoAlto = listViewIamgenesVideos.Top - (2* distanciaEntreBotones);
+
+                if (MiWebCam != null && MiWebCam.VideoResolution != null)
+                {
+                    nuevoAlto = MiWebCam.VideoResolution.FrameSize.Height * nuevoAncho / MiWebCam.VideoResolution.FrameSize.Width;
+
+                    if (nuevoAlto < listViewIamgenesVideos.Top - distanciaEntreBotones) //- buttonGrabar.Height
+                    {
+                        videoSourcePlayerCamera.Height = nuevoAlto;
+                    }
+                    else
+                    {
+                        nuevoAlto = listViewIamgenesVideos.Top - (2*distanciaEntreBotones);
+                        nuevoAncho = MiWebCam.VideoResolution.FrameSize.Width * nuevoAlto / MiWebCam.VideoResolution.FrameSize.Height;
+                    }
+                }
+
+
+
+                videoSourcePlayerCamera.Size = new Size(nuevoAncho, nuevoAlto);
+                buttonMaximizar.Visible = true;
+                buttonMaximizar.Left = videoSourcePlayerCamera.Right - buttonMaximizar.Width-2;
+                buttonMaximizar.Top = panel1.Top+2;
+
+                //if (videoSourcePlayerCamera.Width < this.Width)
+                //{
+                //    var diffAncho = this.Width - videoSourcePlayerCamera.Width;
+                //    videoSourcePlayerCamera.Top = 0;
+                //    videoSourcePlayerCamera.Left = diffAncho / 2;
+                //}
+                //else
+                //{
+                //    videoSourcePlayerCamera.Top = 0;
+                //    videoSourcePlayerCamera.Left = 0;
+                //}
+
+
+                //var visibleComponentes = false;
+                //videoSourcePlayerCamera.Parent = this;
+
+
+
+
+                //listViewImages.Parent = this;
+                //listViewImages.Top = videoSourcePlayerCamera.Top;
+                //listViewImages.Height = this.Height - buttonCapturarImg.Height - 5;
+
+
+                //listViewImages.Left = videoSourcePlayerCamera.Width;
+                //listViewImages.Width = anchoListaImagenes - 15;
+                //listViewImages.BringToFront();
+
+
+                //listViewIamgenesVideos.Parent = this;
+
+                //CambiarVisibilidadControles(visibleComponentes);
+
+                //buttonMinimizar.Left = videoSourcePlayerCamera.Left + videoSourcePlayerCamera.Width - buttonMinimizar.Width;
+                //buttonMinimizar.Top = videoSourcePlayerCamera.Top;
+
+                //buttonMinimizar.BringToFront();
+            }
 
 
 
@@ -1277,7 +1398,7 @@ namespace MediaCampturerControlerLib
 
             videoSourcePlayerCamera.Focus();
 
-
+            ModificarPosicionPicture();
 
         }
 

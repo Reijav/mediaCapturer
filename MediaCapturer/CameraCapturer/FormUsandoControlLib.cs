@@ -38,7 +38,7 @@ namespace CameraCapturer
                     VideoCapturer1 = new UserControlVideoCapturer();
                     VideoCapturer1.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
                   
-                    VideoCapturer1.Size = new Size(this.Size.Width,this.Size.Height-50);
+                    VideoCapturer1.Size = new Size(this.Size.Width,this.Size.Height-80);
                 }
                 return VideoCapturer1;
             }
@@ -54,7 +54,10 @@ namespace CameraCapturer
 
         private void FormUsandoControlLib_Load(object sender, EventArgs e)
         {
-            
+            //FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            //Left = Top = 0;
+            //Width = Screen.PrimaryScreen.WorkingArea.Width;
+            //Height = Screen.PrimaryScreen.WorkingArea.Height;
         }
 
         private void FormUsandoControlLib_FormClosing(object sender, FormClosingEventArgs e)

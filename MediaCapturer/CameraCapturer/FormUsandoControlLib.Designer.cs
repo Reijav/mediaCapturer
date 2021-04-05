@@ -34,13 +34,11 @@
             // 
             // panelControl
             // 
-            this.panelControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelControl.AutoScroll = true;
+            this.panelControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControl.Location = new System.Drawing.Point(0, 0);
             this.panelControl.Name = "panelControl";
-            this.panelControl.Size = new System.Drawing.Size(1111, 682);
+            this.panelControl.Size = new System.Drawing.Size(1211, 682);
             this.panelControl.TabIndex = 0;
             // 
             // FormUsandoControlLib
@@ -48,9 +46,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1111, 682);
+            this.ClientSize = new System.Drawing.Size(1211, 682);
             this.Controls.Add(this.panelControl);
             this.Name = "FormUsandoControlLib";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormUsandoControlLib";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormUsandoControlLib_FormClosing);
             this.Load += new System.EventHandler(this.FormUsandoControlLib_Load);
