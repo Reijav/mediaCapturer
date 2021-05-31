@@ -686,7 +686,7 @@ namespace MediaCampturerControlerLib
                         var Imagen = videoSourcePlayerCamera.GetCurrentVideoFrame();
                         if (Imagen != null)
                         {
-                            Imagen.Save(memory, ImageFormat.Jpeg);
+                            Imagen.Save(memory,ImageFormat.Bmp);
                             byte[] bytes = memory.ToArray();
                             fs.Write(bytes, 0, bytes.Length);
                             imageListCaptured.Images.Add(nombreArchivo, Imagen);
