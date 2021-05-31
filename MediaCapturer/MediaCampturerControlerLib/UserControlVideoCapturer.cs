@@ -32,33 +32,36 @@ namespace MediaCampturerControlerLib
         private long ticksInicioGrabado = 0;
 
         private VideoCodec videoCodecGrabacion = VideoCodec.MPEG4;
-        private string contenedorExtencion = "avi";
+        private string contenedorExtencion = "mp4";
         private string pathDispositivoDefecto = AppContext.BaseDirectory + "dispositivodefecto.txt";
 
-        public PropiedadesDispositivo DispositivoPorDefecto {
-            get {
+        public PropiedadesDispositivo DispositivoPorDefecto
+        {
+            get
+            {
 
                 var binaryFU = new BinaryFileUtil<PropiedadesDispositivo>();
 
                 var fiDispositivoDefecto = new FileInfo(pathDispositivoDefecto);
                 if (!fiDispositivoDefecto.Exists)
                 {
-                    
-                    var propiedadesDefecto = new PropiedadesDispositivo { Entrada="Dispositivo", Formato="HDMI", NombreDispositivo ="Dispositivo"}; 
+
+                    var propiedadesDefecto = new PropiedadesDispositivo { Entrada = "Dispositivo", Formato = "HDMI", NombreDispositivo = "Dispositivo" };
                     return propiedadesDefecto;
                 }
                 else
                 {
                     return binaryFU.Deserialize(pathDispositivoDefecto);
                 }
-               
+
             }
 
-            set {
+            set
+            {
                 var binaryFU = new BinaryFileUtil<PropiedadesDispositivo>();
                 var fiDispositivoDefecto = new FileInfo(pathDispositivoDefecto);
-                binaryFU.Serialize(value,pathDispositivoDefecto);
-                    //File.WriteAllLines(pathDispositivoDefecto, new string[] {value });
+                binaryFU.Serialize(value, pathDispositivoDefecto);
+                //File.WriteAllLines(pathDispositivoDefecto, new string[] {value });
 
             }
         }
@@ -120,7 +123,7 @@ namespace MediaCampturerControlerLib
 
                     });
                     if (error)
-                        MessageBox.Show(this,"Error, no se pudo cargar uno o varios archivos" + msgerror, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(this, "Error, no se pudo cargar uno o varios archivos" + msgerror, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     listViewImages.Refresh();
                     LabelCantidadImagenes.Text = listViewImages.Items.Count.ToString();
                 }
@@ -147,81 +150,81 @@ namespace MediaCampturerControlerLib
                 var error = false;
                 string msgerror = "";
                 List<ListViewItem> listaViewItems = new List<ListViewItem>();
-                Parallel.ForEach( PathVideosPr, new ParallelOptions { MaxDegreeOfParallelism=8 }, (pathVideo) =>
-                {
+                Parallel.ForEach(PathVideosPr, new ParallelOptions { MaxDegreeOfParallelism = 8 }, (pathVideo) =>
+                 {
 
-                    try
-                    {
-                        Bitmap imagen = null;
+                     try
+                     {
+                         Bitmap imagen = null;
 
-                        var finfo = new FileInfo(pathVideo);
+                         var finfo = new FileInfo(pathVideo);
 
-                        if (!finfo.Exists)
-                        {
-                            throw new Exception("Error");
-                        }
-                       
-                        using (VideoFileReader reader = new VideoFileReader())
-                        {
-                            reader.Open(pathVideo);
+                         if (!finfo.Exists)
+                         {
+                             throw new Exception("Error");
+                         }
 
-                            var frame= reader.ReadVideoFrame();
-                            if (frame != null)
-                            {
-                                imagen = (Bitmap)reader.ReadVideoFrame().Clone();
-                                reader.Close();
-                            }
-                            else
-                            {
-                                reader.Close();
-                                throw new Exception("Error leyedo archivo");
-                            }
-                            
-                        }
+                         using (VideoFileReader reader = new VideoFileReader())
+                         {
+                             reader.Open(pathVideo);
 
-                        lock (obj)
-                        {
-                    
-                            imageListVideos.Images.Add(pathVideo, imagen);
-                            var listViewIte = new ListViewItem()
-                            {
-                                Name = pathVideo,
-                                Text = Path.GetFileName(pathVideo),
-                                ImageIndex = imageListVideos.Images.IndexOfKey(pathVideo),
-                            };
-                            listaViewItems.Add(listViewIte);
+                             var frame = reader.ReadVideoFrame();
+                             if (frame != null)
+                             {
+                                 imagen = (Bitmap)reader.ReadVideoFrame().Clone();
+                                 reader.Close();
+                             }
+                             else
+                             {
+                                 reader.Close();
+                                 throw new Exception("Error leyedo archivo");
+                             }
+
+                         }
+
+                         lock (obj)
+                         {
+
+                             imageListVideos.Images.Add(pathVideo, imagen);
+                             var listViewIte = new ListViewItem()
+                             {
+                                 Name = pathVideo,
+                                 Text = Path.GetFileName(pathVideo),
+                                 ImageIndex = imageListVideos.Images.IndexOfKey(pathVideo),
+                             };
+                             listaViewItems.Add(listViewIte);
                             //listViewIamgenesVideos.Items.Add(listViewIte);
                         }
 
 
-                    }
-                    catch (Exception er)
-                    {
+                     }
+                     catch (Exception er)
+                     {
                         //error = true;
                         msgerror += msgerror + "\n";
 
-                        Assembly myAssembly = Assembly.GetExecutingAssembly();
-                        Stream myStream = myAssembly.GetManifestResourceStream("MediaCampturerControlerLib.imagenVideoDefault.jpg");
-                        Bitmap imagen = new Bitmap(myStream);
+                         Assembly myAssembly = Assembly.GetExecutingAssembly();
+                         Stream myStream = myAssembly.GetManifestResourceStream("MediaCampturerControlerLib.imagenVideoDefault.jpg");
+                         Bitmap imagen = new Bitmap(myStream);
 
-                        lock (obj)
-                        {
-                            imageListVideos.Images.Add(pathVideo, imagen);
-                            var listViewIte = new ListViewItem()
-                            {
-                                Name = pathVideo,
-                                Text = Path.GetFileName(pathVideo),
-                                ImageIndex = imageListVideos.Images.IndexOfKey(pathVideo),
-                            };
-                            listaViewItems.Add(listViewIte);
+                         lock (obj)
+                         {
+                             imageListVideos.Images.Add(pathVideo, imagen);
+                             var listViewIte = new ListViewItem()
+                             {
+                                 Name = pathVideo,
+                                 Text = Path.GetFileName(pathVideo),
+                                 ImageIndex = imageListVideos.Images.IndexOfKey(pathVideo),
+                             };
+                             listaViewItems.Add(listViewIte);
                             //listViewIamgenesVideos.Items.Add(listViewIte);
                         }
-                    }
-                });
+                     }
+                 });
                 listViewIamgenesVideos.Items.AddRange(listaViewItems.ToArray());
                 labelCntImgVideos.Text = listViewIamgenesVideos.Items.Count.ToString();
                 if (error)
-                    MessageBox.Show(this,"Error, no se pudo cargar uno o varios archivos. \n" + msgerror, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, "Error, no se pudo cargar uno o varios archivos. \n" + msgerror, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 
                 listViewIamgenesVideos.Refresh();
@@ -274,7 +277,7 @@ namespace MediaCampturerControlerLib
             this.PathImagenesPr = new List<string>();
             this.PathVideosPr = new List<string>();
             this.ArchivosEliminadosPr = new List<string>();
-            
+
             this.buttonMinimizar.Visible = false;
             buttonMaximizar.Visible = false;
         }
@@ -294,7 +297,7 @@ namespace MediaCampturerControlerLib
             this.PathImagenesPr = new List<string>();
             this.PathVideosPr = new List<string>();
             this.ArchivosEliminadosPr = new List<string>();
-            
+
             this.buttonMinimizar.Visible = false;
             buttonMaximizar.Visible = false;
         }
@@ -316,7 +319,7 @@ namespace MediaCampturerControlerLib
 
             this.buttonMinimizar.Visible = false;
             buttonMaximizar.Visible = false;
-            this.pathDispositivoDefecto = pathDispositivoDefecto+ "dispositivodefecto.txt";
+            this.pathDispositivoDefecto = pathDispositivoDefecto + "dispositivodefecto.txt";
         }
 
 
@@ -352,13 +355,13 @@ namespace MediaCampturerControlerLib
                 comboBoxCapabilitis.SelectedIndex = String.IsNullOrEmpty(DispositivoPorDefectoMem.Formato) ? -1 : comboBoxCapabilitis.Items.IndexOf(DispositivoPorDefectoMem.Formato);
 
                 if (comboBoxCapabilitis.SelectedIndex < 0)
-                { 
+                {
 
                     //comboBoxDispositivos.Text = MisDispositivos[0].Name;
                     comboBoxCapabilitis.SelectedIndex = 0;
                 }
 
-                
+
             }
             else
             {
@@ -380,11 +383,11 @@ namespace MediaCampturerControlerLib
             if (comboBoxInputs.Items.Count > 0)
             {
 
-                comboBoxInputs.SelectedIndex = String.IsNullOrEmpty(DispositivoPorDefectoMem.Entrada) ? -1:  comboBoxInputs.Items.IndexOf(DispositivoPorDefectoMem.Entrada);
+                comboBoxInputs.SelectedIndex = String.IsNullOrEmpty(DispositivoPorDefectoMem.Entrada) ? -1 : comboBoxInputs.Items.IndexOf(DispositivoPorDefectoMem.Entrada);
 
                 if (comboBoxInputs.SelectedIndex < 0)
                 {
-                 
+
                     //comboBoxDispositivos.Text = MisDispositivos[0].Name;
                     comboBoxInputs.SelectedIndex = 0;
                 }
@@ -399,7 +402,7 @@ namespace MediaCampturerControlerLib
             }
 
 
-            MiWebCam = WebCam;            
+            MiWebCam = WebCam;
         }
 
         FilterInfoCollection MisDispositivosCompresores;
@@ -421,7 +424,7 @@ namespace MediaCampturerControlerLib
                 }
 
 
-                comboBoxDispositivos.SelectedIndex=  String.IsNullOrEmpty(DispositivoPorDefectoMem.NombreDispositivo) ? -1 :  comboBoxDispositivos.Items.IndexOf(DispositivoPorDefectoMem.NombreDispositivo);
+                comboBoxDispositivos.SelectedIndex = String.IsNullOrEmpty(DispositivoPorDefectoMem.NombreDispositivo) ? -1 : comboBoxDispositivos.Items.IndexOf(DispositivoPorDefectoMem.NombreDispositivo);
 
                 if (comboBoxDispositivos.SelectedIndex >= 0)
                 {
@@ -432,15 +435,16 @@ namespace MediaCampturerControlerLib
                     comboBoxDispositivos.Text = MisDispositivos[0].Name;
                     comboBoxDispositivos.SelectedIndex = 0;
                 }
-                
 
 
-               
+
+
             }
 
         }
 
         private long numeroPrevio;
+        //
         private long horaInicioGrabacion;
 
         /// <summary>
@@ -458,66 +462,50 @@ namespace MediaCampturerControlerLib
 
                 if (newFrameEventArgs.Frame != null)
                 {
-
-
-
-                  //  Imagen = (Bitmap)newFrameEventArgs.Frame.Clone();
-
-                  // pictureBoxEnUso.Image = Imagen;//(Bitmap)newFrameEventArgs.Frame.Clone();
-
                     //SI SE ENCUENTRA GRABANDO
                     var lapsoTiempo = numeroActual - numeroPrevio;
-                    var lapsoTiempoTS = new TimeSpan(numeroActual - numeroPrevio);
+                    var lapsoTiempoTS = TimeSpan.FromTicks(lapsoTiempo);
 
-                    if (imagenVideo == null)
+                    var totalTiempoTS = new TimeSpan(numeroActual - horaInicioGrabacion);
+
+                    if (Convert.ToDecimal(lapsoTiempoTS.TotalMilliseconds/1000)   > (1.0m/ MiWebCam.VideoResolution.AverageFrameRate))
                     {
-                        imagenVideo = (Bitmap)newFrameEventArgs.Frame.Clone();
+
+
+                         imagenVideo = (Bitmap)newFrameEventArgs.Frame.Clone();
+                        
+
+                        if (!pararGrabar && buttonGrabar.Text == PARAR_GRABAR && FileWriter != null && FileWriter.IsOpen)
+                        {
+                            try
+                            {
+                                FileWriter.WriteVideoFrame((Bitmap)imagenVideo, totalTiempoTS);
+                                
+                                if (totalTiempoTS.TotalMilliseconds > 30000)
+                                {
+                                    FileWriter.Flush();
+                                }
+                                numeroPrevio = DateTime.Now.Ticks;
+                            }
+
+                            catch (AccessViolationException ex)
+                            {
+                                FileWriter.WriteVideoFrame(newFrameEventArgs.Frame);
+                                MessageBox.Show(this, "Error " + ex);
+                            }
+
+                            catch (Exception er)
+                            {
+                                Console.WriteLine(er.Message);
+                                //FileWriter.WriteVideoFrame(newFrameEventArgs.Frame);
+                                // MessageBox.Show(this,this,"Error " + er.Message);
+                            }
+                        }
+                        //else
+                        //{
+                        //    imagenVideo = (Bitmap)newFrameEventArgs.Frame.Clone();
+                        //}
                     }
-
-           
-                    if (!pararGrabar &&  buttonGrabar.Text == PARAR_GRABAR &&   FileWriter != null && FileWriter.IsOpen)
-                    {
-                        try
-                        {
-
-                            if (lapsoTiempoTS.Milliseconds > 100)
-                            {
-                                FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone(), lapsoTiempoTS);
-                            }
-                            else
-                            {
-                                FileWriter.WriteVideoFrame((Bitmap)newFrameEventArgs.Frame.Clone());
-                            }
-
-                            var totalTiempoTS = new TimeSpan(numeroActual - horaInicioGrabacion);
-
-                            if (totalTiempoTS.TotalMilliseconds > 30000)
-                            {
-                                FileWriter.Flush();
-                                horaInicioGrabacion = DateTime.Now.Ticks; ;
-                            }
-
-
-
-                        }
-
-                        catch (AccessViolationException ex)
-                        {
-                            FileWriter.WriteVideoFrame(newFrameEventArgs.Frame);
-                            MessageBox.Show(this,"Error " + ex);
-                        }
-
-                        catch (Exception er)
-                        {
-
-                            //FileWriter.WriteVideoFrame(newFrameEventArgs.Frame);
-                            // MessageBox.Show(this,this,"Error " + er.Message);
-                        }
-
-
-
-                    }
-
                 }
 
             }
@@ -574,7 +562,7 @@ namespace MediaCampturerControlerLib
                 { return; }
                 else if (MiWebCam.IsRunning)
                 {
-                    
+
                     pararGrabar = true;
 
                     Thread.Sleep(200);
@@ -587,23 +575,24 @@ namespace MediaCampturerControlerLib
                         FileWriter.Dispose();
                         FileWriter = null;
                     }
-                    catch(Exception er)
+                    catch (Exception er)
                     {
-                        MessageBox.Show(this,er.Message);
+                        MessageBox.Show(this, er.Message);
                     }
 
-                    
+
 
 
                     Task.Factory.StartNew(() =>
                     {
-                        listViewIamgenesVideos.Invoke((MethodInvoker)delegate {
-                            if (imagenVideo != null)
+                        listViewIamgenesVideos.Invoke((MethodInvoker)delegate
+                        {
+                            if (imagenVideo != null  )
                             {
                                 imageListVideos.Images.Add(nombreArchivoVideo, imagenVideo);
                                 listViewIamgenesVideos.Items.Add(nombreArchivoVideo, Path.GetFileName(nombreArchivoVideo), imageListVideos.Images.IndexOfKey(nombreArchivoVideo));
                                 listViewIamgenesVideos.Refresh();
-                                labelCntImgVideos.Text =  listViewIamgenesVideos.Items.Count.ToString();
+                                labelCntImgVideos.Text = listViewIamgenesVideos.Items.Count.ToString();
                                 imagenVideo = null;
                             }
 
@@ -625,12 +614,12 @@ namespace MediaCampturerControlerLib
 
 
 
-                if (MiWebCam != null && MiWebCam.IsRunning )//&& Imagen != null)
+                if (MiWebCam != null && MiWebCam.IsRunning)//&& Imagen != null)
                 {
                     buttonObtenerVideo.Enabled = false;
 
-                    
-                    
+
+
 
                     timerRecording.Start();
                     ticksInicioGrabado = DateTime.Now.Ticks;
@@ -673,7 +662,7 @@ namespace MediaCampturerControlerLib
                 }
                 else
                 {
-                    MessageBox.Show(this,"No hay conexión a ningún dispositivo de video.", "Conexión" , MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(this, "No hay conexión a ningún dispositivo de video.", "Conexión", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
 
             }
@@ -687,14 +676,14 @@ namespace MediaCampturerControlerLib
             if (buttonObtenerVideo.Text == DESCONECTAR)
             {
 
-                string nombreArchivo = $"{path}\\{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-fff")}.jpg";
+                string nombreArchivo = $"{path}\\{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-fff")}.bmp";
 
                 using (MemoryStream memory = new MemoryStream())
                 {
                     using (FileStream fs = new FileStream(nombreArchivo, FileMode.Create, FileAccess.Write))
                     {
 
-                        var Imagen =  videoSourcePlayerCamera.GetCurrentVideoFrame();
+                        var Imagen = videoSourcePlayerCamera.GetCurrentVideoFrame();
                         if (Imagen != null)
                         {
                             Imagen.Save(memory, ImageFormat.Jpeg);
@@ -717,7 +706,7 @@ namespace MediaCampturerControlerLib
             }
             else
             {
-                MessageBox.Show(this,"No se encuentra conectado a ningún dispositivo.");
+                MessageBox.Show(this, "No se encuentra conectado a ningún dispositivo.");
             }
 
         }
@@ -738,7 +727,7 @@ namespace MediaCampturerControlerLib
                     buttonObtenerVideo.Text = DESCONECTAR;
                     int indice = comboBoxDispositivos.SelectedIndex;
                     string nombreVideo = MisDispositivos[indice].MonikerString;
-                    
+
                     MiWebCam = new VideoCaptureDevice(nombreVideo);
                     MiWebCam.VideoResolution = MiWebCam.VideoCapabilities[comboBoxCapabilitis.SelectedIndex];
 
@@ -748,11 +737,11 @@ namespace MediaCampturerControlerLib
                     videoSourcePlayerCamera.Height = alto;
 
 
-                //    listViewIamgenesVideos.Top += diffAlto;
+                    //    listViewIamgenesVideos.Top += diffAlto;
 
                     labelCntImgVideos.Top = listViewIamgenesVideos.Top - labelCntImgVideos.Height - 2;
 
-                //    listViewImages.Height += diffAlto;
+                    //    listViewImages.Height += diffAlto;
 
 
                     if (imageListCaptured.Images.Count == 0)
@@ -794,29 +783,29 @@ namespace MediaCampturerControlerLib
                         // VideoProcAmpFlags vpflags;
                         MiWebCam.GetCameraPropertyRange(CameraControlProperty.Exposure, out min, out max, out step, out def, out ccflags);
                     }
-                    catch(Exception  ex)
+                    catch (Exception ex)
                     {
-                        var error= ex.Message;
+                        var error = ex.Message;
 
                     }
 
                     //guadar dispositivo por defecto
                     this.DispositivoPorDefecto = new PropiedadesDispositivo
                     {
-                        NombreDispositivo= comboBoxDispositivos.SelectedItem.ToString(),
-                        Entrada = comboBoxInputs.SelectedIndex > -1 ? comboBoxInputs.SelectedItem.ToString() :"",
-                        Formato = comboBoxCapabilitis.SelectedIndex > -1 ? comboBoxCapabilitis.SelectedItem.ToString(): "",
+                        NombreDispositivo = comboBoxDispositivos.SelectedItem.ToString(),
+                        Entrada = comboBoxInputs.SelectedIndex > -1 ? comboBoxInputs.SelectedItem.ToString() : "",
+                        Formato = comboBoxCapabilitis.SelectedIndex > -1 ? comboBoxCapabilitis.SelectedItem.ToString() : "",
                     };
 
 
                     buttonObtenerVideo.ImageIndex = 4;
 
                     buttonMaximizar_Click(sender, e);
-                   
+
                 }
                 else
                 {
-                    MessageBox.Show(this,"Debe seleccionar un dispositivo", "Dispositivos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(this, "Debe seleccionar un dispositivo", "Dispositivos", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
             }
@@ -825,8 +814,8 @@ namespace MediaCampturerControlerLib
                 buttonObtenerVideo.Text = "Conectar con dispositivo";
                 buttonObtenerVideo.ImageIndex = 3;
                 buttonMaximizar.Visible = false;
-                if(buttonMinimizar.Visible)
-                    buttonMinimizar_Click(sender, e);   
+                if (buttonMinimizar.Visible)
+                    buttonMinimizar_Click(sender, e);
             }
 
 
@@ -842,7 +831,7 @@ namespace MediaCampturerControlerLib
             CerrarComponente();
 
             // start new video source
-            
+
             videoSourcePlayerCamera.VideoSource = source;
 
             videoSourcePlayerCamera.VideoSource.NewFrame += new NewFrameEventHandler(CapturandoImagen);
@@ -999,7 +988,7 @@ namespace MediaCampturerControlerLib
                     labelCntImgVideos.Text = listViewIamgenesVideos.Items.Count.ToString();
                 }
                 listViewIamgenesVideos.Refresh();
-                
+
             }
 
 
@@ -1101,7 +1090,7 @@ namespace MediaCampturerControlerLib
 
         private void buttonMaximizar_Click(object sender, EventArgs e)
         {
-            if(MiWebCam!=null && MiWebCam.VideoResolution != null)
+            if (MiWebCam != null && MiWebCam.VideoResolution != null)
             {
                 listViewIamgenesVideos.Visible = false;
 
@@ -1147,12 +1136,12 @@ namespace MediaCampturerControlerLib
         private void ModificarPosicionPicture()
         {
 
-            if (  buttonMinimizar.Visible)
+            if (buttonMinimizar.Visible)
             {
 
                 buttonObtenerVideo.Height = 50;
                 buttonObtenerVideo.Top = this.Height - buttonObtenerVideo.Height - 1;
-                buttonObtenerVideo.Left = (this.Width - ( buttonObtenerVideo.Width+ labelTiempoGrabacion.Width + buttonGrabar.Width + buttonObtenerVideo.Width + buttonCapturarImg.Width + 30)) / 2;
+                buttonObtenerVideo.Left = (this.Width - (buttonObtenerVideo.Width + labelTiempoGrabacion.Width + buttonGrabar.Width + buttonObtenerVideo.Width + buttonCapturarImg.Width + 30)) / 2;
                 buttonObtenerVideo.BringToFront();
 
 
@@ -1180,8 +1169,8 @@ namespace MediaCampturerControlerLib
                 buttonCapturarImg.BringToFront();
                 buttonCapturarImg.Height = buttonGrabar.Height;
 
-                LabelCantidadImagenes.Top = buttonCapturarImg.Top + buttonCapturarImg.Height - LabelCantidadImagenes.Height -3;
-                LabelCantidadImagenes.Left = buttonCapturarImg.Right - LabelCantidadImagenes.Width -3 ;
+                LabelCantidadImagenes.Top = buttonCapturarImg.Top + buttonCapturarImg.Height - LabelCantidadImagenes.Height - 3;
+                LabelCantidadImagenes.Left = buttonCapturarImg.Right - LabelCantidadImagenes.Width - 3;
                 LabelCantidadImagenes.BringToFront();
 
                 int nuevoAncho = Convert.ToInt32(this.Width);// - anchoListaImagenes);
@@ -1199,18 +1188,18 @@ namespace MediaCampturerControlerLib
 
                 videoSourcePlayerCamera.Size = new Size(nuevoAncho, nuevoAlto);
 
-                if(videoSourcePlayerCamera.Width< this.Width)
+                if (videoSourcePlayerCamera.Width < this.Width)
                 {
                     var diffAncho = this.Width - videoSourcePlayerCamera.Width;
                     videoSourcePlayerCamera.Top = 0;
-                    videoSourcePlayerCamera.Left = diffAncho /2;
+                    videoSourcePlayerCamera.Left = diffAncho / 2;
                 }
                 else
                 {
                     videoSourcePlayerCamera.Top = 0;
                     videoSourcePlayerCamera.Left = 0;
                 }
-                
+
 
                 var visibleComponentes = false;
                 videoSourcePlayerCamera.Parent = this;
@@ -1227,7 +1216,7 @@ namespace MediaCampturerControlerLib
 
 
                 listViewIamgenesVideos.Parent = this;
-                
+
                 CambiarVisibilidadControles(visibleComponentes);
 
                 buttonMinimizar.Left = videoSourcePlayerCamera.Left + videoSourcePlayerCamera.Width - buttonMinimizar.Width;
@@ -1268,8 +1257,8 @@ namespace MediaCampturerControlerLib
 
 
 
-                int nuevoAncho = Convert.ToInt32(panel1.Width - (listViewImages.Width + 4* distanciaEntreBotones));// - anchoListaImagenes);
-                int nuevoAlto = listViewIamgenesVideos.Top - (2* distanciaEntreBotones);
+                int nuevoAncho = Convert.ToInt32(panel1.Width - (listViewImages.Width + 4 * distanciaEntreBotones));// - anchoListaImagenes);
+                int nuevoAlto = listViewIamgenesVideos.Top - (2 * distanciaEntreBotones);
 
                 if (MiWebCam != null && MiWebCam.VideoResolution != null)
                 {
@@ -1281,7 +1270,7 @@ namespace MediaCampturerControlerLib
                     }
                     else
                     {
-                        nuevoAlto = listViewIamgenesVideos.Top - (2*distanciaEntreBotones);
+                        nuevoAlto = listViewIamgenesVideos.Top - (2 * distanciaEntreBotones);
                         nuevoAncho = MiWebCam.VideoResolution.FrameSize.Width * nuevoAlto / MiWebCam.VideoResolution.FrameSize.Height;
                     }
                 }
@@ -1290,8 +1279,8 @@ namespace MediaCampturerControlerLib
 
                 videoSourcePlayerCamera.Size = new Size(nuevoAncho, nuevoAlto);
                 buttonMaximizar.Visible = true;
-                buttonMaximizar.Left = videoSourcePlayerCamera.Right - buttonMaximizar.Width-2;
-                buttonMaximizar.Top = panel1.Top+2;
+                buttonMaximizar.Left = videoSourcePlayerCamera.Right - buttonMaximizar.Width - 2;
+                buttonMaximizar.Top = panel1.Top + 2;
 
                 //if (videoSourcePlayerCamera.Width < this.Width)
                 //{
@@ -1503,7 +1492,7 @@ namespace MediaCampturerControlerLib
             }
             catch (Exception er)
             {
-                MessageBox.Show(this,er.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, er.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
         }
