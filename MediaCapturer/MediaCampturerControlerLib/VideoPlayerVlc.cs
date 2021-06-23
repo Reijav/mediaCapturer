@@ -274,7 +274,7 @@ namespace MediaCampturerControlerLib
 
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                string nombreArchivo = $"{PathBaseImagenes}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff")}.jpg";
+                string nombreArchivo = $"{PathBaseImagenes}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff")}.bmp";
 
                 var fileInfo = new FileInfo(nombreArchivo);
                 if (this.vlcControl1.TakeSnapshot(Path.Combine(PathBaseImagenes, nombreArchivo)) && fileInfo.Exists)
