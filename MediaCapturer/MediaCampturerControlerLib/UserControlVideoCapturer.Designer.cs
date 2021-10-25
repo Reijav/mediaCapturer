@@ -69,6 +69,7 @@
             this.LabelCantidadImagenes = new System.Windows.Forms.Label();
             this.buttonProperties = new System.Windows.Forms.Button();
             this.buttonMaximizar = new System.Windows.Forms.Button();
+            this.obtenerFotoDeVideoExternoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripEliminar.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -77,9 +78,10 @@
             // 
             this.contextMenuStripEliminar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.eliminarToolStripMenuItem,
-            this.obtenerFotoDeVideoToolStripMenuItem});
+            this.obtenerFotoDeVideoToolStripMenuItem,
+            this.obtenerFotoDeVideoExternoToolStripMenuItem});
             this.contextMenuStripEliminar.Name = "contextMenuStripEliminar";
-            this.contextMenuStripEliminar.Size = new System.Drawing.Size(194, 48);
+            this.contextMenuStripEliminar.Size = new System.Drawing.Size(237, 92);
             this.contextMenuStripEliminar.Text = "Eliminar";
             // 
             // eliminarToolStripMenuItem
@@ -216,7 +218,6 @@
             this.listViewIamgenesVideos.HideSelection = false;
             this.listViewIamgenesVideos.LargeImageList = this.imageListVideos;
             this.listViewIamgenesVideos.Location = new System.Drawing.Point(12, 501);
-            this.listViewIamgenesVideos.MaximumSize = new System.Drawing.Size(1980, 400);
             this.listViewIamgenesVideos.MinimumSize = new System.Drawing.Size(320, 121);
             this.listViewIamgenesVideos.Name = "listViewIamgenesVideos";
             this.listViewIamgenesVideos.Size = new System.Drawing.Size(849, 121);
@@ -236,7 +237,6 @@
             this.listViewImages.HideSelection = false;
             this.listViewImages.LargeImageList = this.imageListCaptured;
             this.listViewImages.Location = new System.Drawing.Point(870, 4);
-            this.listViewImages.MaximumSize = new System.Drawing.Size(1280, 920);
             this.listViewImages.MinimumSize = new System.Drawing.Size(100, 360);
             this.listViewImages.Name = "listViewImages";
             this.listViewImages.Size = new System.Drawing.Size(311, 618);
@@ -383,6 +383,13 @@
             this.buttonMaximizar.UseVisualStyleBackColor = true;
             this.buttonMaximizar.Click += new System.EventHandler(this.buttonMaximizar_Click);
             // 
+            // obtenerFotoDeVideoExternoToolStripMenuItem
+            // 
+            this.obtenerFotoDeVideoExternoToolStripMenuItem.Name = "obtenerFotoDeVideoExternoToolStripMenuItem";
+            this.obtenerFotoDeVideoExternoToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.obtenerFotoDeVideoExternoToolStripMenuItem.Text = "Obtener Foto de Video Externo";
+            this.obtenerFotoDeVideoExternoToolStripMenuItem.Click += new System.EventHandler(this.obtenerFotoDeVideoExternoToolStripMenuItem_Click);
+            // 
             // UserControlVideoCapturer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -445,5 +452,6 @@
         private System.Windows.Forms.Button buttonProperties;
         public Accord.Controls.VideoSourcePlayer videoSourcePlayerCamera;
         private System.Windows.Forms.Button buttonMaximizar;
+        private System.Windows.Forms.ToolStripMenuItem obtenerFotoDeVideoExternoToolStripMenuItem;
     }
 }

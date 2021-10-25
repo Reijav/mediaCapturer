@@ -732,6 +732,7 @@ namespace MediaCampturerControlerLib
                     MiWebCam.VideoResolution = MiWebCam.VideoCapabilities[comboBoxCapabilitis.SelectedIndex];
 
 
+
                     int alto = MiWebCam.VideoResolution.FrameSize.Height * videoSourcePlayerCamera.Width / MiWebCam.VideoResolution.FrameSize.Width;
                     int diffAlto = alto - videoSourcePlayerCamera.Height;
                     videoSourcePlayerCamera.Height = alto;
@@ -1136,12 +1137,12 @@ namespace MediaCampturerControlerLib
         private void ModificarPosicionPicture()
         {
 
-            if (buttonMinimizar.Visible)
+            if (buttonMinimizar.Visible) //ENTRA CUANDO SE DA CLIC EN MAXIMIZAR
             {
 
                 buttonObtenerVideo.Height = 50;
                 buttonObtenerVideo.Top = this.Height - buttonObtenerVideo.Height - 1;
-                buttonObtenerVideo.Left = (this.Width - (buttonObtenerVideo.Width + labelTiempoGrabacion.Width + buttonGrabar.Width + buttonObtenerVideo.Width + buttonCapturarImg.Width + 30)) / 2;
+                buttonObtenerVideo.Left = (this.Width/2 - (buttonObtenerVideo.Width + labelTiempoGrabacion.Width + buttonGrabar.Width + buttonCapturarImg.Width + 30)/2);
                 buttonObtenerVideo.BringToFront();
 
 
@@ -1165,7 +1166,7 @@ namespace MediaCampturerControlerLib
 
 
                 buttonCapturarImg.Top = buttonObtenerVideo.Top;
-                buttonCapturarImg.Left = this.buttonGrabar.Left + this.buttonGrabar.Width + 10;  // (this.Width / 2) + 5;
+                buttonCapturarImg.Left = this.buttonAgregarDesdeArchivo.Left - 10 - this.buttonAgregarDesdeArchivo.Width; 
                 buttonCapturarImg.BringToFront();
                 buttonCapturarImg.Height = buttonGrabar.Height;
 
@@ -1217,45 +1218,19 @@ namespace MediaCampturerControlerLib
 
                 listViewIamgenesVideos.Parent = this;
 
-                CambiarVisibilidadControles(visibleComponentes);
+                
 
                 buttonMinimizar.Left = videoSourcePlayerCamera.Left + videoSourcePlayerCamera.Width - buttonMinimizar.Width;
                 buttonMinimizar.Top = videoSourcePlayerCamera.Top;
 
                 buttonMinimizar.BringToFront();
 
+                CambiarVisibilidadControles(visibleComponentes);
+
             }
             else
             {
                 var distanciaEntreBotones = 10;
-
-                //buttonObtenerVideo.Left = ((this.Width / 2) - ((buttonObtenerVideo.Width + labelTiempoGrabacion.Width + buttonGrabar.Width + buttonCapturarImg.Width + buttonAgregarDesdeArchivo.Width + (4 * distanciaEntreBotones)) / 2));
-
-                //buttonObtenerVideo.BringToFront();
-
-                //labelTiempoGrabacion.Left = this.buttonObtenerVideo.Left + this.buttonObtenerVideo.Width + distanciaEntreBotones;
-                //labelTiempoGrabacion.BringToFront();
-
-                //buttonGrabar.Left = this.labelTiempoGrabacion.Left + this.labelTiempoGrabacion.Width + distanciaEntreBotones; //(this.Width / 2) - (buttonGrabar.Width) - 5;
-                //buttonGrabar.BringToFront();
-
-                //labelCntImgVideos.Parent = this;
-                //labelCntImgVideos.Left = buttonGrabar.Right - labelCntImgVideos.Width - 3;
-                //labelCntImgVideos.BringToFront();
-
-                //buttonCapturarImg.Left = this.buttonGrabar.Left + this.buttonGrabar.Width + distanciaEntreBotones;  // (this.Width / 2) + 5;
-                //buttonCapturarImg.BringToFront();
-
-                //// LabelCantidadImagenes.Top = buttonCapturarImg.Top + buttonCapturarImg.Height - LabelCantidadImagenes.Height - 3;
-                //LabelCantidadImagenes.Left = buttonCapturarImg.Right - LabelCantidadImagenes.Width - 3;
-                //LabelCantidadImagenes.BringToFront();
-
-                //this.buttonAgregarDesdeArchivo.Left = buttonCapturarImg.Right + distanciaEntreBotones;
-
-                //buttonMaximizar.BringToFront();
-                //buttonMinimizar.BringToFront();
-
-
 
                 int nuevoAncho = Convert.ToInt32(panel1.Width - (listViewImages.Width + 4 * distanciaEntreBotones));// - anchoListaImagenes);
                 int nuevoAlto = listViewIamgenesVideos.Top - (2 * distanciaEntreBotones);
@@ -1280,45 +1255,8 @@ namespace MediaCampturerControlerLib
                 videoSourcePlayerCamera.Size = new Size(nuevoAncho, nuevoAlto);
                 buttonMaximizar.Visible = true;
                 buttonMaximizar.Left = videoSourcePlayerCamera.Right - buttonMaximizar.Width - 2;
-                buttonMaximizar.Top = panel1.Top + 2;
+                buttonMaximizar.Top = videoSourcePlayerCamera.Top+ panel1.Top;
 
-                //if (videoSourcePlayerCamera.Width < this.Width)
-                //{
-                //    var diffAncho = this.Width - videoSourcePlayerCamera.Width;
-                //    videoSourcePlayerCamera.Top = 0;
-                //    videoSourcePlayerCamera.Left = diffAncho / 2;
-                //}
-                //else
-                //{
-                //    videoSourcePlayerCamera.Top = 0;
-                //    videoSourcePlayerCamera.Left = 0;
-                //}
-
-
-                //var visibleComponentes = false;
-                //videoSourcePlayerCamera.Parent = this;
-
-
-
-
-                //listViewImages.Parent = this;
-                //listViewImages.Top = videoSourcePlayerCamera.Top;
-                //listViewImages.Height = this.Height - buttonCapturarImg.Height - 5;
-
-
-                //listViewImages.Left = videoSourcePlayerCamera.Width;
-                //listViewImages.Width = anchoListaImagenes - 15;
-                //listViewImages.BringToFront();
-
-
-                //listViewIamgenesVideos.Parent = this;
-
-                //CambiarVisibilidadControles(visibleComponentes);
-
-                //buttonMinimizar.Left = videoSourcePlayerCamera.Left + videoSourcePlayerCamera.Width - buttonMinimizar.Width;
-                //buttonMinimizar.Top = videoSourcePlayerCamera.Top;
-
-                //buttonMinimizar.BringToFront();
             }
 
 
@@ -1345,21 +1283,42 @@ namespace MediaCampturerControlerLib
         private void buttonMinimizar_Click(object sender, EventArgs e)
         {
 
+            buttonMinimizar.Visible = false;
+
             listViewIamgenesVideos.Parent = panel1;
             listViewIamgenesVideos.Visible = true;
 
+            listViewImages.Parent = panel1;
+            listViewImages.Refresh();
+            listViewIamgenesVideos.Refresh();
 
-            buttonMinimizar.Visible = false;
+
+            var posicion = new Point(4, panel1.Height - listViewIamgenesVideos.Height - 4);
+            listViewIamgenesVideos.Location = posicion ;
+            listViewIamgenesVideos.BringToFront();
+
+
             buttonGrabar.Location = posicionInicialBtnGrabar;
             buttonGrabar.Size = sizeInicialBtnGrabar;
 
 
             buttonCapturarImg.Location = posicionInicialBtnCapturarImg;
             buttonCapturarImg.Size = sizeInicialBtnCapturarImg;
+
+            buttonAgregarDesdeArchivo.Visible = true;
+            
+
+
             listViewImages.Parent = panel1;
+
+            sizeInicialListViewImagenes.Height = panel1.Height - 2;
             listViewImages.Size = sizeInicialListViewImagenes;
+
             posicionInicialListViewImagenes.Y = 0;
+            posicionInicialListViewImagenes.X = panel1.Width - listViewImages.Width-4;
             listViewImages.Location = posicionInicialListViewImagenes;
+
+
 
             labelTiempoGrabacion.Location = posicionCronometroRegistro;
             labelTiempoGrabacion.Size = sizeInicialCronometroRegistro;
@@ -1370,24 +1329,32 @@ namespace MediaCampturerControlerLib
             CambiarVisibilidadControles(true);
 
 
-            listViewImages.Refresh();
-            listViewIamgenesVideos.Refresh();
+
 
             videoSourcePlayerCamera.Parent = panel1;
 
             videoSourcePlayerCamera.Size = sizeVideoPlayerCamera;
+            posicionVideoPlayerCamera.Y = 2;
+            posicionVideoPlayerCamera.X = 2;
+
             videoSourcePlayerCamera.Location = posicionVideoPlayerCamera;
 
+
+            posicionLabelCntImg.X = listViewImages.Right - LabelCantidadImagenes.Width;
             LabelCantidadImagenes.Location = posicionLabelCntImg;
             LabelCantidadImagenes.Size = sizeLabelCntImg;
 
             labelCntImgVideos.Parent = panel1;
+            posicionLabelCntImgVideos.Y = listViewIamgenesVideos.Location.Y - labelCntImgVideos.Height - 2;
+            posicionLabelCntImgVideos.X = listViewIamgenesVideos.Width - labelCntImgVideos.Width;
             labelCntImgVideos.Location = posicionLabelCntImgVideos;
             labelCntImgVideos.Size = sizeLabelCntImgVideos;
 
             videoSourcePlayerCamera.Focus();
 
             ModificarPosicionPicture();
+
+            panel1.Refresh();
 
         }
 
@@ -1415,9 +1382,12 @@ namespace MediaCampturerControlerLib
 
         private void obtenerFotoDeVideoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formVideoPlayerVlc = new VideoPlayerVlc(listViewIamgenesVideos.Items[listViewIamgenesVideos.SelectedIndices[0]].Name, path);
-            formVideoPlayerVlc.ImagenesSeleccionadasDeVideo += ImagenesSeleccionadasDeVideo;
-            formVideoPlayerVlc.ShowDialog(this);
+            if(listViewIamgenesVideos.SelectedIndices!=null && listViewIamgenesVideos.SelectedIndices.Count > 0)
+            {
+                var formVideoPlayerVlc = new VideoPlayerVlc(listViewIamgenesVideos.Items[listViewIamgenesVideos.SelectedIndices[0]].Name, path);
+                formVideoPlayerVlc.ImagenesSeleccionadasDeVideo += ImagenesSeleccionadasDeVideo;
+                formVideoPlayerVlc.ShowDialog(this);
+            }
 
 
             //var formVideoPlayer = new VideoPlayer(listViewIamgenesVideos.Items[listViewIamgenesVideos.SelectedIndices[0]].Name, path);
@@ -1495,6 +1465,13 @@ namespace MediaCampturerControlerLib
                 MessageBox.Show(this, er.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
+        }
+
+        private void obtenerFotoDeVideoExternoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var formVideoPlayerVlc = new VideoPlayerVlc(path);
+            formVideoPlayerVlc.ImagenesSeleccionadasDeVideo += ImagenesSeleccionadasDeVideo;
+            formVideoPlayerVlc.ShowDialog(this);
         }
     }
 }

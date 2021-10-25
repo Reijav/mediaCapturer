@@ -109,6 +109,75 @@ namespace MediaCampturerControlerLib
 
         }
 
+        public VideoPlayerVlc( string pathBaseImagenes)
+        {
+
+
+
+
+
+            this.vlcControl1 = new Vlc.DotNet.Forms.VlcControl();
+            this.vlcControl1.BeginInit();
+
+            this.vlcControl1.BackColor = System.Drawing.Color.Black;
+            this.vlcControl1.Location = new System.Drawing.Point(2, 0);
+            this.vlcControl1.Name = "vlcControl1";
+            this.vlcControl1.Size = new System.Drawing.Size(653, 399);
+            this.vlcControl1.Spu = -1;
+            this.vlcControl1.TabIndex = 0;
+            this.vlcControl1.Text = "vlcControl1";
+            this.vlcControl1.VlcLibDirectory = null;
+            this.vlcControl1.VlcLibDirectoryNeeded += VlcControl1_VlcLibDirectoryNeeded1;
+            this.vlcControl1.VlcMediaplayerOptions = new[]
+            {
+            "-vv",
+            };
+
+            this.vlcControl1.EndInit();
+            this.Controls.Add(this.vlcControl1);
+
+            this.PathBaseImagenes = pathBaseImagenes;
+
+            InitializeComponent();
+
+            var result = openFileVideoDialog.ShowDialog();
+            if (result.Equals(DialogResult.OK))
+            {
+
+                this.PathVideo = openFileVideoDialog.FileName;
+
+                this.vlcControl1.PositionChanged += new System.EventHandler<Vlc.DotNet.Core.VlcMediaPlayerPositionChangedEventArgs>(this.vlcControl1_PositionChanged);
+
+                this.vlcControl1.Playing += new System.EventHandler<VlcMediaPlayerPlayingEventArgs>(SetProgresMax);
+
+                this.vlcControl1.EndReached += VlcControl1_EndReached;
+
+                this.vlcControl1.Capture = true;
+
+                this.vlcControl1.SetMedia(new System.IO.FileInfo(this.PathVideo));
+
+                this.vlcControl1.TimeChanged += (sender, e) =>
+                {
+                    // Maps the time to a 5-seconds interval to take a snapshot every 5 seconds
+                    snapshotInterval = e.NewTime; /// 5000;
+
+                    trackBarVideo.Invoke((MethodInvoker)delegate
+                    {
+                        var valorTrack = Convert.ToInt32(snapshotInterval / frecuenciaTrack);
+                        if (!usandoTrackbar && valorTrack >= trackBarVideo.Minimum && valorTrack <= trackBarVideo.Maximum)
+                        {
+                            trackBarVideo.Value = valorTrack;
+                        }
+                    });
+
+                };
+            }
+
+
+
+
+        }
+
         private void VlcControl1_EndReached(object sender, VlcMediaPlayerEndReachedEventArgs e)
         {
 
@@ -435,6 +504,12 @@ namespace MediaCampturerControlerLib
 
                 });
             });
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+           
+
         }
     }
 }
