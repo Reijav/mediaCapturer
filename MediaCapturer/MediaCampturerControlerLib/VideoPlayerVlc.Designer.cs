@@ -51,20 +51,22 @@ namespace MediaCampturerControlerLib
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.Location = new System.Drawing.Point(222, 466);
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(127, 464);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(155, 38);
             this.button1.TabIndex = 1;
-            this.button1.Text = "Retroceder";
+            this.button1.Text = "<< Retroceder";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // buttonPlayPause
             // 
             this.buttonPlayPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonPlayPause.Location = new System.Drawing.Point(330, 466);
+            this.buttonPlayPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonPlayPause.Location = new System.Drawing.Point(288, 464);
             this.buttonPlayPause.Name = "buttonPlayPause";
-            this.buttonPlayPause.Size = new System.Drawing.Size(75, 23);
+            this.buttonPlayPause.Size = new System.Drawing.Size(132, 38);
             this.buttonPlayPause.TabIndex = 2;
             this.buttonPlayPause.Text = "Reproducir";
             this.buttonPlayPause.UseVisualStyleBackColor = true;
@@ -73,11 +75,12 @@ namespace MediaCampturerControlerLib
             // buttonAdelantar
             // 
             this.buttonAdelantar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonAdelantar.Location = new System.Drawing.Point(441, 466);
+            this.buttonAdelantar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonAdelantar.Location = new System.Drawing.Point(426, 464);
             this.buttonAdelantar.Name = "buttonAdelantar";
-            this.buttonAdelantar.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdelantar.Size = new System.Drawing.Size(132, 38);
             this.buttonAdelantar.TabIndex = 3;
-            this.buttonAdelantar.Text = "Adelantar";
+            this.buttonAdelantar.Text = "Adelantar >>";
             this.buttonAdelantar.UseVisualStyleBackColor = true;
             this.buttonAdelantar.Click += new System.EventHandler(this.buttonAdelantar_Click);
             // 
@@ -115,9 +118,10 @@ namespace MediaCampturerControlerLib
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 474);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 471);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.Size = new System.Drawing.Size(51, 20);
             this.label1.TabIndex = 7;
             this.label1.Text = "label1";
             // 
@@ -169,6 +173,7 @@ namespace MediaCampturerControlerLib
             this.button3.TabIndex = 10;
             this.button3.Text = "button3";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // VideoPlayerVlc

@@ -172,6 +172,10 @@ namespace MediaCampturerControlerLib
 
                 };
             }
+            else
+            {
+                this.Close();
+            }
 
 
 
@@ -204,8 +208,19 @@ namespace MediaCampturerControlerLib
         private void ObtenerDatosVideo()
         {
             var mediaInformation = vlcControl1.GetCurrentMedia().Tracks;
-            videoHeight = Convert.ToInt32(((VideoTrack)mediaInformation[0].TrackInfo).Height);
-            videoWidth = Convert.ToInt32(((VideoTrack)mediaInformation[0].TrackInfo).Width);
+
+            foreach(var mediaTrack in mediaInformation)
+            {
+                if (mediaTrack.TrackInfo is VideoTrack)
+                {
+                    videoHeight = Convert.ToInt32(((VideoTrack)mediaTrack.TrackInfo).Height);
+                    videoWidth = Convert.ToInt32(((VideoTrack)mediaTrack.TrackInfo).Width);
+                    break;
+                }
+            }
+            
+
+           
 
         }
 
@@ -346,7 +361,7 @@ namespace MediaCampturerControlerLib
                 string nombreArchivo = $"{PathBaseImagenes}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff")}.bmp";
 
                 var fileInfo = new FileInfo(nombreArchivo);
-                if (this.vlcControl1.TakeSnapshot(Path.Combine(PathBaseImagenes, nombreArchivo)) && fileInfo.Exists)
+                if (this.vlcControl1.TakeSnapshot(Path.Combine(PathBaseImagenes, nombreArchivo), (uint)videoWidth,(uint) videoHeight) && fileInfo.Exists)
                 {
 
                     var Imagen = new Bitmap(nombreArchivo);
@@ -481,10 +496,13 @@ namespace MediaCampturerControlerLib
 
                     this.vlcControl1.Time = trackBarVideo.Value * frecuenciaTrack;
                     ObtenerPresentarTiempo();
+                    this.vlcControl1.Pause();
+                    buttonPlayPause.Text = "Pausar";
+
                     usandoTrackbar = false;
 
-                    this.vlcControl1.Pause();
-                    buttonPlayPause.Text = "Reproducir";
+
+                    
                 });
 
             });

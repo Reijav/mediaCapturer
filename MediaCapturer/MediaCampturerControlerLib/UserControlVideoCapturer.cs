@@ -15,6 +15,8 @@ using Accord.Video.DirectShow;
 using System.Threading;
 using Accord.Video.VFW;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 
 namespace MediaCampturerControlerLib
 {
@@ -32,7 +34,7 @@ namespace MediaCampturerControlerLib
         private long ticksInicioGrabado = 0;
 
         private VideoCodec videoCodecGrabacion = VideoCodec.MPEG4;
-        private string contenedorExtencion = "mp4";
+        private string contenedorExtencion = "avi";
         private string pathDispositivoDefecto = AppContext.BaseDirectory + "dispositivodefecto.txt";
 
         public PropiedadesDispositivo DispositivoPorDefecto
@@ -468,11 +470,12 @@ namespace MediaCampturerControlerLib
 
                     var totalTiempoTS = new TimeSpan(numeroActual - horaInicioGrabacion);
 
-                    if (Convert.ToDecimal(lapsoTiempoTS.TotalMilliseconds/1000)   > (1.0m/ MiWebCam.VideoResolution.AverageFrameRate))
+                    if (Convert.ToDecimal(lapsoTiempoTS.TotalMilliseconds) > (1000.0m / MiWebCam.VideoResolution.AverageFrameRate))
                     {
 
+                        //imagenVideo= Clone<Bitmap>(newFrameEventArgs.Frame);
 
-                         imagenVideo = (Bitmap)newFrameEventArgs.Frame.Clone();
+                        imagenVideo = (Bitmap)newFrameEventArgs.Frame.Clone();
                         
 
                         if (!pararGrabar && buttonGrabar.Text == PARAR_GRABAR && FileWriter != null && FileWriter.IsOpen)
@@ -485,7 +488,7 @@ namespace MediaCampturerControlerLib
                                 {
                                     FileWriter.Flush();
                                 }
-                                numeroPrevio = DateTime.Now.Ticks;
+                                numeroPrevio = numeroActual;
                             }
 
                             catch (AccessViolationException ex)
@@ -496,7 +499,7 @@ namespace MediaCampturerControlerLib
 
                             catch (Exception er)
                             {
-                                Console.WriteLine(er.Message);
+                               // Console.WriteLine(er.Message);
                                 //FileWriter.WriteVideoFrame(newFrameEventArgs.Frame);
                                 // MessageBox.Show(this,this,"Error " + er.Message);
                             }
@@ -505,11 +508,36 @@ namespace MediaCampturerControlerLib
                         //{
                         //    imagenVideo = (Bitmap)newFrameEventArgs.Frame.Clone();
                         //}
-                    }
+                   }
                 }
 
             }
         }
+
+
+        public static T Clone<T>(T source)
+        {
+            if (!typeof(T).IsSerializable)
+            {
+                throw new ArgumentException("The type must be serializable.", "source");
+            }
+
+            // Don't serialize a null object, simply return the default for that object
+            if (Object.ReferenceEquals(source, null))
+            {
+                return default(T);
+            }
+
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new MemoryStream();
+            using (stream)
+            {
+                formatter.Serialize(stream, source);
+                stream.Seek(0, SeekOrigin.Begin);
+                return (T)formatter.Deserialize(stream);
+            }
+        }
+
 
 
         private void CerrarWebCam()
@@ -564,8 +592,6 @@ namespace MediaCampturerControlerLib
                 {
 
                     pararGrabar = true;
-
-                    Thread.Sleep(200);
 
                     try
                     {
@@ -632,9 +658,9 @@ namespace MediaCampturerControlerLib
 
                     PathVideosPr.Add(nombreArchivoVideo);
 
-                    int bitrate = (MiWebCam.VideoResolution.BitCount) * h * w;
+                    int bitrate = (MiWebCam.VideoResolution.BitCount) * h * w; 
                     int fotogramasPorSegundo = MiWebCam.VideoResolution.AverageFrameRate;
-
+                    label2.Text = fotogramasPorSegundo.ToString() + " fps";
                     try
                     {
                         if (FileWriter != null)
@@ -1430,6 +1456,7 @@ namespace MediaCampturerControlerLib
         private void listViewImages_MouseEnter(object sender, EventArgs e)
         {
             obtenerFotoDeVideoToolStripMenuItem.Visible = false;
+            obtenerFotoDeVideoExternoToolStripMenuItem.Visible = false;
         }
 
 
@@ -1437,6 +1464,7 @@ namespace MediaCampturerControlerLib
         private void listViewIamgenesVideos_MouseEnter(object sender, EventArgs e)
         {
             obtenerFotoDeVideoToolStripMenuItem.Visible = true;
+            obtenerFotoDeVideoExternoToolStripMenuItem.Visible = true;
         }
 
         private void UserControlVideoCapturer_KeyPress(object sender, KeyPressEventArgs e)
