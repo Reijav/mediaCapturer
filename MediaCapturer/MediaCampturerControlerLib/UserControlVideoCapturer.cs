@@ -1497,9 +1497,17 @@ namespace MediaCampturerControlerLib
 
         private void obtenerFotoDeVideoExternoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formVideoPlayerVlc = new VideoPlayerVlc(path);
-            formVideoPlayerVlc.ImagenesSeleccionadasDeVideo += ImagenesSeleccionadasDeVideo;
-            formVideoPlayerVlc.ShowDialog(this);
+            try
+            {
+                var formVideoPlayerVlc = new VideoPlayerVlc(path);
+                formVideoPlayerVlc.ImagenesSeleccionadasDeVideo += ImagenesSeleccionadasDeVideo;
+                formVideoPlayerVlc.ShowDialog(this);
+            }
+            catch(Exception ex)
+            {
+
+            }
+
         }
     }
 }

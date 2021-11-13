@@ -111,12 +111,14 @@ namespace MediaCampturerControlerLib
 
         public VideoPlayerVlc( string pathBaseImagenes)
         {
+            InitializeComponent();
+
+            var result = openFileVideoDialog.ShowDialog();
+            if (result.Equals(DialogResult.OK))
+            {
 
 
-
-
-
-            this.vlcControl1 = new Vlc.DotNet.Forms.VlcControl();
+                this.vlcControl1 = new Vlc.DotNet.Forms.VlcControl();
             this.vlcControl1.BeginInit();
 
             this.vlcControl1.BackColor = System.Drawing.Color.Black;
@@ -138,11 +140,9 @@ namespace MediaCampturerControlerLib
 
             this.PathBaseImagenes = pathBaseImagenes;
 
-            InitializeComponent();
+        
 
-            var result = openFileVideoDialog.ShowDialog();
-            if (result.Equals(DialogResult.OK))
-            {
+
 
                 this.PathVideo = openFileVideoDialog.FileName;
 
@@ -361,7 +361,18 @@ namespace MediaCampturerControlerLib
                 string nombreArchivo = $"{PathBaseImagenes}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff")}.bmp";
 
                 var fileInfo = new FileInfo(nombreArchivo);
-                if (this.vlcControl1.TakeSnapshot(Path.Combine(PathBaseImagenes, nombreArchivo), (uint)videoWidth,(uint) videoHeight) && fileInfo.Exists)
+
+                var anchoFotoCaptura = (uint)(videoWidth );
+                var altoFotoCaptura = (uint)(videoHeight );
+
+                if (videoWidth <= 640) {
+                    anchoFotoCaptura = (uint)(videoWidth * 2);
+                    altoFotoCaptura = (uint)(videoHeight * 2);
+                }
+
+               
+
+                if (this.vlcControl1.TakeSnapshot(Path.Combine(PathBaseImagenes, nombreArchivo), anchoFotoCaptura,altoFotoCaptura) && fileInfo.Exists)
                 {
 
                     var Imagen = new Bitmap(nombreArchivo);
@@ -458,13 +469,15 @@ namespace MediaCampturerControlerLib
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
+                if (this.vlcControl1 != null)
+                {
+                    this.vlcControl1.Stop();
+                    if (this.vlcControl1.GetCurrentMedia() != null)
+                        this.vlcControl1.GetCurrentMedia().Dispose();
+                    if (!this.vlcControl1.IsDisposed)
+                        this.vlcControl1.Dispose();
 
-                this.vlcControl1.Stop();
-                if (this.vlcControl1.GetCurrentMedia() != null)
-                    this.vlcControl1.GetCurrentMedia().Dispose();
-                if (!this.vlcControl1.IsDisposed)
-                    this.vlcControl1.Dispose();
-
+                }
             }
             );
 
