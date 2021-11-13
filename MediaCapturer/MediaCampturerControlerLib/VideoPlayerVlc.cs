@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -358,7 +359,7 @@ namespace MediaCampturerControlerLib
 
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                string nombreArchivo = $"{PathBaseImagenes}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff")}.bmp";
+                string nombreArchivo = $"{PathBaseImagenes}\\{DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff")}.jpg";
 
                 var fileInfo = new FileInfo(nombreArchivo);
 
@@ -375,36 +376,43 @@ namespace MediaCampturerControlerLib
                 if (this.vlcControl1.TakeSnapshot(Path.Combine(PathBaseImagenes, nombreArchivo), anchoFotoCaptura,altoFotoCaptura) && fileInfo.Exists)
                 {
 
-                    var Imagen = new Bitmap(nombreArchivo);
+                    var nuevoNombreArchivo=  nombreArchivo.Replace(".jpg",".bmp");
+                    
+                    var ImgDrawing = Image.FromFile(nombreArchivo);
+                    ImgDrawing.Save(nuevoNombreArchivo , ImageFormat.Bmp);
+
+                    
+
+                    var Imagen = new Bitmap(nuevoNombreArchivo);
 
                     if (this.InvokeRequired)
                     {
 
                         listViewCapturas.Invoke((MethodInvoker)delegate
                         {
-                            imageListCapturas.Images.Add(nombreArchivo, Imagen);
-                            listViewCapturas.Items.Add(nombreArchivo, Path.GetFileName(nombreArchivo), imageListCapturas.Images.IndexOfKey(nombreArchivo));
+                            imageListCapturas.Images.Add(nuevoNombreArchivo, Imagen);
+                            listViewCapturas.Items.Add(nuevoNombreArchivo, Path.GetFileName(nuevoNombreArchivo), imageListCapturas.Images.IndexOfKey(nuevoNombreArchivo));
                             listViewCapturas.Refresh();
                             if (PathImagenes == null)
                             {
                                 PathImagenes = new List<string>();
                             }
 
-                            PathImagenes.Add(nombreArchivo);
+                            PathImagenes.Add(nuevoNombreArchivo);
                         });
 
                     }
                     else
                     {
-                        imageListCapturas.Images.Add(nombreArchivo, Imagen);
-                        listViewCapturas.Items.Add(nombreArchivo, Path.GetFileName(nombreArchivo), imageListCapturas.Images.IndexOfKey(nombreArchivo));
+                        imageListCapturas.Images.Add(nuevoNombreArchivo, Imagen);
+                        listViewCapturas.Items.Add(nuevoNombreArchivo, Path.GetFileName(nuevoNombreArchivo), imageListCapturas.Images.IndexOfKey(nuevoNombreArchivo));
                         listViewCapturas.Refresh();
                         if (PathImagenes == null)
                         {
                             PathImagenes = new List<string>();
                         }
 
-                        PathImagenes.Add(nombreArchivo);
+                        PathImagenes.Add(nuevoNombreArchivo);
                     }
 
                 }
