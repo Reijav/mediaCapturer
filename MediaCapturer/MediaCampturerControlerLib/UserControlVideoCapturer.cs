@@ -1501,7 +1501,11 @@ namespace MediaCampturerControlerLib
             {
                 var formVideoPlayerVlc = new VideoPlayerVlc(path);
                 formVideoPlayerVlc.ImagenesSeleccionadasDeVideo += ImagenesSeleccionadasDeVideo;
-                formVideoPlayerVlc.ShowDialog(this);
+                if(formVideoPlayerVlc.DialogResult != DialogResult.Cancel)
+                {
+                    formVideoPlayerVlc.ShowDialog(this);
+                }
+                
             }
             catch(Exception ex)
             {

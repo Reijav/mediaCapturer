@@ -176,6 +176,7 @@ namespace MediaCampturerControlerLib
             else
             {
                 this.Close();
+                this.DialogResult = DialogResult.Cancel;
             }
 
 
@@ -263,7 +264,15 @@ namespace MediaCampturerControlerLib
 
 
             {
-                this.Invoke(new UpdateControlsDelegate(currentTrackTime));
+
+                try
+                {
+                    this.Invoke(new UpdateControlsDelegate(currentTrackTime));
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
             else
             {
@@ -381,6 +390,9 @@ namespace MediaCampturerControlerLib
                     var ImgDrawing = Image.FromFile(nombreArchivo);
                     ImgDrawing.Save(nuevoNombreArchivo , ImageFormat.Bmp);
 
+                    ImgDrawing.Dispose();
+
+                    fileInfo.Delete();
                     
 
                     var Imagen = new Bitmap(nuevoNombreArchivo);
@@ -477,7 +489,7 @@ namespace MediaCampturerControlerLib
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                if (this.vlcControl1 != null)
+                if (this.vlcControl1 != null && !this.vlcControl1.IsDisposed)
                 {
                     this.vlcControl1.Stop();
                     if (this.vlcControl1.GetCurrentMedia() != null)
